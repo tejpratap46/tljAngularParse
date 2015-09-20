@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="tlj">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Manage your movie, music, tv shows and podcast life here">
+    <link rel="icon" href="favicon.ico">
+    <title>The List Job :: Manage your movie, music, tv shows and podcast life here</title>
+    <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="well">
+    <nav class="navbar navbar-default navbar-fixed-top" data-ng-controller="navController">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#/">The List Job</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="navHome" class="active"><a href="#/">Home</a></li>
+            <li id="navMovie"><a href="#movie">Movie</a></li>
+            <li id="navTv"><a href="#tv">TV</a></li>
+            <li id="navMusic"><a href="#music">Music</a></li>
+            <li id="navPodcast"><a href="#podcast">Podcast</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right" id="navLoggedIn"></ul>
+        </div>
+      </div>
+    </nav>
+    <div style="margin-top:60px;" data-ng-view></div>
+    <div class="notification"></div>
+    <!-- <div class="bottom center white full-width">
+      <a href="#/">The List Job</a>, by <a href="mailto:tejpratap46@gmail.com?Subject=The+List+Job">Tej Pratap Singh</a>.
+    </div> -->
+  </body>
+  <script src="https://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.min.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/homeController.js"></script>
+  <script src="js/movie/movieHomeController.js"></script>
+  <script src="js/movie/movieListController.js"></script>
+  <script src="js/movie/movieViewController.js"></script>
+  <script src="rawgit.com/saribe/eModal/master/dist/eModal.min.js"></script>
+</html>
