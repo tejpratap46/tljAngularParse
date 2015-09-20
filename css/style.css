@@ -1,0 +1,77 @@
+.bold {
+	font-weight: bold;
+}
+
+.bottom {
+	bottom: 0px;
+	position: fixed;
+	z-index: 10;
+}
+
+.justified {
+    text-align: justify;
+}
+
+.center-image {
+	display: block;
+	margin-left: auto;
+	margin-right: auto
+}
+
+.center {
+	text-align: center;
+}
+
+.full-width {
+	width: 100%;
+}
+
+.half-width {
+	width: 50%;
+}
+
+.hide {
+	display: none;
+}
+
+.no-padding {
+	padding: 0px 0px 0px 0px;
+}
+
+.no-margin {
+	margin: 0px 0px 0px 0px;
+}
+
+.center-vertical {
+	vertical-align: middle;
+}
+
+.round-button {
+    border-radius: 50%;
+    overflow:hidden;
+}
+
+.ellipsis {
+	text-overflow: ellipsis;
+	/* Required for text-overflow to do anything */
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.notification {
+	width: 97%;
+	position: fixed;
+	bottom: 10px;
+	background: #383838;
+	color: #F0F0F0;
+	padding: 10px;
+	z-index: 10;
+	text-align: center;
+	border-radius: 2px;
+	display: none;
+}
+
+.white {
+	background: #FFFFFF;
+	color: #000000;
+}
