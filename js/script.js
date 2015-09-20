@@ -36,9 +36,9 @@ function addMovieWatchlist($index,tmdbid,imdbid,name,image){
     success: function(results) {
         if(results.length > 0){
             $('.notification').first().text('Error : Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
-            toggleButton($index);
+            toggleButton($index, "movieWatchlist");
         }else{
-            addMovie($index,movie,tmdbid,name,image);
+            addMovie($index,movie,tmdbid,name,image, "movieWatchlist");
         }
     },
     error: function(error) {
@@ -57,11 +57,11 @@ function addMovieWatched($index,tmdbid,imdbid,name,image){
     success: function(results) {
         if(results.length > 0){
             $('.notification').first().text('Error : Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
-            toggleButton($index);
+            toggleButton($index, "movieWatched");
             eModal.confirm("Want To Remove It", "Already Added")
-                .then(deleteMovie, null);
+                .then(deleteMovie, deleteMovieCancel);
         }else{
-            addMovie($index,movie,tmdbid,name,image);
+            addMovie($index,movie,tmdbid,name,image, "movieWatched");
         }
     },
     error: function(error) {
@@ -70,13 +70,13 @@ function addMovieWatched($index,tmdbid,imdbid,name,image){
     });
 }
 
-function addMovie($index,movie,tmdbid,name,image){
+function addMovie($index,movie,tmdbid,name,image, buttonId){
     movie.set("TMDBID", tmdbid + "");
     movie.set("name", name);
     movie.set("image", image);
     movie.set("isDeleted", false);
     var user = Parse.User.current();
-    if (user != null){
+    if (user == null){
         window.location.hash = '#/login';
         return false;
     }else{
@@ -87,7 +87,7 @@ function addMovie($index,movie,tmdbid,name,image){
     movie.save(null, {
         success: function(movie) {
             $('.notification').first().hide('fast');
-            toggleButton($index);
+            toggleButton($index, buttonId);
         },
     error: function(movie, error) {
 			$('.notification').first().text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
@@ -95,10 +95,11 @@ function addMovie($index,movie,tmdbid,name,image){
     });
 }
 
-function toggleButton($index){
+function toggleButton($index, buttonId){
+    
     if($index == -1){
-        $('#movieWatched').eq($index).removeClass('btn-info').addClass('btn-danger');
+        $('#' + buttonId).eq($index).removeClass('btn-info').addClass('btn-danger');
     }else{
-        $('.movieWatched').eq($index).removeClass('btn-info').addClass('btn-danger');
+        $('.' + buttonId).eq($index).removeClass('btn-info').addClass('btn-danger');
     }
 }
