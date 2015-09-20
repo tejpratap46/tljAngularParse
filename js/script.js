@@ -76,7 +76,12 @@ function addMovie($index,movie,tmdbid,name,image){
     movie.set("image", image);
     movie.set("isDeleted", false);
     var user = Parse.User.current();
-    movie.setACL(new Parse.ACL(user));
+    if (user != null){
+        window.location.hash = '#/login';
+        return false;
+    }else{
+        movie.setACL(new Parse.ACL(user));
+    }
 
     $('.notification').first().text('Loading...').show('fast');
     movie.save(null, {

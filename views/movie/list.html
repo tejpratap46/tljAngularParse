@@ -5,14 +5,14 @@
                 <img style="width: 100%;" src="http://image.tmdb.org/t/p/w185{{movie.poster_path}}" alt="{{movie.title}}">
             </div>
             <div class="caption">
-                <h4 class="center ellipsis" title="{{movie.name}}">{{movie.title}}</h4>
+                <h4 class="center ellipsis" title="{{movie.title}}">{{movie.title}}</h4>
                 <p class="center ellipsis">{{movie.title}}</p>
             </div>
         </a>
         <div class="center">
             <div class="btn-group">
-                <button class="movieWatchlist btn btn-success glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, movie.id, '', movie.name, movie.poster_path)"></button>
-                <button class="movieWatched btn btn-info glyphicon glyphicon-ok" data-ng-click="watched($index, movie.id, '', movie.name, movie.poster_path)"></button>
+                <button class="movieWatchlist btn btn-success glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, movie.id, '', movie.title, movie.poster_path)"></button>
+                <button class="movieWatched btn btn-info glyphicon glyphicon-ok" data-ng-click="watched($index, movie.id, '', movie.title, movie.poster_path)"></button>
                 <button class="btn btn-primary glyphicon glyphicon-play"></button>
             </div>
         </div>
