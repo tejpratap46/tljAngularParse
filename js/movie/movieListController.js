@@ -8,7 +8,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         var body = document.body, html = document.documentElement;
         var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
         windowBottom = windowHeight + window.pageYOffset;
-        if (windowBottom >= docHeight) {
+        if (windowBottom >= docHeight - 10) {
             if ($routeParams.list == 'list'){
                 $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey + "&page=" + page)
                 .success(function(response) {

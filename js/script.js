@@ -32,17 +32,20 @@ function addMovieWatchlist($index,tmdbid,imdbid,name,image){
 
     var query = new Parse.Query(MovieWatchList);
     query.equalTo("TMDBID", tmdbid + "");
+    query.equalTo("isDeleted", false);
     query.find({
     success: function(results) {
         if(results.length > 0){
-            $('.notification').first().text('Error : Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
-            toggleButton($index, "movieWatchlist");
+            var object = results[0];
+            $('.notification').first().text('Oops! Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
+            toggleButtonAdded($index, "movieWatchlist");
+            eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie($index, object,tmdbid,"movieWatchlist"), deleteMovieCancel);
         }else{
             addMovie($index,movie,tmdbid,name,image, "movieWatchlist");
         }
     },
     error: function(error) {
-        $('.notification').first().text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
+        $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
     }
     });
 }
@@ -53,21 +56,42 @@ function addMovieWatched($index,tmdbid,imdbid,name,image){
     
     var query = new Parse.Query(MovieWatched);
     query.equalTo("TMDBID", tmdbid + "");
+    query.equalTo("isDeleted", false);
     query.find({
     success: function(results) {
         if(results.length > 0){
-            $('.notification').first().text('Error : Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
-            toggleButton($index, "movieWatched");
-            eModal.confirm("Want To Remove It", "Already Added")
-                .then(deleteMovie, deleteMovieCancel);
+            var object = results[0];
+            $('.notification').first().text('Oops! Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
+            toggleButtonAdded($index, "movieWatched");
+            eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie($index, object,tmdbid,"movieWatched"), deleteMovieCancel);
         }else{
             addMovie($index,movie,tmdbid,name,image, "movieWatched");
         }
     },
     error: function(error) {
-        $('.notification').first().text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
+        $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
     }
     });
+}
+
+function deleteMovie($index,movie,tmdbid,buttonId){
+    console.log('Delete Ok');
+    movie.set("isDeleted", true);
+    
+    $('.notification').first().text('Loading...').show('fast');
+    movie.save(null, {
+        success: function(movie) {
+            $('.notification').first().hide('fast');
+            toggleButtonRemoved($index, buttonId);
+        },
+    error: function(movie, error) {
+			$('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
+        }
+    });
+}
+
+function deleteMovieCancel(){
+    console.log('Delete Cancel');
 }
 
 function addMovie($index,movie,tmdbid,name,image, buttonId){
@@ -77,7 +101,7 @@ function addMovie($index,movie,tmdbid,name,image, buttonId){
     movie.set("isDeleted", false);
     var user = Parse.User.current();
     if (user == null){
-        window.location.hash = '#/login';
+        eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
         return false;
     }else{
         movie.setACL(new Parse.ACL(user));
@@ -87,19 +111,34 @@ function addMovie($index,movie,tmdbid,name,image, buttonId){
     movie.save(null, {
         success: function(movie) {
             $('.notification').first().hide('fast');
-            toggleButton($index, buttonId);
+            toggleButtonAdded($index, buttonId);
         },
     error: function(movie, error) {
-			$('.notification').first().text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
+			$('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
         }
     });
 }
 
-function toggleButton($index, buttonId){
-    
+function loginOk(){
+    console.log('Login OK');
+}
+
+function loginCancel(){
+    console.log('Login Cancel');
+}
+
+function toggleButtonAdded($index, buttonId){
     if($index == -1){
-        $('#' + buttonId).eq($index).removeClass('btn-info').addClass('btn-danger');
+        $('#' + buttonId).eq($index).addClass('btn-danger');
     }else{
-        $('.' + buttonId).eq($index).removeClass('btn-info').addClass('btn-danger');
+        $('.' + buttonId).eq($index).addClass('btn-danger');
+    }
+}
+
+function toggleButtonRemoved($index, buttonId){
+    if($index == -1){
+        $('#' + buttonId).eq($index).removeClass('btn-danger');
+    }else{
+        $('.' + buttonId).eq($index).removeClass('btn-danger');
     }
 }

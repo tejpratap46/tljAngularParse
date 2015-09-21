@@ -1,52 +1,62 @@
 <div>
     <div class="row">
         <h1 class="bold center">{{movie.title}}</h1>
+        <hr />
         <div class="col-sm-3">
             <img style="width: 100%;" src="http://image.tmdb.org/t/p/w185{{movie.poster_path}}" alt="movie.title">
         </div>
         <div class="col-sm-9">
-            <div class="row">
-                <div class="col-sm-6 center">
-                    <h1 class="bold" style="font-size: 10em;">{{movie.vote_average}}</h1>
-                  <hr />
-                   <div class="col-xs-4">
-                        <button id="movieWatchlist" style="height: 80px; width: 80px;" class="btn btn-success round-button glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist(-1, movie.id, '', movie.title, movie.poster_path)"></button>
-                   </div>
-                   <div class="col-xs-4">
-                        <button id="movieWatched" style="height: 80px; width: 80px;" class="btn btn-info round-button glyphicon glyphicon-ok" title="Add To Watched" data-ng-click="watched(-1, movie.id, '', movie.title, movie.poster_path)"></button>
-                   </div>
-                   <div class="col-xs-4">
-                        <button style="height: 80px; width: 80px;" class="btn btn-primary round-button glyphicon glyphicon-play" title="Watch Trailer"></button>
-                   </div>
-                <hr />
-                </div>
-                <div class="col-sm-6">
-                   <hr />
-                   <blockquote><h6 class="bold center">"{{movie.tagline}}"</h6></blockquote>
-                    <h5><strong>Released : </strong>{{movie.release_date}}</h5>
-                    <h5><strong>Runtime : </strong>{{movie.runtime}} min</h5>
-                    <a target="_blank" href="{{movie.homepage}}" class="btn btn-default full-width" title="Watch Trailer">Home Page</a>
-                    <hr />
-                    <a target="_blank" href="http://www.imdb.com/title/{{movie.imdb_id}}" class="btn btn-warning full-width" title="Watch Trailer">IMDB</a>
-                </div>
+            <div class="row center">
+                <h1 class="bold" style="font-size: 10em;">{{movie.vote_average}}</h1>
+               <div class="col-xs-4">
+                    <button id="movieWatchlist" style="height: 80px; width: 80px;" class="btn btn-success round-button glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist(-1, movie.id, '', movie.title, movie.poster_path)"></button>
+               </div>
+               <div class="col-xs-4">
+                    <button id="movieWatched" style="height: 80px; width: 80px;" class="btn btn-info round-button glyphicon glyphicon-ok" title="Add To Watched" data-ng-click="watched(-1, movie.id, '', movie.title, movie.poster_path)"></button>
+               </div>
+               <div class="col-xs-4">
+                    <button style="height: 80px; width: 80px;" class="btn btn-primary round-button glyphicon glyphicon-play" title="Watch Trailer"></button>
+               </div>
             </div>
             <blockquote class="row">
                <h3 class="bold">Genres</h3>
                 <div class="col-sm-3" ng-repeat="genre in movie.genres">
-                    <a href="#/movie/list/genre/{{genre.id}}" class="btn btn-primary full-width" title="{{genre.name}}">{{ genre.name}}</a>
+                    <a href="#/movie/list/genre/{{genre.id}}" class="btn btn-primary full-width ellipsis" title="{{genre.name}}">{{ genre.name}}</a>
                 </div>
             </blockquote>
+        </div>
+    </div>
+   <hr />
+   <blockquote><h6 class="bold center">{{'"' + movie.tagline + '"'}}</h6></blockquote>
+    <hr />
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="bold center ellipsis">Released</h3>
+            <h5 class="center">{{movie.release_date}}</h5>
+        </div>
+        <div class="col-xs-6">
+            <h3 class="bold center ellipsis">Runtime</h3>
+            <h5 class="center">{{movie.runtime + ' min'}}</h5>
         </div>
     </div>
     <hr />
     <div class="row">
         <div class="col-xs-6">
-            <h3 class="bold center">Budget</h3>
-            <h5 class="center">${{movie.budget}}</h5>
+            <a target="_blank" href="http://www.imdb.com/title/{{movie.imdb_id}}" class="btn btn-warning full-width" title="Watch Trailer">IMDB</a>
         </div>
         <div class="col-xs-6">
-            <h3 class="bold center">Revenue</h3>
-            <h5 class="center">${{movie.revenue}}</h5>
+            <a target="_blank" href="{{movie.homepage}}" class="btn btn-default full-width" title="Watch Trailer">Home Page</a>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="bold center ellipsis">Budget</h3>
+            <h5 class="center">{{'$' + movie.budget}}</h5>
+        </div>
+        <div class="col-xs-6">
+            <h3 class="bold center ellipsis">Revenue</h3>
+            <h5 class="center">{{'$' + movie.revenue}}</h5>
         </div>
     </div>
     <hr />
@@ -59,19 +69,19 @@
     <hr />
     <div class="row">
         <h2 class="bold center">SIMILAR MOVIES</h2>
-        <div class="col-xs-6 col-sm-4 col-md-3" data-ng-repeat="movie in movies track by $index">
+        <div class="col-sm-4 col-md-3 col-lg-2" style="height: 440px;" data-ng-repeat="movie in movies track by $index">
             <div class="thumbnail">
                 <a href="#/movie/view/{{movie.id + '/' + movie.title}}">
-                   <div style=" height: 400px; overflow: hidden;">
+                   <div style="height: 275px; overflow: hidden;">
                         <img style="width: 100%;" src="http://image.tmdb.org/t/p/w185{{movie.poster_path}}" alt="{{movie.title}}">
                     </div>
                     <div class="caption">
                         <h4 class="center ellipsis" title="{{movie.title}}">{{movie.title}}</h4>
-                        <p class="center ellipsis">{{movie.title}}</p>
+                        <p class="center ellipsis">{{movie.release_date}}</p>
                     </div>
                 </a>
                 <div class="center">
-                    <div class="btn-group">
+                    <div class="btn-group" style="margin-top: -20px;">
                         <button class="movieWatchlist btn btn-success glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, movie.id, '', movie.title, movie.poster_path)"></button>
                         <button class="movieWatched btn btn-info glyphicon glyphicon-ok" data-ng-click="watched($index, movie.id, '', movie.title, movie.poster_path)"></button>
                         <button class="btn btn-primary glyphicon glyphicon-play"></button>
@@ -82,10 +92,10 @@
     </div>
     <div class="row">
         <h2 class="bold center">CAST</h2>
-        <div class="col-md-2" data-ng-repeat="cast in casts">
+        <div class="col-xs-4 col-sm-3 col-md-2" style="height: 320px;" data-ng-repeat="cast in casts">
             <div class="thumbnail">
                 <a href="#/people/view/{{cast.id + '/' + cast.title}}">
-                   <div style=" height: 200px; overflow: hidden;">
+                   <div style="height: 200px; overflow: hidden;">
                         <img style="width: 100%;" src="http://image.tmdb.org/t/p/w185{{cast.profile_path}}" alt="{{cast.name}}">
                     </div>
                     <div class="caption">
