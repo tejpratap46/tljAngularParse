@@ -52,4 +52,8 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
     $scope.watched = function($index,tmdbid,imdbid,name,image){
         addMovieWatched($index,tmdbid,"",name,image);
     }
+    
+    $scope.trailer = function($index,tmdbid){
+        showMovieTrailer($index,tmdbid);
+    }
 });

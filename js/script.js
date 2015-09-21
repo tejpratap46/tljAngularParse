@@ -26,6 +26,12 @@ function checkIfLoggedIn () {
 	}
 }
 
+function showMovieTrailer($index, tmdbid){
+    $.getJSON('http://api.themoviedb.org/3/movie/' + tmdbid + '/videos?api_key=' + tmdbapikey, function(json, textStatus) {
+		eModal.iframe('http://www.youtube.com/embed/' + json.results[0].key + '?autoplay=1', 'Trailer');
+    });
+}
+
 function addMovieWatchlist($index,tmdbid,imdbid,name,image){
     var MovieWatchList = Parse.Object.extend("MovieWatchList");
     var movie = new MovieWatchList();
