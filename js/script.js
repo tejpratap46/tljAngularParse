@@ -120,7 +120,7 @@ function addMovie($index,movie,tmdbid,name,image, buttonId){
 }
 
 function loginOk(){
-    console.log('Login OK');
+    window.location.hash = "#/login";
 }
 
 function loginCancel(){
