@@ -1,4 +1,6 @@
 var tmdbapikey = "72cae7941bfe23850229828662c9e4b8";
+var userMoviesWatchlist = [];
+var userMoviesWatched = [];
 
 function setNav (activeId) {
 	$('#navHome').removeClass('active');
@@ -26,8 +28,42 @@ function checkIfLoggedIn () {
 	}
 }
 
+function getUserMoviesWatchlist(){
+    var MovieWatchList = Parse.Object.extend("MovieWatchList");
+    var movie = new MovieWatchList();
+    var query = new Parse.Query(MovieWatchList);
+    query.equalTo("isDeleted", false);
+    query.find({
+    success: function(results) {
+        for (var i=0; i< results.length; i++){
+            userMoviesWatchlist.push(results[i].get('name'));
+        }
+        console.log(results.length + '\n' + userMoviesWatchlist);
+    },
+    error: function(error) {}
+    });
+}
+
+function getUserMoviesWatched(){
+    var MovieWatchList = Parse.Object.extend("MovieWatched");
+    var movie = new MovieWatchList();
+    var query = new Parse.Query(MovieWatchList);
+    query.equalTo("isDeleted", false);
+    query.find({
+    success: function(results) {
+        for (var i=0; i< results.length; i++){
+            userMoviesWatched.push(results[i].get('name'));
+        }
+        console.log(results.length + '\n' + userMoviesWatched);
+    },
+    error: function(error) {}
+    });
+}
+
 function showMovieTrailer($index, tmdbid){
+    $('.notification').first().text('Loading ...').show('fast');
     $.getJSON('http://api.themoviedb.org/3/movie/' + tmdbid + '/videos?api_key=' + tmdbapikey, function(json, textStatus) {
+    $('.notification').first().hide('fast');
 		eModal.iframe('http://www.youtube.com/embed/' + json.results[0].key + '?autoplay=1', 'Trailer');
     });
 }
@@ -45,7 +81,10 @@ function addMovieWatchlist($index,tmdbid,imdbid,name,image){
             var object = results[0];
             $('.notification').first().text('Oops! Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
             toggleButtonAdded($index, "movieWatchlist");
-            eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie($index, object,tmdbid,"movieWatchlist"), deleteMovieCancel);
+            globalmovie = object;
+            globalIndex = $index;
+            globalbutton = "movieWatchlist";
+            eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie, deleteMovieCancel);
         }else{
             addMovie($index,movie,tmdbid,name,image, "movieWatchlist");
         }
@@ -69,7 +108,10 @@ function addMovieWatched($index,tmdbid,imdbid,name,image){
             var object = results[0];
             $('.notification').first().text('Oops! Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
             toggleButtonAdded($index, "movieWatched");
-            eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie($index, object,tmdbid,"movieWatched"), deleteMovieCancel);
+            globalmovie = object;
+            globalIndex = $index;
+            globalbutton = "movieWatched";
+            eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie, deleteMovieCancel);
         }else{
             addMovie($index,movie,tmdbid,name,image, "movieWatched");
         }
@@ -80,15 +122,15 @@ function addMovieWatched($index,tmdbid,imdbid,name,image){
     });
 }
 
-function deleteMovie($index,movie,tmdbid,buttonId){
+function deleteMovie(){
     console.log('Delete Ok');
-    movie.set("isDeleted", true);
+    globalmovie.set("isDeleted", true);
     
     $('.notification').first().text('Loading...').show('fast');
-    movie.save(null, {
+    globalmovie.save(null, {
         success: function(movie) {
             $('.notification').first().hide('fast');
-            toggleButtonRemoved($index, buttonId);
+            toggleButtonRemoved(globalIndex, globalbutton);
         },
     error: function(movie, error) {
 			$('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');

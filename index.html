@@ -29,6 +29,21 @@
             <li id="navTv"><a href="#tv">TV</a></li>
             <li id="navMusic"><a href="#music">Music</a></li>
             <li id="navPodcast"><a href="#podcast">Podcast</a></li>
+            <form id="searchBar" class="navbar-form navbar-left" role="search" action="{{'#/movie/list/search/' + searchData}}">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search" data-ng-model="searchData" />
+                    <div class="btn-group">
+                        <a href="{{'#/movie/list/search/' + searchData}}" class="btn btn-default">Movie</a>
+                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{'#/movie/list/search/' + searchData}}">Movie</a></li>
+                            <li><a href="{{'#/tv/list/search/' + searchData}}">Tv Sow</a></li>
+                            <li><a href="{{'#/music/list/search/' + searchData}}">Music</a></li>
+                            <li><a href="{{'#/podcast/list/search/' + searchData}}">Podcast</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
           </ul>
           <ul class="nav navbar-nav navbar-right" id="navLoggedIn"></ul>
         </div>

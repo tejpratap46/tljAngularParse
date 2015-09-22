@@ -35,6 +35,11 @@ app.config(function ($routeProvider) {
 });
 
 Parse.initialize("LQ0CkEovQS7YW2s4i6VXe7x6su7mrtGVFgJvMlYL", "ZEu9KSnsmCeQDqadynUC53dlU3Fs8MQSwI2mBY6R");
+var currentUser = Parse.User.current();
+if (currentUser) {
+    getUserMoviesWatchlist();
+    getUserMoviesWatched();
+}
 
 app.controller('navController', function ($scope) {
 	checkIfLoggedIn();

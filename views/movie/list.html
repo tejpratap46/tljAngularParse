@@ -12,8 +12,8 @@
             </a>
             <div class="center">
                 <div class="btn-group" style="margin-top: -20px;">
-                    <button class="movieWatchlist btn btn-success glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, movie.id, '', movie.title, movie.poster_path)"></button>
-                    <button class="movieWatched btn btn-info glyphicon glyphicon-ok" data-ng-click="watched($index, movie.id, '', movie.title, movie.poster_path)"></button>
+                    <button class="movieWatchlist btn {{movie.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, movie.id, '', movie.title, movie.poster_path)"></button>
+                    <button class="movieWatched btn {{movie.watchedClass}} glyphicon glyphicon-ok" data-ng-click="watched($index, movie.id, '', movie.title, movie.poster_path)"></button>
                     <button class="btn btn-primary glyphicon glyphicon-play" data-ng-click="trailer($index, movie.id)"></button>
                 </div>
             </div>

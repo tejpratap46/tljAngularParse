@@ -2,6 +2,7 @@ var app = angular.module('tlj');
 
 app.controller('movieListController', function($scope, $window, $http, $routeParams){
 	setNav('#navMovie');
+    
     var page = 1;
     angular.element($window).bind("scroll", function() {
         var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
@@ -13,7 +14,20 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                 $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey + "&page=" + page)
                 .success(function(response) {
                     page++;
+                    $scope.movies = [];
                     for (var i=0; i<response.results.length; i++){
+                        var index1 = $.inArray(response.results[i].title, userMoviesWatchlist);
+                        if (index1 >= 0){
+                            response.results[i].watchlistClass = "btn-danger";
+                        }else{
+                            response.results[i].watchlistClass = "btn-success";
+                        }
+                        var index2 = $.inArray(response.results[i].title, userMoviesWatched);
+                        if (index2 >= 0){
+                            response.results[i].watchedClass = "btn-danger";
+                        }else{
+                            response.results[i].watchedClass = "btn-info";
+                        }
                         $scope.movies.push(response.results[i]);
                         $scope.$apply;
                     }
@@ -22,7 +36,42 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                 $http.get("http://api.themoviedb.org/3/genre/" + $routeParams.id + "/movies?api_key=" + tmdbapikey + "&page=" + page)
                 .success(function(response) {
                     page++;
+                    $scope.movies = [];
                     for (var i=0; i<response.results.length; i++){
+                        var index1 = $.inArray(response.results[i].title, userMoviesWatchlist);
+                        if (index1 >= 0){
+                            response.results[i].watchlistClass = "btn-danger";
+                        }else{
+                            response.results[i].watchlistClass = "btn-success";
+                        }
+                        var index2 = $.inArray(response.results[i].title, userMoviesWatched);
+                        if (index2 >= 0){
+                            response.results[i].watchedClass = "btn-danger";
+                        }else{
+                            response.results[i].watchedClass = "btn-info";
+                        }
+                        $scope.movies.push(response.results[i]);
+                        $scope.$apply;
+                    }
+                });
+            }else if($routeParams.list == 'genre'){
+                $http.get("http://api.themoviedb.org/3/search/movie?query=" + $routeParams.id + "/&api_key=" + tmdbapikey + "&page=" + page)
+                .success(function(response) {
+                    page++;
+                    $scope.movies = [];
+                    for (var i=0; i<response.results.length; i++){
+                        var index1 = $.inArray(response.results[i].title, userMoviesWatchlist);
+                        if (index1 >= 0){
+                            response.results[i].watchlistClass = "btn-danger";
+                        }else{
+                            response.results[i].watchlistClass = "btn-success";
+                        }
+                        var index2 = $.inArray(response.results[i].title, userMoviesWatched);
+                        if (index2 >= 0){
+                            response.results[i].watchedClass = "btn-danger";
+                        }else{
+                            response.results[i].watchedClass = "btn-info";
+                        }
                         $scope.movies.push(response.results[i]);
                         $scope.$apply;
                     }
@@ -35,13 +84,69 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey + "&page=" + page)
             .success(function(response) {
             page++;
-            $scope.movies = response.results;
+            $scope.movies = [];
+            for (var i=0; i<response.results.length; i++){
+                var index1 = $.inArray(response.results[i].title, userMoviesWatchlist);
+                if (index1 >= 0){
+                    response.results[i].watchlistClass = "btn-danger";
+                }else{
+                    response.results[i].watchlistClass = "btn-success";
+                }
+                var index2 = $.inArray(response.results[i].title, userMoviesWatched);
+                if (index2 >= 0){
+                    response.results[i].watchedClass = "btn-danger";
+                }else{
+                    response.results[i].watchedClass = "btn-info";
+                }
+                $scope.movies.push(response.results[i]);
+                $scope.$apply;
+            }
         });
     }else if($routeParams.list == 'genre'){
          $http.get("http://api.themoviedb.org/3/genre/" + $routeParams.id + "/movies?api_key=" + tmdbapikey + "&page=" + page)
             .success(function(response) {
             page++;
-            $scope.movies = response.results;
+            
+            $scope.movies = [];
+            for (var i=0; i<response.results.length; i++){
+                var index1 = $.inArray(response.results[i].title, userMoviesWatchlist);
+                if (index1 >= 0){
+                    response.results[i].watchlistClass = "btn-danger";
+                }else{
+                    response.results[i].watchlistClass = "btn-success";
+                }
+                var index2 = $.inArray(response.results[i].title, userMoviesWatched);
+                if (index2 >= 0){
+                    response.results[i].watchedClass = "btn-danger";
+                }else{
+                    response.results[i].watchedClass = "btn-info";
+                }
+                $scope.movies.push(response.results[i]);
+                $scope.$apply;
+            }
+        });
+    }else if($routeParams.list == 'search'){
+         $http.get("http://api.themoviedb.org/3/search/movie?query=" + $routeParams.id + "/&api_key=" + tmdbapikey + "&page=" + page)
+            .success(function(response) {
+            page++;
+            
+            $scope.movies = [];
+            for (var i=0; i<response.results.length; i++){
+                var index1 = $.inArray(response.results[i].title, userMoviesWatchlist);
+                if (index1 >= 0){
+                    response.results[i].watchlistClass = "btn-danger";
+                }else{
+                    response.results[i].watchlistClass = "btn-success";
+                }
+                var index2 = $.inArray(response.results[i].title, userMoviesWatched);
+                if (index2 >= 0){
+                    response.results[i].watchedClass = "btn-danger";
+                }else{
+                    response.results[i].watchedClass = "btn-info";
+                }
+                $scope.movies.push(response.results[i]);
+                $scope.$apply;
+            }
         });
     }
     
