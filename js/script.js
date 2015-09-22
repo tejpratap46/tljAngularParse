@@ -131,6 +131,17 @@ function deleteMovie(){
         success: function(movie) {
             $('.notification').first().hide('fast');
             toggleButtonRemoved(globalIndex, globalbutton);
+            if (globalbutton == "movieWatchlist"){
+                var index = userMoviesWatchlist.indexOf(globalmovie.get('name'));
+                if (index > -1) {
+                    userMoviesWatchlist.splice(index, 1);
+                }
+            }else{
+                var index = userMoviesWatched.indexOf(globalmovie.get('name'));
+                if (index > -1) {
+                    userMoviesWatchlist.splice(index, 1);
+                }
+            }
         },
     error: function(movie, error) {
 			$('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -160,6 +171,11 @@ function addMovie($index,movie,tmdbid,name,image, buttonId){
         success: function(movie) {
             $('.notification').first().hide('fast');
             toggleButtonAdded($index, buttonId);
+            if(buttonId == "movieWatchlist"){
+                userMoviesWatchlist.push(name);
+            }else{
+                userMoviesWatched.push(name);
+            }
         },
     error: function(movie, error) {
 			$('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
