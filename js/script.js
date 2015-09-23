@@ -1,6 +1,7 @@
 var tmdbapikey = "72cae7941bfe23850229828662c9e4b8";
 var userMoviesWatchlist = [];
 var userMoviesWatched = [];
+var userMoviesLiked = [];
 
 function setNav (activeId) {
 	$('#navHome').removeClass('active');
@@ -16,7 +17,10 @@ function checkIfLoggedIn () {
 	if (currentUser) {
 	    var loginViewData = "<li class='dropdown'><a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false'>" + currentUser.get('username') + "<span class='caret'></span></a>"
 							+ "<ul class='dropdown-menu' role='menu'>"
-							+ "<li><a href='#/profile'>Profile</a></li>"
+							+ "<li><a href='#/user/movie'>My Movies</a></li>"
+                            + "<li><a href='#/user/tv'>My Shows</a></li>"
+                            + "<li><a href='#/user/music'>My Music</a></li>"
+                            + "<li><a href='#/user/podcast'>My Pocasts</a></li>"
 							+ "<li class='divider'></li>"
 							+ "<li class='dropdown-header'>Say Good Bye</li>"
 							+ "<li><a href='#/logout'>Logout</a></li>"
@@ -38,7 +42,6 @@ function getUserMoviesWatchlist(){
         for (var i=0; i< results.length; i++){
             userMoviesWatchlist.push(results[i].get('name'));
         }
-        console.log(results.length + '\n' + userMoviesWatchlist);
     },
     error: function(error) {}
     });
@@ -54,7 +57,21 @@ function getUserMoviesWatched(){
         for (var i=0; i< results.length; i++){
             userMoviesWatched.push(results[i].get('name'));
         }
-        console.log(results.length + '\n' + userMoviesWatched);
+    },
+    error: function(error) {}
+    });
+}
+
+function getUserMoviesLiked(){
+    var MovieWatchList = Parse.Object.extend("MovieLiked");
+    var movie = new MovieWatchList();
+    var query = new Parse.Query(MovieWatchList);
+    query.equalTo("isDeleted", false);
+    query.find({
+    success: function(results) {
+        for (var i=0; i< results.length; i++){
+            userMoviesLiked.push(results[i].get('name'));
+        }
     },
     error: function(error) {}
     });
@@ -74,17 +91,31 @@ function addMovieWatchlist($index,tmdbid,imdbid,name,image){
 
     var query = new Parse.Query(MovieWatchList);
     query.equalTo("TMDBID", tmdbid + "");
-    query.equalTo("isDeleted", false);
     query.find({
     success: function(results) {
         if(results.length > 0){
             var object = results[0];
-            $('.notification').first().text('Oops! Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
-            toggleButtonAdded($index, "movieWatchlist");
-            globalmovie = object;
-            globalIndex = $index;
-            globalbutton = "movieWatchlist";
-            eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie, deleteMovieCancel);
+            if(object.get('isDeleted') == true){
+                $('.notification').first().text('Loading...').show('fast');
+                object.set('isDeleted',false);
+                object.save(null, {
+                    success: function(movie) {
+                        $('.notification').first().hide('fast');
+                        toggleButtonAdded($index, "movieWatchlist");
+                        userMoviesWatchlist.push(name);
+                    },
+                error: function(movie, error) {
+                        $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
+                    }
+                });
+            }else{
+                $('.notification').first().text('Oops! Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
+                toggleButtonAdded($index, "movieWatchlist");
+                globalmovie = object;
+                globalIndex = $index;
+                globalbutton = "movieWatchlist";
+                eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie, deleteMovieCancel);
+            }
         }else{
             addMovie($index,movie,tmdbid,name,image, "movieWatchlist");
         }
@@ -101,19 +132,74 @@ function addMovieWatched($index,tmdbid,imdbid,name,image){
     
     var query = new Parse.Query(MovieWatched);
     query.equalTo("TMDBID", tmdbid + "");
-    query.equalTo("isDeleted", false);
     query.find({
-    success: function(results) {
+        success: function(results) {
         if(results.length > 0){
             var object = results[0];
-            $('.notification').first().text('Oops! Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
-            toggleButtonAdded($index, "movieWatched");
-            globalmovie = object;
-            globalIndex = $index;
-            globalbutton = "movieWatched";
-            eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie, deleteMovieCancel);
+            if(object.get('isDeleted') == true){
+                $('.notification').first().text('Loading...').show('fast');
+                object.set('isDeleted',false);
+                object.save(null, {
+                    success: function(movie) {
+                        $('.notification').first().hide('fast');
+                        toggleButtonAdded($index, "movieWatched");
+                        userMoviesWatched.push(name);
+                    },
+                error: function(movie, error) {
+                        $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
+                    }
+                });
+            }else{
+                $('.notification').first().text('Oops! Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
+                toggleButtonAdded($index, "movieWatched");
+                globalmovie = object;
+                globalIndex = $index;
+                globalbutton = "movieWatched";
+                eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie, deleteMovieCancel);
+            }
         }else{
             addMovie($index,movie,tmdbid,name,image, "movieWatched");
+        }
+    },
+    error: function(error) {
+        $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
+    }
+    });
+}
+
+function addMovieLiked($index,tmdbid,imdbid,name,image){
+    var MovieWatched = Parse.Object.extend("MovieLiked");
+    var movie = new MovieWatched();
+    
+    var query = new Parse.Query(MovieWatched);
+    query.equalTo("TMDBID", tmdbid + "");
+    query.find({
+        success: function(results) {
+        if(results.length > 0){
+            var object = results[0];
+            if(object.get('isDeleted') == true){
+                $('.notification').first().text('Loading...').show('fast');
+                object.set('isDeleted',false);
+                object.save(null, {
+                    success: function(movie) {
+                        $('.notification').first().hide('fast');
+                        toggleButtonAdded($index, "movieLiked");
+                        userMoviesLiked.push(name);
+                    },
+                error: function(movie, error) {
+                        $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
+                    }
+                });
+            }else{
+                $('.notification').first().text('Oops! Movie Already In Your Watchlist').show('fast').delay(3000).hide('fast');
+                toggleButtonAdded($index, "movieLiked");
+                globalmovie = object;
+                globalIndex = $index;
+                globalbutton = "movieLiked";
+                eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie, deleteMovieCancel);
+            }
+        }else{
+            addMovie($index,movie,tmdbid,name,image, "movieLiked");
         }
     },
     error: function(error) {
@@ -136,10 +222,15 @@ function deleteMovie(){
                 if (index > -1) {
                     userMoviesWatchlist.splice(index, 1);
                 }
-            }else{
+            }else if(globalbutton == "movieWatched"){
                 var index = userMoviesWatched.indexOf(globalmovie.get('name'));
                 if (index > -1) {
                     userMoviesWatchlist.splice(index, 1);
+                }
+            }else{
+                var index = userMoviesLiked.indexOf(globalmovie.get('name'));
+                if (index > -1) {
+                    userMoviesLiked.splice(index, 1);
                 }
             }
         },

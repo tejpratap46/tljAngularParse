@@ -4,19 +4,36 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
     setNav('#navMovie');
     $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey)
         .success(function(response) {
-            var index1 = $.inArray(response.title, userMoviesWatchlist);
-            if (index1 >= 0){
+            $scope.movie = response;
+            var MovieWatched = Parse.Object.extend("MovieLiked");
+            var movie = new MovieWatched();
+            movie.set("movie", response);
+            var user = Parse.User.current();
+            movie.save();
+            var index = $.inArray(response.title, userMoviesWatchlist);
+            if (index >= 0){
                 response.watchlistClass = "btn-danger";
             }else{
                 response.watchlistClass = "btn-success";
             }
-            var index2 = $.inArray(response.title, userMoviesWatched);
-            if (index2 >= 0){
+            index = $.inArray(response.title, userMoviesWatched);
+            if (index >= 0){
                 response.watchedClass = "btn-danger";
             }else{
                 response.watchedClass = "btn-info";
             }
+            index = $.inArray(response.title, userMoviesLiked);
+            if (index >= 0){
+                response.likedClass = "btn-danger";
+            }else{
+                response.likedClass = "btn-warning";
+            }
             $scope.movie = response;
+            var MovieWatched = Parse.Object.extend("MovieLiked");
+            var movie = new MovieWatched();
+            movie.set("movie", response);
+            var user = Parse.User.current();
+            movie.save();
     });
     $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "/credits?api_key=" + tmdbapikey)
         .success(function(response) {
@@ -26,17 +43,23 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
         .success(function(response) {
             $scope.movies = [];
             for (var i=0; i<response.results.length; i++){
-                var index1 = $.inArray(response.results[i].title, userMoviesWatchlist);
-                if (index1 >= 0){
+                var index = $.inArray(response.results[i].title, userMoviesWatchlist);
+                if (index >= 0){
                     response.results[i].watchlistClass = "btn-danger";
                 }else{
                     response.results[i].watchlistClass = "btn-success";
                 }
-                var index2 = $.inArray(response.results[i].title, userMoviesWatched);
-                if (index2 >= 0){
+                index = $.inArray(response.results[i].title, userMoviesWatched);
+                if (index >= 0){
                     response.results[i].watchedClass = "btn-danger";
                 }else{
                     response.results[i].watchedClass = "btn-info";
+                }
+                index = $.inArray(response.results[i].title, userMoviesLiked);
+                if (index >= 0){
+                    response.results[i].likedClass = "btn-danger";
+                }else{
+                    response.results[i].likedClass = "btn-warning";
                 }
                 $scope.movies.push(response.results[i]);
                 $scope.$apply;
@@ -53,5 +76,9 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
     
     $scope.trailer = function($index,tmdbid){
         showMovieTrailer($index,tmdbid);
+    }
+    
+    $scope.like = function($index,tmdbid,imdbid,name,image){
+        addMovieLiked($index,tmdbid,"",name,image);
     }
 });
