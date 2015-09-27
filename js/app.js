@@ -31,13 +31,13 @@ app.config(function ($routeProvider) {
 		templateUrl: 'views/movie/list.html',
 		controller : 'movieListController'
 	})
-	.when('/movie/list/imdb', {
-		templateUrl: 'views/movie/imdb.html',
-		controller : 'movieImdbController'
-	})
 	.when('/movie/view/:id/:name', {
 		templateUrl: 'views/movie/view.html',
 		controller : 'movieViewController'
+	})
+	.when('/user/movie', {
+		templateUrl: 'views/user/movie.html',
+		controller : 'userMovieController'
 	})
 	.when('/test', {
 		templateUrl: 'views/test.html'

@@ -253,11 +253,11 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
     }
     
     $scope.watchlist = function($index,movie){
-        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date);
+        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
     
     $scope.watched = function($index,movie){
-        addMovieWatched($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date);
+        addMovieWatched($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
     
     $scope.trailer = function($index,movie){
@@ -265,6 +265,6 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
     }
     
     $scope.like = function($index,movie){
-        addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date);
+        addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
 });
