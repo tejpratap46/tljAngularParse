@@ -1,4 +1,7 @@
 var tmdbapikey = "72cae7941bfe23850229828662c9e4b8";
+var userMoviesWatchlistNames = [];
+var userMoviesWatchedNames = [];
+var userMoviesLikedNames = [];
 var userMoviesWatchlist = [];
 var userMoviesWatched = [];
 var userMoviesLiked = [];
@@ -12,7 +15,7 @@ function setNav (activeId) {
 	$(activeId).addClass('active');
 }
 
-function checkIfLoggedIn () {
+function checkIfLoggedIn() {
 	var currentUser = Parse.User.current();
 	if (currentUser) {
 	    var loginViewData = "<li class='dropdown'><a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false'>" + currentUser.get('username') + "<span class='caret'></span></a>"
@@ -33,14 +36,16 @@ function checkIfLoggedIn () {
 }
 
 function getUserMoviesWatchlist(){
-    var MovieWatchList = Parse.Object.extend("MovieWatchList");
+    var MovieWatchList = Parse.Object.extend("MovieWatchlist");
     var movie = new MovieWatchList();
     var query = new Parse.Query(MovieWatchList);
-    query.equalTo("isDeleted", false);
+    query.equalTo("is_deleted", false);
+    query.limit(1000);
     query.find({
     success: function(results) {
+        userMoviesWatchlist = results;
         for (var i=0; i< results.length; i++){
-            userMoviesWatchlist.push(results[i].get('name'));
+            userMoviesWatchlistNames.push(results[i].get('title'));
         }
     },
     error: function(error) {}
@@ -51,11 +56,13 @@ function getUserMoviesWatched(){
     var MovieWatchList = Parse.Object.extend("MovieWatched");
     var movie = new MovieWatchList();
     var query = new Parse.Query(MovieWatchList);
-    query.equalTo("isDeleted", false);
+    query.equalTo("is_deleted", false);
+    query.limit(1000);
     query.find({
     success: function(results) {
+        userMoviesWatched = results;
         for (var i=0; i< results.length; i++){
-            userMoviesWatched.push(results[i].get('name'));
+            userMoviesWatchedNames.push(results[i].get('title'));
         }
     },
     error: function(error) {}
@@ -66,11 +73,13 @@ function getUserMoviesLiked(){
     var MovieWatchList = Parse.Object.extend("MovieLiked");
     var movie = new MovieWatchList();
     var query = new Parse.Query(MovieWatchList);
-    query.equalTo("isDeleted", false);
+    query.equalTo("is_deleted", false);
+    query.limit(1000);
     query.find({
     success: function(results) {
+        userMoviesLiked = results;
         for (var i=0; i< results.length; i++){
-            userMoviesLiked.push(results[i].get('name'));
+            userMoviesLikedNames.push(results[i].get('title'));
         }
     },
     error: function(error) {}
@@ -81,28 +90,27 @@ function showMovieTrailer($index, tmdbid){
     $('.notification').first().text('Loading ...').show('fast');
     $.getJSON('http://api.themoviedb.org/3/movie/' + tmdbid + '/videos?api_key=' + tmdbapikey, function(json, textStatus) {
     $('.notification').first().hide('fast');
-		eModal.iframe('http://www.youtube.com/embed/' + json.results[0].key + '?autoplay=1', 'Trailer');
+		eModal.iframe('http://www.youtube.com/embed/' + json.results[0].key + '?autoplay=1', '');
     });
 }
 
-function addMovieWatchlist($index,tmdbid,imdbid,name,image){
+function addMovieWatchlist($index,tmdbid,name,image,genre,release){
     var MovieWatchList = Parse.Object.extend("MovieWatchList");
     var movie = new MovieWatchList();
-
     var query = new Parse.Query(MovieWatchList);
-    query.equalTo("TMDBID", tmdbid + "");
+    query.equalTo("tmdb_id", tmdbid + "");
     query.find({
     success: function(results) {
         if(results.length > 0){
             var object = results[0];
-            if(object.get('isDeleted') == true){
+            if(object.get('is_deleted') == true){
                 $('.notification').first().text('Loading...').show('fast');
-                object.set('isDeleted',false);
+                object.set('is_deleted',false);
                 object.save(null, {
                     success: function(movie) {
                         $('.notification').first().hide('fast');
                         toggleButtonAdded($index, "movieWatchlist");
-                        userMoviesWatchlist.push(name);
+                        userMoviesWatchlistNames.push(name);
                     },
                 error: function(movie, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -117,7 +125,7 @@ function addMovieWatchlist($index,tmdbid,imdbid,name,image){
                 eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie, deleteMovieCancel);
             }
         }else{
-            addMovie($index,movie,tmdbid,name,image, "movieWatchlist");
+            addMovie($index,movie,tmdbid,name,image,genre,release, "movieWatchlist");
         }
     },
     error: function(error) {
@@ -126,24 +134,24 @@ function addMovieWatchlist($index,tmdbid,imdbid,name,image){
     });
 }
 
-function addMovieWatched($index,tmdbid,imdbid,name,image){
+function addMovieWatched($index,tmdbid,name,image,genre,release){
     var MovieWatched = Parse.Object.extend("MovieWatched");
     var movie = new MovieWatched();
     
     var query = new Parse.Query(MovieWatched);
-    query.equalTo("TMDBID", tmdbid + "");
+    query.equalTo("tmdb_id", tmdbid + "");
     query.find({
         success: function(results) {
         if(results.length > 0){
             var object = results[0];
-            if(object.get('isDeleted') == true){
+            if(object.get('is_deleted') == true){
                 $('.notification').first().text('Loading...').show('fast');
-                object.set('isDeleted',false);
+                object.set('is_deleted',false);
                 object.save(null, {
                     success: function(movie) {
                         $('.notification').first().hide('fast');
                         toggleButtonAdded($index, "movieWatched");
-                        userMoviesWatched.push(name);
+                        userMoviesWatchedNames.push(name);
                     },
                 error: function(movie, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -158,7 +166,7 @@ function addMovieWatched($index,tmdbid,imdbid,name,image){
                 eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie, deleteMovieCancel);
             }
         }else{
-            addMovie($index,movie,tmdbid,name,image, "movieWatched");
+            addMovie($index,movie,tmdbid,name,image,genre,release, "movieWatched");
         }
     },
     error: function(error) {
@@ -167,24 +175,24 @@ function addMovieWatched($index,tmdbid,imdbid,name,image){
     });
 }
 
-function addMovieLiked($index,tmdbid,imdbid,name,image){
+function addMovieLiked($index,tmdbid,name,image,genre,release){
     var MovieWatched = Parse.Object.extend("MovieLiked");
     var movie = new MovieWatched();
     
     var query = new Parse.Query(MovieWatched);
-    query.equalTo("TMDBID", tmdbid + "");
+    query.equalTo("tmdb_id", tmdbid + "");
     query.find({
         success: function(results) {
         if(results.length > 0){
             var object = results[0];
-            if(object.get('isDeleted') == true){
+            if(object.get('is_deleted') == true){
                 $('.notification').first().text('Loading...').show('fast');
-                object.set('isDeleted',false);
+                object.set('is_deleted',false);
                 object.save(null, {
                     success: function(movie) {
                         $('.notification').first().hide('fast');
                         toggleButtonAdded($index, "movieLiked");
-                        userMoviesLiked.push(name);
+                        userMoviesLikedNames.push(name);
                     },
                 error: function(movie, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -199,7 +207,7 @@ function addMovieLiked($index,tmdbid,imdbid,name,image){
                 eModal.confirm("Want To Remove It", "Already Added").then(deleteMovie, deleteMovieCancel);
             }
         }else{
-            addMovie($index,movie,tmdbid,name,image, "movieLiked");
+            addMovie($index,movie,tmdbid,name,image,genre,release, "movieLiked");
         }
     },
     error: function(error) {
@@ -210,7 +218,7 @@ function addMovieLiked($index,tmdbid,imdbid,name,image){
 
 function deleteMovie(){
     console.log('Delete Ok');
-    globalmovie.set("isDeleted", true);
+    globalmovie.set("is_deleted", true);
     
     $('.notification').first().text('Loading...').show('fast');
     globalmovie.save(null, {
@@ -218,19 +226,19 @@ function deleteMovie(){
             $('.notification').first().hide('fast');
             toggleButtonRemoved(globalIndex, globalbutton);
             if (globalbutton == "movieWatchlist"){
-                var index = userMoviesWatchlist.indexOf(globalmovie.get('name'));
+                var index = userMoviesWatchlistNames.indexOf(globalmovie.get('name'));
                 if (index > -1) {
-                    userMoviesWatchlist.splice(index, 1);
+                    userMoviesWatchlistNames.splice(index, 1);
                 }
             }else if(globalbutton == "movieWatched"){
-                var index = userMoviesWatched.indexOf(globalmovie.get('name'));
+                var index = userMoviesWatchedNames.indexOf(globalmovie.get('name'));
                 if (index > -1) {
-                    userMoviesWatchlist.splice(index, 1);
+                    userMoviesWatchedNames.splice(index, 1);
                 }
             }else{
-                var index = userMoviesLiked.indexOf(globalmovie.get('name'));
+                var index = userMoviesLikedNames.indexOf(globalmovie.get('name'));
                 if (index > -1) {
-                    userMoviesLiked.splice(index, 1);
+                    userMoviesLikedNames.splice(index, 1);
                 }
             }
         },
@@ -244,11 +252,13 @@ function deleteMovieCancel(){
     console.log('Delete Cancel');
 }
 
-function addMovie($index,movie,tmdbid,name,image, buttonId){
-    movie.set("TMDBID", tmdbid + "");
-    movie.set("name", name);
-    movie.set("image", image);
-    movie.set("isDeleted", false);
+function addMovie($index,movie,tmdbid,name,image,genre,release, buttonId){
+    movie.set("tmdb_id", tmdbid + "");
+    movie.set("title", name);
+    movie.set("poster_path", image);
+    movie.set("genre", genre);
+    movie.set("release_date", release);
+    movie.set("is_deleted", false);
     var user = Parse.User.current();
     if (user == null){
         eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
@@ -257,15 +267,17 @@ function addMovie($index,movie,tmdbid,name,image, buttonId){
         movie.setACL(new Parse.ACL(user));
     }
 
-    $('.notification').first().text('Loading...').show('fast');
+    $('.notification').first().text('Adding...').show('fast');
     movie.save(null, {
         success: function(movie) {
             $('.notification').first().hide('fast');
             toggleButtonAdded($index, buttonId);
             if(buttonId == "movieWatchlist"){
-                userMoviesWatchlist.push(name);
+                userMoviesWatchlistNames.push(name);
+            }else if(buttonId == "movieWatched"){
+                userMoviesWatchedNames.push(name);
             }else{
-                userMoviesWatched.push(name);
+                userMoviesLikedNames.push(name);
             }
         },
     error: function(movie, error) {

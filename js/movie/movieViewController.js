@@ -10,19 +10,19 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
             movie.set("movie", response);
             var user = Parse.User.current();
             movie.save();
-            var index = $.inArray(response.title, userMoviesWatchlist);
+            var index = $.inArray(response.title, userMoviesWatchlistNames);
             if (index >= 0){
                 response.watchlistClass = "btn-danger";
             }else{
                 response.watchlistClass = "btn-success";
             }
-            index = $.inArray(response.title, userMoviesWatched);
+            index = $.inArray(response.title, userMoviesWatchedNames);
             if (index >= 0){
                 response.watchedClass = "btn-danger";
             }else{
                 response.watchedClass = "btn-info";
             }
-            index = $.inArray(response.title, userMoviesLiked);
+            index = $.inArray(response.title, userMoviesLikedNames);
             if (index >= 0){
                 response.likedClass = "btn-danger";
             }else{
@@ -43,19 +43,19 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
         .success(function(response) {
             $scope.movies = [];
             for (var i=0; i<response.results.length; i++){
-                var index = $.inArray(response.results[i].title, userMoviesWatchlist);
+                var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
                 if (index >= 0){
                     response.results[i].watchlistClass = "btn-danger";
                 }else{
                     response.results[i].watchlistClass = "btn-success";
                 }
-                index = $.inArray(response.results[i].title, userMoviesWatched);
+                index = $.inArray(response.results[i].title, userMoviesWatchedNames);
                 if (index >= 0){
                     response.results[i].watchedClass = "btn-danger";
                 }else{
                     response.results[i].watchedClass = "btn-info";
                 }
-                index = $.inArray(response.results[i].title, userMoviesLiked);
+                index = $.inArray(response.results[i].title, userMoviesLikedNames);
                 if (index >= 0){
                     response.results[i].likedClass = "btn-danger";
                 }else{
@@ -66,19 +66,19 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
             }
     });
     
-    $scope.watchlist = function($index,tmdbid,imdbid,name,image){
-        addMovieWatchlist($index,tmdbid,"",name,image);
+    $scope.watchlist = function($index,movie){
+        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date);
     }
     
-    $scope.watched = function($index,tmdbid,imdbid,name,image){
-        addMovieWatched($index,tmdbid,"",name,image);
+    $scope.watched = function($index,movie){
+        addMovieWatched($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date);
     }
     
-    $scope.trailer = function($index,tmdbid){
-        showMovieTrailer($index,tmdbid);
+    $scope.trailer = function($index,movie){
+        showMovieTrailer($index,movie.id);
     }
     
-    $scope.like = function($index,tmdbid,imdbid,name,image){
-        addMovieLiked($index,tmdbid,"",name,image);
+    $scope.like = function($index,movie){
+        addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date);
     }
 });

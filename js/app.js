@@ -31,6 +31,10 @@ app.config(function ($routeProvider) {
 		templateUrl: 'views/movie/list.html',
 		controller : 'movieListController'
 	})
+	.when('/movie/list/imdb', {
+		templateUrl: 'views/movie/imdb.html',
+		controller : 'movieImdbController'
+	})
 	.when('/movie/view/:id/:name', {
 		templateUrl: 'views/movie/view.html',
 		controller : 'movieViewController'
@@ -63,7 +67,7 @@ app.controller('loginController', function($scope) {
 	    	checkIfLoggedIn();
 	    },
 		error: function(user, error) {
-			$('.notification').text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
+			$('.notification').text('Error : ' + error).show('fast').delay(3000).hide('fast');
 		}
 	});
    };
