@@ -7,6 +7,7 @@ app.controller('userMovieController', function($scope){
         getUserMoviesWatchlist();
         getUserMoviesWatched();
         getUserMoviesLiked();
+        console.log('loaded');
     }else{
         window.location.hash = '#/';
     }

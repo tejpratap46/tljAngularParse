@@ -14,7 +14,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                 $('.notification').first().text('Loading More...').show('fast');
                 $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey + "&page=" + page)
                 .success(function(response) {
-                    ++page;
+                    page = page + 1;
                     $('.notification').first().hide('fast');
                     for (var i=0; i<response.results.length; i++){
                         var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
@@ -43,7 +43,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                 $('.notification').first().text('Loading More...').show('fast');
                 $http.get("http://api.themoviedb.org/3/genre/" + $routeParams.id + "/movies?api_key=" + tmdbapikey + "&page=" + page)
                 .success(function(response) {
-                    ++page;
+                    page = page + 1;
                     $('.notification').first().hide('fast');
                     for (var i=0; i<response.results.length; i++){
                         var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
@@ -72,7 +72,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                 $('.notification').first().text('Loading More...').show('fast');
                 $http.get("http://api.themoviedb.org/3/search/movie?query=" + $routeParams.id + "/&api_key=" + tmdbapikey + "&page=" + page)
                 .success(function(response) {
-                    ++page;
+                    page = page + 1;
                     $('.notification').first().hide('fast');
                     for (var i=0; i<response.results.length; i++){
                         var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
@@ -101,7 +101,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                 $('.notification').first().text('Loading More...').show('fast');
                  $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&api_key=" + tmdbapikey + "&page=" + page)
                     .success(function(response) {
-                    ++page;
+                    page = page + 1;
                     $('.notification').first().hide('fast');
                     for (var i=0; i<response.results.length; i++){
                         var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
@@ -134,7 +134,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         $('.notification').first().text('Loading ...').show('fast');
         $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey + "&page=" + page)
             .success(function(response) {
-            ++page;
+            page = page + 1;
             $('.notification').first().hide('fast');
             $scope.movies = [];
             for (var i=0; i<response.results.length; i++){
@@ -164,7 +164,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         $('.notification').first().text('Loading ...').show('fast');
          $http.get("http://api.themoviedb.org/3/genre/" + $routeParams.id + "/movies?api_key=" + tmdbapikey + "&page=" + page)
             .success(function(response) {
-            ++page;
+            page = page + 1;
             $('.notification').first().hide('fast');
             $scope.movies = [];
             for (var i=0; i<response.results.length; i++){
@@ -194,7 +194,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         $('.notification').first().text('Loading ...').show('fast');
          $http.get("http://api.themoviedb.org/3/search/movie?query=" + $routeParams.id + "/&api_key=" + tmdbapikey + "&page=" + page)
             .success(function(response) {
-            ++page;
+            page = page + 1;
             $('.notification').first().hide('fast');
             $scope.movies = [];
             for (var i=0; i<response.results.length; i++){
@@ -224,7 +224,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         $('.notification').first().text('Loading ...').show('fast');
          $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&api_key=" + tmdbapikey + "&page=" + page)
             .success(function(response) {
-            ++page;
+            page = page + 1;
             $('.notification').first().hide('fast');
             $scope.movies = [];
             for (var i=0; i<response.results.length; i++){
