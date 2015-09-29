@@ -93,7 +93,7 @@ function showMovieTrailer($index, tmdbid){
     $('.notification').first().text('Loading ...').show('fast');
     $.getJSON('http://api.themoviedb.org/3/movie/' + tmdbid + '/videos?api_key=' + tmdbapikey, function(json, textStatus) {
     $('.notification').first().hide('fast');
-		eModal.iframe('http://www.youtube.com/embed/' + json.results[0].key + '?autoplay=1', '');
+		eModal.iframe('http://www.youtube.com/embed/' + json.results[0].key + '?autoplay=1', 'Trailer');
     });
 }
 

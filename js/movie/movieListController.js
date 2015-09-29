@@ -3,7 +3,7 @@ var app = angular.module('tlj');
 app.controller('movieListController', function($scope, $window, $http, $routeParams){
 	setNav('#navMovie');
     
-    var page = 1;
+    var page = 0;
     angular.element($window).bind("scroll", function() {
         var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
         var body = document.body, html = document.documentElement;
@@ -12,9 +12,8 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         if (windowBottom >= docHeight - 10) {
             if ($routeParams.list == 'list'){
                 $('.notification').first().text('Loading More...').show('fast');
-                $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey + "&page=" + page)
+                $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey + "&page=" + (++page))
                 .success(function(response) {
-                    page = page + 1;
                     $('.notification').first().hide('fast');
                     for (var i=0; i<response.results.length; i++){
                         var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
@@ -41,9 +40,8 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                 });
             }else if($routeParams.list == 'genre'){
                 $('.notification').first().text('Loading More...').show('fast');
-                $http.get("http://api.themoviedb.org/3/genre/" + $routeParams.id + "/movies?api_key=" + tmdbapikey + "&page=" + page)
+                $http.get("http://api.themoviedb.org/3/genre/" + $routeParams.id + "/movies?api_key=" + tmdbapikey + "&page=" + (++page))
                 .success(function(response) {
-                    page = page + 1;
                     $('.notification').first().hide('fast');
                     for (var i=0; i<response.results.length; i++){
                         var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
@@ -70,9 +68,8 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                 });
             }else if($routeParams.list == 'search'){
                 $('.notification').first().text('Loading More...').show('fast');
-                $http.get("http://api.themoviedb.org/3/search/movie?query=" + $routeParams.id + "/&api_key=" + tmdbapikey + "&page=" + page)
+                $http.get("http://api.themoviedb.org/3/search/movie?query=" + $routeParams.id + "/&api_key=" + tmdbapikey + "&page=" + (++page))
                 .success(function(response) {
-                    page = page + 1;
                     $('.notification').first().hide('fast');
                     for (var i=0; i<response.results.length; i++){
                         var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
@@ -99,9 +96,8 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                 });
             }else if($routeParams.list == 'discover'){
                 $('.notification').first().text('Loading More...').show('fast');
-                 $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&api_key=" + tmdbapikey + "&page=" + page)
+                 $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&api_key=" + tmdbapikey + "&page=" + (++page))
                     .success(function(response) {
-                    page = page + 1;
                     $('.notification').first().hide('fast');
                     for (var i=0; i<response.results.length; i++){
                         var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
@@ -132,9 +128,8 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
     
     if ($routeParams.list == 'list'){
         $('.notification').first().text('Loading ...').show('fast');
-        $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey + "&page=" + page)
+        $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey + "&page=" + (++page))
             .success(function(response) {
-            page = page + 1;
             $('.notification').first().hide('fast');
             $scope.movies = [];
             for (var i=0; i<response.results.length; i++){
@@ -162,9 +157,8 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         });
     }else if($routeParams.list == 'genre'){
         $('.notification').first().text('Loading ...').show('fast');
-         $http.get("http://api.themoviedb.org/3/genre/" + $routeParams.id + "/movies?api_key=" + tmdbapikey + "&page=" + page)
+         $http.get("http://api.themoviedb.org/3/genre/" + $routeParams.id + "/movies?api_key=" + tmdbapikey + "&page=" + (++page))
             .success(function(response) {
-            page = page + 1;
             $('.notification').first().hide('fast');
             $scope.movies = [];
             for (var i=0; i<response.results.length; i++){
@@ -192,9 +186,8 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         });
     }else if($routeParams.list == 'search'){
         $('.notification').first().text('Loading ...').show('fast');
-         $http.get("http://api.themoviedb.org/3/search/movie?query=" + $routeParams.id + "/&api_key=" + tmdbapikey + "&page=" + page)
+         $http.get("http://api.themoviedb.org/3/search/movie?query=" + $routeParams.id + "/&api_key=" + tmdbapikey + "&page=" + (++page))
             .success(function(response) {
-            page = page + 1;
             $('.notification').first().hide('fast');
             $scope.movies = [];
             for (var i=0; i<response.results.length; i++){
@@ -222,9 +215,8 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         });
     }else if($routeParams.list == 'discover'){
         $('.notification').first().text('Loading ...').show('fast');
-         $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&api_key=" + tmdbapikey + "&page=" + page)
+         $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&api_key=" + tmdbapikey + "&page=" + (++page))
             .success(function(response) {
-            page = page + 1;
             $('.notification').first().hide('fast');
             $scope.movies = [];
             for (var i=0; i<response.results.length; i++){
