@@ -29,27 +29,33 @@
             <li id="navTv"><a href="#tv">TV</a></li>
             <li id="navMusic"><a href="#music">Music</a></li>
             <li id="navPodcast"><a href="#podcast">Podcast</a></li>
-            <form id="searchBar" class="navbar-form navbar-left" role="search" action="{{'#/movie/list/search/' + searchData}}">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search" data-ng-model="searchData" />
-                    <div class="btn-group">
-                        <a href="{{'#/movie/list/search/' + searchData}}" class="btn btn-default">Movie</a>
-                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{'#/movie/list/search/' + searchData}}">Movie</a></li>
-                            <li><a href="{{'#/tv/list/search/' + searchData}}">Tv Sow</a></li>
-                            <li><a href="{{'#/music/list/search/' + searchData}}">Music</a></li>
-                            <li><a href="{{'#/podcast/list/search/' + searchData}}">Podcast</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </form>
           </ul>
           <ul class="nav navbar-nav navbar-right" id="navLoggedIn"></ul>
         </div>
+          <div class="search row">
+              <div class="col-xs-1 col-sm-1 col-md-2"></div>
+              <div class="col-xs-5 col-sm-7 col-md-6">
+                <form id="searchBar" action="{{'#/movie/list/search/' + searchData}}">
+                    <input type="text" class="bold form-control" placeholder="Search" data-ng-model="searchData" />
+                </form>
+              </div>
+              <div class="col-xs-5 col-sm-3 col-md-4">
+                <div class="btn-group">
+                    <a href="{{'#/movie/list/search/' + searchData}}" class="btn btn-default">Movie</a>
+                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{'#/movie/list/search/' + searchData}}">Movie</a></li>
+                        <li><a href="{{'#/tv/list/search/' + searchData}}">Tv Sow</a></li>
+                        <li><a href="{{'#/music/list/search/' + searchData}}">Music</a></li>
+                        <li><a href="{{'#/podcast/list/search/' + searchData}}">Podcast</a></li>
+                    </ul>
+                </div>
+              </div>
+              <div class="col-xs-0 col-sm-1 col-md-4"></div>
+          </div>
       </div>
     </nav>
-    <div style="margin-top:150px;" data-ng-view></div>
+    <div style="margin-top:100px;" data-ng-view></div>
     <div class="notification"></div>
     <!-- <div class="bottom center white full-width">
       <a href="#/">The List Job</a>, by <a href="mailto:tejpratap46@gmail.com?Subject=The+List+Job">Tej Pratap Singh</a>.
@@ -67,5 +73,6 @@
   <script src="js/movie/movieListController.js"></script>
   <script src="js/user/userMovieController.js"></script>
   <script src="js/movie/movieViewController.js"></script>
+  <script src="js/people/peopleViewController.js"></script>
   <script src="//rawgit.com/saribe/eModal/master/dist/eModal.min.js"></script>
 </html>

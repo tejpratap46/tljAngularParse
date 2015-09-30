@@ -15,7 +15,7 @@
                     <button id="movieWatched" style="height: 60px; width: 60px;" class="btn {{movie.watchedClass}} round-button glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched(-1,movie)"></button>
                </div>
                <div class="col-xs-3">
-                    <button id="movieLiked" style="height: 60px; width: 60px;" class="btn {{movie.likedClass}} round-button glyphicon glyphicon-heart" title="Watch Trailer"  data-ng-click="like(-1,movie)"></button>
+                    <button id="movieLiked" style="height: 60px; width: 60px;" class="btn {{movie.likedClass}} round-button glyphicon glyphicon-heart" title="Watch Trailer" data-ng-click="like(-1,movie)"></button>
                </div>
                <div class="col-xs-3">
                     <button style="height: 60px; width: 60px;" class="btn btn-primary round-button glyphicon glyphicon-play" title="Watch Trailer" data-ng-click="trailer(-1,movie)"></button>
@@ -56,11 +56,11 @@
     <div class="row">
         <div class="col-xs-6">
             <h3 class="bold center ellipsis">Budget</h3>
-            <h5 class="center">{{'$' + movie.budget}}</h5>
+            <h5 class="center">{{movie.budget | currency:'$'}}</h5>
         </div>
         <div class="col-xs-6">
             <h3 class="bold center ellipsis">Revenue</h3>
-            <h5 class="center">{{'$' + movie.revenue}}</h5>
+            <h5 class="center">{{movie.revenue | currency:'$'}}</h5>
         </div>
     </div>
     <hr />

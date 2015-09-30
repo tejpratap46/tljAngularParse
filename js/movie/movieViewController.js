@@ -5,11 +5,6 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
     $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey)
         .success(function(response) {
             $scope.movie = response;
-            var MovieWatched = Parse.Object.extend("MovieLiked");
-            var movie = new MovieWatched();
-            movie.set("movie", response);
-            var user = Parse.User.current();
-            movie.save();
             var index = $.inArray(response.title, userMoviesWatchlistNames);
             if (index >= 0){
                 response.watchlistClass = "btn-danger";
@@ -29,11 +24,6 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
                 response.likedClass = "btn-warning";
             }
             $scope.movie = response;
-            var MovieWatched = Parse.Object.extend("MovieLiked");
-            var movie = new MovieWatched();
-            movie.set("movie", response);
-            var user = Parse.User.current();
-            movie.save();
     });
     $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "/credits?api_key=" + tmdbapikey)
         .success(function(response) {
@@ -67,11 +57,19 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
     });
     
     $scope.watchlist = function($index,movie){
-        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        var genres = [];
+        movie.genres.forEach(function(object){
+            genres.push(object.id);
+        })
+        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
     }
     
     $scope.watched = function($index,movie){
-        addMovieWatched($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        var genres = [];
+        movie.genres.forEach(function(object){
+            genres.push(object.id);
+        })
+        addMovieWatched($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
     }
     
     $scope.trailer = function($index,movie){
@@ -79,6 +77,10 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
     }
     
     $scope.like = function($index,movie){
-        addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        var genres = [];
+        movie.genres.forEach(function(object){
+            genres.push(object.id);
+        })
+        addMovieLiked($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
     }
 });

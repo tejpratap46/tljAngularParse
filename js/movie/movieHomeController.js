@@ -9,7 +9,6 @@ app.controller('movieHomeController', function($scope, $http){
                          {"name" : "Now Playing", "id":"now_playing", "glyphicon": "play"}];
     
     $scope.discover = [{"name" : "Highest Revenue", "id":"revenue.desc", "glyphicon": "usd"},
-                       {"name" : "Lowest Revenue", "id":"revenue.asc", "glyphicon": "usd"},
                        {"name" : "Released Date", "id":"release_date.desc", "glyphicon": "calendar"},
                        {"name" : "Highest Rating", "id":"vote_average.desc", "glyphicon": "stats"}];
 

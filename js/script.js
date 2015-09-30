@@ -6,6 +6,18 @@ var userMoviesWatchlist = [];
 var userMoviesWatched = [];
 var userMoviesLiked = [];
 
+// scroll
+var lastScrollTop = 0;
+$(window).scroll(function(event){
+   var st = $(this).scrollTop();
+   if (st > lastScrollTop){
+       $('.search').first().slideUp();
+   } else {
+       $('.search').first().slideDown();
+   }
+   lastScrollTop = st;
+});
+
 function setNav (activeId) {
 	$('#navHome').removeClass('active');
 	$('#navMovie').removeClass('active');
@@ -18,17 +30,7 @@ function setNav (activeId) {
 function checkIfLoggedIn() {
 	var currentUser = Parse.User.current();
 	if (currentUser) {
-	    var loginViewData = "<li class='dropdown'><a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false'>" + currentUser.get('username') + "<span class='caret'></span></a>"
-							+ "<ul class='dropdown-menu' role='menu'>"
-							+ "<li><a href='#/user/movie'>My Movies</a></li>"
-                            + "<li><a href='#/user/tv'>My Shows</a></li>"
-                            + "<li><a href='#/user/music'>My Music</a></li>"
-                            + "<li><a href='#/user/podcast'>My Pocasts</a></li>"
-							+ "<li class='divider'></li>"
-							+ "<li class='dropdown-header'>Say Good Bye</li>"
-							+ "<li><a href='#/logout'>Logout</a></li>"
-							+ "</ul>"
-							+ "</li>";
+	    var loginViewData = "<li><a href='#/user/movie'>" + currentUser.get('username') + "<span class='caret'></span></a></li>";
    		$('#navLoggedIn').html(loginViewData);
 	} else {
    		$('#navLoggedIn').html('<a type="button" class="btn btn-default navbar-btn" href="#/login">Sign in</a>');
@@ -36,7 +38,7 @@ function checkIfLoggedIn() {
 }
 
 function getUserMoviesWatchlist(){
-    var MovieWatchList = Parse.Object.extend("MovieWatchlist");
+    var MovieWatchList = Parse.Object.extend("MovieWatchList");
     var movie = new MovieWatchList();
     var query = new Parse.Query(MovieWatchList);
     query.equalTo("is_deleted", false);
@@ -62,6 +64,7 @@ function getUserMoviesWatched(){
     query.descending("updatedAt");
     query.find({
     success: function(results) {
+        console.log(results.length)
         userMoviesWatched = results;
         for (var i=0; i< results.length; i++){
             userMoviesWatchedNames.push(results[i].get('title'));
