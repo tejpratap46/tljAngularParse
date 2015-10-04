@@ -58,17 +58,25 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
     
     $scope.watchlist = function($index,movie){
         var genres = [];
-        movie.genres.forEach(function(object){
-            genres.push(object.id);
-        })
+        if ($index > -1){
+            genres = movie.genre_ids;
+        }else{
+            movie.genres.forEach(function(object){
+                genres.push(object.id);
+            })
+        }
         addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
     }
     
     $scope.watched = function($index,movie){
         var genres = [];
-        movie.genres.forEach(function(object){
-            genres.push(object.id);
-        })
+        if ($index > -1){
+            genres = movie.genre_ids;
+        }else{
+            movie.genres.forEach(function(object){
+                genres.push(object.id);
+            })
+        }
         addMovieWatched($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
     }
     
@@ -78,9 +86,13 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
     
     $scope.like = function($index,movie){
         var genres = [];
-        movie.genres.forEach(function(object){
-            genres.push(object.id);
-        })
+        if ($index > -1){
+            genres = movie.genre_ids;
+        }else{
+            movie.genres.forEach(function(object){
+                genres.push(object.id);
+            })
+        }
         addMovieLiked($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
     }
 });

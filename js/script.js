@@ -7,16 +7,16 @@ var userMoviesWatched = [];
 var userMoviesLiked = [];
 
 // scroll
-var lastScrollTop = 0;
-$(window).scroll(function(event){
-   var st = $(this).scrollTop();
-   if (st > lastScrollTop){
-       $('.search').first().slideUp();
-   } else {
-       $('.search').first().slideDown();
-   }
-   lastScrollTop = st;
-});
+//var lastScrollTop = 0;
+//$(window).scroll(function(event){
+//   var st = $(this).scrollTop();
+//   if (st > lastScrollTop){
+//       $('.search').first().slideUp();
+//   } else {
+//       $('.search').first().slideDown();
+//   }
+//   lastScrollTop = st;
+//});
 
 function setNav (activeId) {
 	$('#navHome').removeClass('active');
@@ -64,7 +64,6 @@ function getUserMoviesWatched(){
     query.descending("updatedAt");
     query.find({
     success: function(results) {
-        console.log(results.length)
         userMoviesWatched = results;
         for (var i=0; i< results.length; i++){
             userMoviesWatchedNames.push(results[i].get('title'));

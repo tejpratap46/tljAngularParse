@@ -7,7 +7,7 @@
         </div>
         <div class="col-sm-9">
             <div class="row center">
-                <h1 class="bold" style="font-size: 10em;">{{people.popularity}}</h1>
+                <h1 class="bold" style="font-size: 10em;">{{people.popularity | number:2}} %</h1>
                 <h3 class="center">{{people.place_of_birth}}</h3>
             </div>
         </div>
@@ -49,6 +49,14 @@
                         <p class="center ellipsis">{{movie.release_date}}</p>
                     </div>
                 </a>
+                <div class="center">
+                    <div class="btn-group" style="margin-top: -20px;">
+                        <button class="movieWatchlist btn {{movie.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, movie)"></button>
+                        <button class="movieWatched btn {{movie.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index, movie)"></button>
+                        <button class="movieLiked btn {{movie.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index, movie)"></button>
+                        <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index, movie.id)"></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
