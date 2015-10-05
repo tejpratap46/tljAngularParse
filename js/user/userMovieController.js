@@ -1,6 +1,6 @@
 app = angular.module('tlj');
 
-app.controller('userMovieController', function($scope){
+app.controller('userMovieController', function($scope, $routeParams){
     
     var currentUser = Parse.User.current();
     if (currentUser) {
@@ -8,8 +8,8 @@ app.controller('userMovieController', function($scope){
         window.location.hash = '#/';
     }
     
-    var MovieWatchList = Parse.Object.extend("MovieWatched");
-    var query = new Parse.Query(MovieWatchList);
+    var movies = Parse.Object.extend($routeParams.category);
+    var query = new Parse.Query(movies);
     
     $('.notification').first().text('Loading...').show('fast');
     
@@ -20,10 +20,24 @@ app.controller('userMovieController', function($scope){
     success: function(results) {
         var moviesTemp = [];
         $scope.movies = [];
-        userMoviesWatched = results;
-        userMoviesWatchedNames = [];
-        for (var i=0; i< results.length; i++){
-            userMoviesWatchedNames.push(results[i].get('title'));
+        if($routeParams.category == 'MovieWatched'){
+            userMoviesWatched = results;
+            userMoviesWatchedNames = [];
+            for (var i=0; i< results.length; i++){
+                userMoviesWatchedNames.push(results[i].get('title'));
+            }
+        }else if($routeParams.category == 'MovieWatchList'){
+            userMoviesWatchlist = results;
+            userMoviesWatchlistNames = [];
+            for (var i=0; i< results.length; i++){
+                userMoviesWatchlistNames.push(results[i].get('title'));
+            }
+        }else if($routeParams.category == 'MovieLiked'){
+            userMoviesLiked = results;
+            userMoviesLikedNames = [];
+            for (var i=0; i< results.length; i++){
+                userMoviesLikedNames.push(results[i].get('title'));
+            }
         }
         results.forEach(function(object){
             moviesTemp.push({
@@ -36,19 +50,19 @@ app.controller('userMovieController', function($scope){
         });
         
         for(var i=0;i<moviesTemp.length;i++){
-            var index = $.inArray(userMoviesWatched[i].get('title'), userMoviesWatchlistNames);
+            var index = $.inArray(moviesTemp[i]['title'], userMoviesWatchlistNames);
             if (index >= 0){
                 moviesTemp[i].watchlistClass = "btn-danger";
             }else{
                 moviesTemp[i].watchlistClass = "btn-success";
             }
-            index = $.inArray(userMoviesWatched[i].get('title'), userMoviesWatchedNames);
+            index = $.inArray(moviesTemp[i]['title'], userMoviesWatchedNames);
             if (index >= 0){
                 moviesTemp[i].watchedClass = "btn-danger";
             }else{
                 moviesTemp[i].watchedClass = "btn-info";
             }
-            index = $.inArray(userMoviesWatched[i].get('title'), userMoviesLikedNames);
+            index = $.inArray(moviesTemp[i]['title'], userMoviesLikedNames);
             if (index >= 0){
                 moviesTemp[i].likedClass = "btn-danger";
             }else{
@@ -60,7 +74,15 @@ app.controller('userMovieController', function($scope){
         $('.notification').first().hide('fast');
     },
     error: function(error) {
-        $('.notification').first().text('Error ' + error).show('fast').delay(3000).hide('fast');}
+        $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');}
+    });
+    
+    Parse.Cloud.run('MovieWatched', {}, {
+        success: function(ratings) {
+            console.log(ratings);
+        },
+        error: function(error) {
+        }
     });
     
     $scope.watchlist = function($index,movie){

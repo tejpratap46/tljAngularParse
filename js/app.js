@@ -27,15 +27,19 @@ app.config(function ($routeProvider) {
 		templateUrl: 'views/movie/home.html',
 		controller : 'movieHomeController'
 	})
-	.when('/movie/list/:list/:id/:genre?/:rating?', {
+	.when('/movie/list/:list/:id/:genre?/:rating?/:cast?', {
 		templateUrl: 'views/movie/list.html',
 		controller : 'movieListController'
 	})
-	.when('/movie/view/:id/:name', {
+	.when('/movie/view/:id/:name?', {
 		templateUrl: 'views/movie/view.html',
 		controller : 'movieViewController'
 	})
-	.when('/user/movie', {
+	.when('/user', {
+		templateUrl: 'views/user/home.html',
+		controller : 'userHomeController'
+	})
+	.when('/user/movie/:category', {
 		templateUrl: 'views/user/movie.html',
 		controller : 'userMovieController'
 	})

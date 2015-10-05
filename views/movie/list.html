@@ -1,5 +1,5 @@
 <div class="row">
-   <blockquote id="discover-filter">
+   <div id="discover-filter">
        <div class="row center">
             <h3>Filter</h3>
            <div class="col-sm-4 cold-md-3" ng-repeat="lists in filters track by $index">
@@ -20,7 +20,7 @@
            </div>
        </div>
        <hr />
-   </blockquote>
+   </div>
     <div class="col-sm-6" data-ng-repeat="movie in movies track by $index">
       <blockquote>
             <a href="#/movie/view/{{movie.id + '/' + movie.title}}">

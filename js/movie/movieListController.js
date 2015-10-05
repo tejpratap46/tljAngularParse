@@ -6,6 +6,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
     if ($routeParams.list == 'discover'){
         $routeParams.genre = typeof $routeParams.genre !== 'undefined' ? $routeParams.genre : '';
         $routeParams.rating = typeof $routeParams.rating !== 'undefined' ? $routeParams.rating : '1';
+        $routeParams.cast = typeof $routeParams.cast !== 'undefined' ? $routeParams.cast : '';
         $scope.minMovieRating = $routeParams.rating;
         $scope.filterName = ["Short By", "Genre"];
         $scope.filters = [
@@ -149,7 +150,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                 });
             }else if($routeParams.list == 'discover'){
                 $('.notification').first().text('Loading More...').show('fast');
-                 $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&with_genres=" + $routeParams.genre + "&vote_average.gte=" + $routeParams.rating + "&api_key=" + tmdbapikey + "&page=" + (++page))
+                 $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&with_genres=" + $routeParams.genre + "&vote_average.gte=" + $routeParams.rating + "&with_cast="+$routeParams.cast+"&api_key=" + tmdbapikey + "&page=" + (++page))
                     .success(function(response) {
                     $('.notification').first().hide('fast');
                     for (var i=0; i<response.results.length; i++){
@@ -268,7 +269,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
         });
     }else if($routeParams.list == 'discover'){
         $('.notification').first().text('Loading ...').show('fast');
-         $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&with_genres=" + $routeParams.genre + "&vote_average.gte=" + $routeParams.rating + "&api_key=" + tmdbapikey + "&page=" + (++page))
+         $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&with_genres=" + $routeParams.genre + "&vote_average.gte=" + $routeParams.rating  + "&with_cast="+$routeParams.cast+"&api_key=" + tmdbapikey + "&page=" + (++page))
             .success(function(response) {
             $('.notification').first().hide('fast');
             $scope.movies = [];
