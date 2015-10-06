@@ -14,7 +14,6 @@ app.controller('userMovieController', function($scope, $routeParams){
     $('.notification').first().text('Loading...').show('fast');
     
     query.equalTo("is_deleted", false);
-    query.limit(1000);
     query.descending("updatedAt");
     query.find({
     success: function(results) {
@@ -75,14 +74,6 @@ app.controller('userMovieController', function($scope, $routeParams){
     },
     error: function(error) {
         $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');}
-    });
-    
-    Parse.Cloud.run('MovieWatched', {}, {
-        success: function(ratings) {
-            console.log(ratings);
-        },
-        error: function(error) {
-        }
     });
     
     $scope.watchlist = function($index,movie){
