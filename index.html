@@ -25,30 +25,16 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li id="navHome" class="active"><a href="#/">Home</a></li>
-            <li id="navMovie"><a href="#movie">Movie</a></li>
-            <li id="navTv"><a href="#tv">TV</a></li>
-            <li id="navMusic"><a href="#music">Music</a></li>
-            <li id="navPodcast"><a href="#podcast">Podcast</a></li>
+            <li id="navStart"><a href="#/movie">Start</a></li>
+            <li id="navDiscover"><a href="#/movie/list/discover/popularity.desc">Discover</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right" id="navLoggedIn"></ul>
         </div>
           <div class="search row">
-              <div class="col-xs-7">
+              <div class="col-xs-12">
                 <form id="searchBar" method="get" action="{{'#/movie/list/search/' + searchData}}">
-                    <input type="text" class="bold form-control" placeholder="Search" data-ng-model="searchData" />
+                    <input type="search" class="bold form-control" placeholder="Search Movie" data-ng-model="searchData" />
                 </form>
-              </div>
-              <div class="col-xs-5">
-                <div class="btn-group">
-                    <a href="{{'#/movie/list/search/' + searchData}}" class="btn btn-default">Movie</a>
-                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{'#/movie/list/search/' + searchData}}">Movie</a></li>
-                        <li><a href="{{'#/tv/list/search/' + searchData}}">Tv Sow</a></li>
-                        <li><a href="{{'#/music/list/search/' + searchData}}">Music</a></li>
-                        <li><a href="{{'#/podcast/list/search/' + searchData}}">Podcast</a></li>
-                    </ul>
-                </div>
               </div>
           </div>
       </div>

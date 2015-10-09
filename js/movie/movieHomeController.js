@@ -1,7 +1,7 @@
 var app = angular.module('tlj');
 
 app.controller('movieHomeController', function($scope, $http){
-	setNav('#navMovie');
+	setNav('#navStart');
 
 	$scope.categories = [{"name" : "Top Rated", "id": "top_rated", "glyphicon": "stats"},
                          {"name" : "Popular", "id":"popular", "glyphicon": "heart"},

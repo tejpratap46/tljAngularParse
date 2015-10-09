@@ -3,6 +3,7 @@ var app = angular.module('tlj');
 app.controller('userHomeController', function($scope, $routeParams){
     var currentUser = Parse.User.current();
     if (currentUser) {
+        $scope.username = currentUser.get('username');
     }else{
         window.location.hash = '#/';
     }

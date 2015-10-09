@@ -2,53 +2,52 @@
   <h1 class="bold">What you want now ?</h1>
 </div>
 <div class="row">
- <div class="col-md-2"></div>
   <div class="col-xs-6 col-sm-3 col-md-2">
     <a href="#/movie">
       <div class="thumbnail">
-        <img style="width: 100%;" src="images/movie-512.png" alt="Movies">
+        <img style="width: 100%;" src="images/start.png" alt="Movies">
         <div class="caption">
-          <h5 class="center ellipsis">Movies</h5>
-          <p class="center ellipsis">Collection Of Awsome Movie List For You.</p>
+          <h5 class="center ellipsis">Start Here</h5>
+          <p class="center ellipsis">Different ways to checkout movies.</p>
         </div>
       </div>
     </a>
   </div>
   <div class="col-xs-6 col-sm-3 col-md-2">
-    <a href="#/tv">
+    <a href="#/movie/list/discover/popularity.desc">
       <div class="thumbnail">
-        <img style="width: 100%;" src="images/tv-512.png" alt="TV Show">
+        <img style="width: 100%;" src="images/discover.png" alt="Movies">
         <div class="caption">
-          <h5 class="center ellipsis">Tv Shows</h5>
-          <p class="center ellipsis">Collection Of Awsome Tv Shows For You.</p>
+          <h5 class="center ellipsis">Discover</h5>
+          <p class="center ellipsis">Different ways to checkout movies.</p>
         </div>
       </div>
     </a>
   </div>
   <div class="col-xs-6 col-sm-3 col-md-2">
-    <a href="#/music">
+    <a href="#/movie/list/discover/popularity.desc">
       <div class="thumbnail">
-        <img style="width: 100%;" src="images/music-512.png" alt="Music">
+        <img style="width: 100%;" src="images/list.png" alt="Movies">
         <div class="caption">
-          <h5 class="center ellipsis">Music</h5>
-          <p class="center ellipsis">Collection Of Awsome Music For You.</p>
+          <h5 class="center ellipsis">Lists</h5>
+          <p class="center ellipsis">Awesome movie curated by experts.</p>
         </div>
       </div>
     </a>
   </div>
   <div class="col-xs-6 col-sm-3 col-md-2">
-    <a href="#/podcast">
+    <a href="#/user">
       <div class="thumbnail">
-        <img style="width: 100%;" src="images/podcast-512.png" alt="Podcast">
+        <img style="width: 100%;" src="images/user.png" alt="Movies">
         <div class="caption">
-          <h5 class="center ellipsis">Podcast</h5>
-          <p class="center ellipsis">Collection Of Awsome Podcasts For You.</p>
+          <h5 class="center ellipsis">You</h5>
+          <p class="center ellipsis">Movies you are intrested in.</p>
         </div>
       </div>
     </a>
   </div>
- <div class="col-md-2"></div>
 </div>
+<hr />
 <div class="row center">
    <h2 class="bold well">People watched these movies recently</h2>
     <div class="col-sm-4 col-md-3 col-lg-2" style="height: 440px;" data-ng-repeat="movie in MovieWatched track by $index">
@@ -74,6 +73,8 @@
         </div>
     </div>
 </div>
+<div class="row"><a class="btn btn-default full-width"><h4>More...</h4></a></div>
+<hr />
 <div class="row center">
    <h2 class="bold well">People are liking these movies</h2>
     <div class="col-sm-4 col-md-3 col-lg-2" style="height: 440px;" data-ng-repeat="movie in MovieLiked track by $index">
@@ -99,8 +100,10 @@
         </div>
     </div>
 </div>
+<div class="row"><a class="btn btn-default full-width"><h4>More...</h4></a></div>
+<hr />
 <div class="row center">
-   <h2 class="bold well">People want to these movies</h2>
+   <h2 class="bold well">People want to watch these movies</h2>
     <div class="col-sm-4 col-md-3 col-lg-2" style="height: 440px;" data-ng-repeat="movie in MovieWatchList track by $index">
         <div class="thumbnail">
             <a href="#/movie/view/{{movie.id + '/' + movie.title}}">
@@ -124,3 +127,4 @@
         </div>
     </div>
 </div>
+<div class="row"><a class="btn btn-default full-width"><h4>More...</h4></a></div>

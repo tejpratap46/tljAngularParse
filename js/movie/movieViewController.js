@@ -1,7 +1,7 @@
 var app = angular.module('tlj');
 
 app.controller('movieViewController', function($scope, $http, $routeParams){
-    setNav('#navMovie');
+	setNav('#navStart');
     $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey)
         .success(function(response) {
             $scope.movie = response;

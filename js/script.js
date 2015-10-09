@@ -20,10 +20,8 @@ var userMoviesLiked = [];
 
 function setNav (activeId) {
 	$('#navHome').removeClass('active');
-	$('#navMovie').removeClass('active');
-	$('#navTv').removeClass('active');
-	$('#navMusic').removeClass('active');
-	$('#navPodcast').removeClass('active');
+	$('#navStart').removeClass('active');
+	$('#navDiscover').removeClass('active');
 	$(activeId).addClass('active');
 }
 
