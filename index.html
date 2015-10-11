@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Manage your movie, music, tv shows and podcast life here">
     <link rel="icon" href="favicon.ico">
-    <title>The List Job :: Manage your movie, music, tv shows and podcast life here</title>
+    <title>The List Job :: Manage your movie life</title>
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
   </head>
@@ -30,10 +30,15 @@
           </ul>
           <ul class="nav navbar-nav navbar-right" id="navLoggedIn"></ul>
         </div>
-          <div class="search row">
+          <div class="row">
               <div class="col-xs-12">
                 <form id="searchBar" method="get" action="{{'#/movie/list/search/' + searchData}}">
-                    <input type="search" class="bold form-control" placeholder="Search Movie" data-ng-model="searchData" />
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search Movie" aria-describedby="basic-addon2" ng-model="searchData">
+                        <a href="{{'#/movie/list/search/' + searchData}}" class="input-group-addon btn btn-default" id="basic-addon2">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </a>
+                    </div>
                 </form>
               </div>
           </div>
@@ -59,5 +64,6 @@
   <script src="js/user/userHomeController.js"></script>
   <script src="js/movie/movieViewController.js"></script>
   <script src="js/people/peopleViewController.js"></script>
+  <script src="js/trend/trendListController.js"></script>
   <script src="//rawgit.com/saribe/eModal/master/dist/eModal.min.js"></script>
 </html>

@@ -39,6 +39,10 @@ app.config(function ($routeProvider) {
 		templateUrl: 'views/user/home.html',
 		controller : 'userHomeController'
 	})
+	.when('/trend/:id?', {
+		templateUrl: 'views/trend/list.html',
+		controller : 'trendListController'
+	})
 	.when('/user/movie/:category', {
 		templateUrl: 'views/user/movie.html',
 		controller : 'userMovieController'

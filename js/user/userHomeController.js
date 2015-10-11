@@ -7,7 +7,7 @@ app.controller('userHomeController', function($scope, $routeParams){
     }else{
         window.location.hash = '#/';
     }
-    
+    $scope.total = 0;
     var classes = ["MovieWatchList", "MovieWatched", "MovieLiked"];
     classes.forEach(function(className){
         var movie = Parse.Object.extend(className);
@@ -19,10 +19,14 @@ app.controller('userHomeController', function($scope, $routeParams){
                 $('.notification').first().hide('fast');
                 if(className == "MovieWatchList"){
                     $scope.MovieWatchList = count;
+                    $scope.total += count;
                 }else if(className == "MovieWatched"){
                     $scope.MovieWatched = count;
+                    $scope.level = Math.log2(count);
+                    $scope.total += count;
                 }else{
                     $scope.MovieLiked = count;
+                    $scope.total += count;
                 }
                 $scope.$apply();
             },
