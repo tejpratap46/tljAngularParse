@@ -290,6 +290,10 @@ function addMovie($index,movie,tmdbid,name,image,genre,release,vote_average, but
     });
 }
 
+function loginAlert(){
+    eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
+}
+
 function loginOk(){
     window.location.hash = "#/login";
 }

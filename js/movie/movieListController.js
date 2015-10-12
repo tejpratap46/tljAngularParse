@@ -135,33 +135,7 @@ app.controller('movieListController', function($scope, $window, $http, $routePar
                     }
                 });
             }else if($routeParams.list == 'search'){
-                $('.notification').first().text('Loading More...').show('fast');
-                $http.get("http://api.themoviedb.org/3/search/movie?query=" + $routeParams.id + "&api_key=" + tmdbapikey + "&page=" + (++page))
-                .success(function(response) {
-                    $('.notification').first().hide('fast');
-                    for (var i=0; i<response.results.length; i++){
-                        var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
-                        if (index >= 0){
-                            response.results[i].watchlistClass = "btn-danger";
-                        }else{
-                            response.results[i].watchlistClass = "btn-success";
-                        }
-                        index = $.inArray(response.results[i].title, userMoviesWatchedNames);
-                        if (index >= 0){
-                            response.results[i].watchedClass = "btn-danger";
-                        }else{
-                            response.results[i].watchedClass = "btn-info";
-                        }
-                        index = $.inArray(response.results[i].title, userMoviesLikedNames);
-                        if (index >= 0){
-                            response.results[i].likedClass = "btn-danger";
-                        }else{
-                            response.results[i].likedClass = "btn-warning";
-                        }
-                        $scope.movies.push(response.results[i]);
-                        $scope.$apply();
-                    }
-                });
+                
             }else if($routeParams.list == 'discover'){
                 $('.notification').first().text('Loading More...').show('fast');
                  $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&with_genres=" + $routeParams.genre + "&vote_average.gte=" + $routeParams.rating + "&with_cast="+$routeParams.cast+"&api_key=" + tmdbapikey + "&page=" + (++page))
