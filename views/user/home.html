@@ -47,3 +47,13 @@
         <div class="progress-bar progress-bar-warning" style="width: {{(MovieLiked)/(total) * 100}}%"></div>
     </div>
 </div>
+<hr />
+<div>
+   <h2>Genre's</h2>
+    <div ng-repeat="genre in genreList track by $index">
+        <h3>{{genre.name}}</h3>
+        <div class="progress">
+            <div class="progress-bar progress-bar-default" style="width: {{genre.count}}%;"></div>
+        </div>
+    </div>
+</div>

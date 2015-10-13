@@ -44,6 +44,7 @@ app.controller('userMovieController', function($scope, $routeParams){
                 poster_path: object.get('poster_path'),
                 vote_average: object.get('vote_average'),
                 release_date: object.get('release_date'),
+                genre: object.get('genre'),
                 id: object.get('tmdb_id')
             });
         });

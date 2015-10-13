@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('userHomeController', function($scope, $routeParams){
+app.controller('userHomeController', function($scope, $routeParams, $http){
     var currentUser = Parse.User.current();
     if (currentUser) {
         $scope.username = currentUser.get('username');
@@ -37,6 +37,33 @@ app.controller('userHomeController', function($scope, $routeParams){
             error: function(error) {
                 $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');
             }
+        });
+    });
+    
+    $http.get("http://api.themoviedb.org/3/genre/movie/list?api_key=" + tmdbapikey)
+        .success(function(response) {
+        var genres = response.genres;
+        $scope.genreList = [];
+        genres.forEach(function(genreItem){
+            var movie = Parse.Object.extend("MovieWatched");
+            var query = new Parse.Query(movie);
+            query.equalTo("genre", genreItem.id);
+            query.equalTo("is_deleted", false);
+            $('.notification').first().text('Loading...').show('fast');
+            query.count({
+                success: function(count) {
+                    $('.notification').first().hide('fast');
+                    $scope.genreList.push({
+                        id: genreItem.id,
+                        name: genreItem.name,
+                        count: (count/$scope.MovieWatched)*100
+                    });
+                    $scope.$apply();
+                },
+                error: function(error) {
+                    $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');
+                }
+            });
         });
     });
 });
