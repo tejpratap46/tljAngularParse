@@ -47,9 +47,13 @@ app.config(function ($routeProvider) {
 		templateUrl: 'views/user/movie.html',
 		controller : 'userMovieController'
 	})
-	.when('/people/view/:id', {
+	.when('/people/view/:id/:name?', {
 		templateUrl: 'views/people/view.html',
 		controller : 'peopleViewController'
+	})
+	.when('/people/list/:id', {
+		templateUrl: 'views/people/list.html',
+		controller : 'peopleListController'
 	})
 	.when('/test', {
 		templateUrl: 'views/test.html'

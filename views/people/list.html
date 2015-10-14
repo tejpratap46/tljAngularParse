@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-sm-4 col-md-3 col-lg-2" style="height: 320px;" data-ng-repeat="cast in casts">
+        <div class="thumbnail">
+            <a href="#/people/view/{{cast.id + '/' + cast.name}}">
+               <div style="height: 200px; overflow: hidden;">
+                    <img style="width: 100%;" src="http://image.tmdb.org/t/p/w185{{cast.profile_path}}" alt="{{cast.name}}">
+                </div>
+                <div class="caption">
+                    <h4 class="center ellipsis" title="{{cast.name}}">{{cast.name}}</h4>
+                    <h6 class="center ellipsis">From : {{cast.known_for[0].title}}</h6>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
