@@ -39,11 +39,11 @@ app.config(function ($routeProvider) {
 		templateUrl: 'views/user/home.html',
 		controller : 'userHomeController'
 	})
-	.when('/trend/:id?', {
+	.when('/trend/:id?/:genre?', {
 		templateUrl: 'views/trend/list.html',
 		controller : 'trendListController'
 	})
-	.when('/user/movie/:category', {
+	.when('/user/movie/:category/:genre?', {
 		templateUrl: 'views/user/movie.html',
 		controller : 'userMovieController'
 	})

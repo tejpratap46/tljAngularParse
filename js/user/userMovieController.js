@@ -2,6 +2,9 @@ app = angular.module('tlj');
 
 app.controller('userMovieController', function($scope, $routeParams){
     
+    $routeParams.genre = typeof $routeParams.genre !== 'undefined' ? $routeParams.genre : 0;
+    $routeParams.genre = parseInt($routeParams.genre);
+    
     var currentUser = Parse.User.current();
     if (currentUser) {
     }else{
@@ -13,8 +16,15 @@ app.controller('userMovieController', function($scope, $routeParams){
     
     $('.notification').first().text('Loading...').show('fast');
     
+    if($routeParams.genre > 0){
+        query.equalTo("genre", $routeParams.genre);
+    }
+    if($routeParams.category == 'MovieWatchList'){
+        query.descending("release_date");
+    }else{
+        query.descending("updatedAt");
+    }
     query.equalTo("is_deleted", false);
-    query.descending("updatedAt");
     query.find({
     success: function(results) {
         var moviesTemp = [];

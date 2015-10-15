@@ -3,7 +3,9 @@ var app = angular.module('tlj');
 app.controller('trendListController', function($scope, $routeParams){
 	setNav('#navHome');
     $routeParams.id = typeof $routeParams.id !== 'undefined' ? $routeParams.id : 'MovieWatched';
-    Parse.Cloud.run('getMovie', {className: $routeParams.id, limit: 24, page: 1}, {
+    $routeParams.genre = typeof $routeParams.genre !== 'undefined' ? $routeParams.genre : 0;
+    $routeParams.genre = parseInt($routeParams.genre);
+    Parse.Cloud.run('getMovie', {className: $routeParams.id, limit: 24, page: 1, genre: $routeParams.genre}, {
         success: function(results) {
             var moviesTemp = [];
             $scope.movies = [];

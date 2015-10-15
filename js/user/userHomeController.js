@@ -43,6 +43,7 @@ app.controller('userHomeController', function($scope, $routeParams, $http){
     $http.get("http://api.themoviedb.org/3/genre/movie/list?api_key=" + tmdbapikey)
         .success(function(response) {
         var genres = response.genres;
+        var index = 1;
         $scope.genreList = [];
         genres.forEach(function(genreItem){
             var movie = Parse.Object.extend("MovieWatched");
@@ -52,13 +53,31 @@ app.controller('userHomeController', function($scope, $routeParams, $http){
             $('.notification').first().text('Loading...').show('fast');
             query.count({
                 success: function(count) {
-                    $('.notification').first().hide('fast');
+                    var percentage = (count/$scope.MovieWatched)*100;
+                    var theme = "success";
+                    if(percentage < 10){
+                        theme = "danger";
+                    }else if(percentage < 40){
+                        theme = "warning";
+                    }else if(percentage < 70){
+                        theme = "info";
+                    }else{
+                        theme = "success";
+                    }
                     $scope.genreList.push({
                         id: genreItem.id,
                         name: genreItem.name,
-                        count: (count/$scope.MovieWatched)*100
+                        theme: theme,
+                        count: percentage
                     });
-                    $scope.$apply();
+                    console.log(genres.length);
+                    console.log(index);
+                    if(genres.length == index){
+                        $('.notification').first().hide('fast');
+                        $scope.genreList.sort(compare);
+                        $scope.$apply();
+                    }
+                    index += 1;
                 },
                 error: function(error) {
                     $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');
@@ -66,4 +85,12 @@ app.controller('userHomeController', function($scope, $routeParams, $http){
             });
         });
     });
+    
+    function compare(a,b) {
+        if (a.count > b.count)
+            return -1;
+        if (a.count < b.count)
+            return 1;
+        return 0;
+    }
 });
