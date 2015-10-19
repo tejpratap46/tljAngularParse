@@ -58,6 +58,36 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
             }
     });
     
+    var comment = Parse.Object.extend("Comment");
+    var query = new Parse.Query(comment);
+    
+    $('.notification').first().text('Loading...').show('fast');
+    query.descending("votes");
+    query.descending("updatedAt");
+    query.equalTo("tmdb_id", $routeParams.id);
+    query.find({
+    success: function(results) {
+        var commentsTemp = [];
+        $scope.comments = [];
+        console.log(results);
+        results.forEach(function(object){
+            commentsTemp.push({
+                text: object.get('text'),
+                username: object.get('username'),
+                votes: object.get('votes')
+            });
+        });
+        commentsTemp.forEach(function(object){
+            $scope.comments.push(object);
+            $scope.$apply();
+        });
+        
+        $('.notification').first().hide('fast');
+    },
+    error: function(error) {
+        $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');}
+    });
+    
     $scope.watchlist = function($index,movie){
         var genres = [];
         if ($index > -1){
@@ -96,5 +126,10 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
             })
         }
         addMovieLiked($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
+    }
+    
+    $scope.addComment = function(tmdb_id){
+        var commentText = $scope.commentText;
+        addComment(tmdb_id,commentText);
     }
 });

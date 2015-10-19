@@ -98,7 +98,7 @@
     </div>
     <div class="row">
         <h2 class="bold center">CAST</h2>
-        <div class="col-sm-4 col-md-3 col-lg-2" style="height: 320px;" data-ng-repeat="cast in casts">
+        <div class="col-sm-4 col-md-3 col-lg-2" style="height: 320px;" data-ng-repeat="cast in casts | limitTo:6">
             <div class="thumbnail">
                 <a href="#/people/view/{{cast.id + '/' + cast.name}}">
                    <div style="height: 200px; overflow: hidden;">
@@ -112,4 +112,19 @@
             </div>
         </div>
     </div>
+    <hr />
+    <blockquote class="row">
+        <div class="col-xs-12"><h4>What do you think about the movie?</h4></div>
+        <div class="col-xs-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Write your thoughts here." aria-describedby="basic-addon2" data-ng-model="commentText">
+              <span class="input-group-addon btn btn-default" id="basic-addon2" data-ng-click="addComment(movie.id)">Shout</span>
+            </div>
+        </div>
+        <div class="col-xs-12"></div>
+    </blockquote>
+    <blockquote class="row" ng-repeat="comment in comments track by $index">
+        <p>{{comment.text}}</p>
+        <button style="height: 60px; width: 60px;" class="btn btn-success round-button glyphicon glyphicon-like" title="Watch Trailer" data-ng-click="upvote"></button><small>{{comment.username}}</small>
+    </blockquote>
 </div>

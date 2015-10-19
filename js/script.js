@@ -290,6 +290,33 @@ function addMovie($index,movie,tmdbid,name,image,genre,release,vote_average, but
     });
 }
 
+function addComment(tmdb_id,text){
+    var Comment = Parse.Object.extend("Comment");
+    var comment = new Comment();
+    comment.set("tmdb_id", tmdb_id + "");
+    comment.set("text", text);
+    comment.increment("votes");
+    var user = Parse.User.current();
+    if (user == null){
+        eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
+        return false;
+    }else{
+        // no problem, add comment
+        var name = user.get("username");
+        comment.set("username", name);
+    }
+
+    $('.notification').first().text('Adding...').show('fast');
+    comment.save(null, {
+        success: function(comment) {
+            $('.notification').first().hide('fast');
+        },
+    error: function(comment, error) {
+			$('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
+        }
+    });
+}
+
 function loginAlert(){
     eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
 }
