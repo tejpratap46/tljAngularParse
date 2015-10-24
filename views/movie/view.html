@@ -116,15 +116,21 @@
     <blockquote class="row">
         <div class="col-xs-12"><h4>What do you think about the movie?</h4></div>
         <div class="col-xs-12">
+           <form  data-ng-submit="addComment(movie.id)">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Write your thoughts here." aria-describedby="basic-addon2" data-ng-model="commentText">
+              <input type="text" class="form-control" placeholder="Write your thoughts here." aria-describedby="basic-addon2" data-ng-model="commentText" required>
               <span class="input-group-addon btn btn-default" id="basic-addon2" data-ng-click="addComment(movie.id)">Shout</span>
             </div>
+           </form>
         </div>
-        <div class="col-xs-12"></div>
     </blockquote>
-    <blockquote class="row" ng-repeat="comment in comments track by $index">
-        <p>{{comment.text}}</p>
-        <button style="height: 60px; width: 60px;" class="btn btn-success round-button glyphicon glyphicon-like" title="Watch Trailer" data-ng-click="upvote"></button><small>{{comment.username}}</small>
+    <blockquote class="row" data-ng-repeat="comment in comments track by $index">
+      <dix class="col-xs-12">
+            <p>{{comment.text}}</p>
+            <small>{{comment.username}}</small>
+      </dix>
+      <div class="col-xs-12">
+           <button class="btn btn-link glyphicon glyphicon-thumbs-up" title="Like" data-ng-click="upvote(comment.id)"></button><span class="ellipsis" data-ng-repeat="votedBy in comment.voted_by track by $index"> {{votedBy}}</span> liked this
+      </div>
     </blockquote>
 </div>

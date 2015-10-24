@@ -58,35 +58,37 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
             }
     });
     
-    var comment = Parse.Object.extend("Comment");
-    var query = new Parse.Query(comment);
+    $scope.loadComments = loadComments();
     
-    $('.notification').first().text('Loading...').show('fast');
-    query.descending("votes");
-    query.descending("updatedAt");
-    query.equalTo("tmdb_id", $routeParams.id);
-    query.find({
-    success: function(results) {
-        var commentsTemp = [];
-        $scope.comments = [];
-        console.log(results);
-        results.forEach(function(object){
-            commentsTemp.push({
-                text: object.get('text'),
-                username: object.get('username'),
-                votes: object.get('votes')
+    function loadComments(){
+        var comment = Parse.Object.extend("Comment");
+        var query = new Parse.Query(comment);
+
+        query.descending("votes");
+        query.descending("createdAt");
+        query.equalTo("tmdb_id", $routeParams.id);
+        query.find({
+        success: function(results) {
+            var commentsTemp = [];
+            $scope.comments = [];
+            results.forEach(function(object){
+                commentsTemp.push({
+                    id: object.id,
+                    text: object.get('text'),
+                    username: object.get('username'),
+                    voted_by: object.get('voted_by'),
+                    votes: object.get('votes')
+                });
             });
+            commentsTemp.forEach(function(object){
+                $scope.comments.push(object);
+                $scope.$apply();
+            });
+        },
+        error: function(error) {
+            $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');}
         });
-        commentsTemp.forEach(function(object){
-            $scope.comments.push(object);
-            $scope.$apply();
-        });
-        
-        $('.notification').first().hide('fast');
-    },
-    error: function(error) {
-        $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');}
-    });
+    }
     
     $scope.watchlist = function($index,movie){
         var genres = [];
@@ -130,6 +132,60 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
     
     $scope.addComment = function(tmdb_id){
         var commentText = $scope.commentText;
-        addComment(tmdb_id,commentText);
+        if(commentText.length == 0){
+            return;
+        }
+        var Comment = Parse.Object.extend("Comment");
+        var comment = new Comment();
+        comment.set("tmdb_id", tmdb_id + "");
+        comment.set("text", commentText);
+        comment.increment("votes");
+        var user = Parse.User.current();
+        if (user == null){
+            eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
+            return false;
+        }
+        // no problem, add comment
+        var name = user.get("username");
+        comment.set("username", name);
+
+        $('.notification').first().text('Adding...').show('fast');
+        comment.save(null, {
+            success: function(comment) {
+                $('.notification').first().hide('fast');
+                $scope.loadComments = loadComments();
+            },
+        error: function(comment, error) {
+                $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
+            }
+        });
+    }
+    
+    $scope.upvote = function(id){
+        var Comment = Parse.Object.extend("Comment");
+        var query = new Parse.Query(Comment);
+        query.get(id, {
+            success: function(comment) {
+            var user = Parse.User.current();
+            if (user == null){
+                eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
+                return false;
+            }else{
+                // no problem, add comment
+                var name = user.get("username");
+                comment.addUnique("voted_by", name);
+                comment.increment("votes");
+                comment.save(null, {
+                    success: function(comment) {
+                        $scope.loadComments = loadComments();
+                    },
+                error: function(comment, error) {
+                    }
+                });
+            }
+        },
+        error: function(error) {
+        }
+        });
     }
 });
