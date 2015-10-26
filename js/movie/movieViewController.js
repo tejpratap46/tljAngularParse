@@ -66,17 +66,33 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
 
         query.descending("votes");
         query.descending("createdAt");
+        query.limit(10);
         query.equalTo("tmdb_id", $routeParams.id);
         query.find({
         success: function(results) {
             var commentsTemp = [];
             $scope.comments = [];
             results.forEach(function(object){
+                var votedByTemp = object.get('voted_by');
+                console.log('created by : ' + votedByTemp.length);
+                var user = Parse.User.current();
+                var votedBy = "";
+                if (votedByTemp.length == 0){
+                    votedBy = "";
+                }else if (votedByTemp.indexOf(user.get("username")) >= 0){
+                    if (votedByTemp.length == 1)
+                        votedBy = "you liked this";
+                    else
+                        votedBy = "you and " + (votedByTemp.length - 1) + " other liked this";
+                }else{
+                    votedBy = votedByTemp.length + " people liked this";
+                }
+                console.log(votedBy);
                 commentsTemp.push({
                     id: object.id,
                     text: object.get('text'),
                     username: object.get('username'),
-                    voted_by: object.get('voted_by'),
+                    voted_by: votedBy,
                     votes: object.get('votes')
                 });
             });
@@ -147,7 +163,7 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
         }
         // no problem, add comment
         var name = user.get("username");
-        comment.set("username", name);
+        comment.set("comment_by", name);
 
         $('.notification').first().text('Adding...').show('fast');
         comment.save(null, {

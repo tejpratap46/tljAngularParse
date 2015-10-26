@@ -130,7 +130,7 @@
             <small>{{comment.username}}</small>
       </dix>
       <div class="col-xs-12">
-           <button class="btn btn-link glyphicon glyphicon-thumbs-up" title="Like" data-ng-click="upvote(comment.id)"></button><span class="ellipsis" data-ng-repeat="votedBy in comment.voted_by track by $index"> {{votedBy}}</span> liked this
+           <button class="btn btn-link glyphicon glyphicon-thumbs-up" title="Like" data-ng-click="upvote(comment.id)"></button><span class="ellipsis"> {{comment.voted_by}}</span>
       </div>
     </blockquote>
 </div>
