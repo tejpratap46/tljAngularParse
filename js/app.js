@@ -55,6 +55,14 @@ app.config(function ($routeProvider) {
 		templateUrl: 'views/people/list.html',
 		controller : 'peopleListController'
 	})
+	.when('/list', {
+		templateUrl: 'views/list/home.html',
+		controller : 'listHomeController'
+	})
+	.when('/list/view/:id', {
+		templateUrl: 'views/list/view.html',
+		controller : 'listViewController'
+	})
 	.when('/test', {
 		templateUrl: 'views/test.html'
 	})

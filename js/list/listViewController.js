@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('trendListController', function($scope, $routeParams, $window){
+app.controller('listViewController', function($scope, $routeParams, $window){
 	setNav('#navHome');
     var page = 0;
     $scope.movies = [];
@@ -14,7 +14,7 @@ app.controller('trendListController', function($scope, $routeParams, $window){
         windowBottom = windowHeight + window.pageYOffset;
         if (windowBottom >= docHeight - 10) {
             $('.notification').first().text('Loading...').show('fast');
-            Parse.Cloud.run('getMovie', {className: $routeParams.id, limit: 24, page: (++page), genre: $routeParams.genre}, {
+            Parse.Cloud.run('getListMovies', {list_id: $routeParams.id, limit: 24, page: (++page)}, {
                 success: function(results) {
                     $('.notification').first().hide('fast');
                     var moviesTemp = [];
@@ -59,7 +59,7 @@ app.controller('trendListController', function($scope, $routeParams, $window){
     });
     
     $('.notification').first().text('Loading...').show('fast');
-    Parse.Cloud.run('getMovie', {className: $routeParams.id, limit: 24, page: (++page), genre: $routeParams.genre}, {
+    Parse.Cloud.run('getListMovies', {list_id: $routeParams.id, limit: 24, page: (++page)}, {
         success: function(results) {
             $('.notification').first().hide('fast');
             var moviesTemp = [];
