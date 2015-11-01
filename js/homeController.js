@@ -156,13 +156,13 @@ app.controller('homeController', function($scope, $http){
     
     $scope.fillAutoComplete = function(){
         var status = $scope.statusText;
+        var searchUrl = "http://api.themoviedb.org/3/search/movie?api_key=968cca12b1a8492036b1e1e05af57e3f&query=ba&search_type=ngram";
         $http.get("http://api.themoviedb.org/3/search/movie?search_type=ngram&query=" + status + "&api_key=" + tmdbapikey)
             .success(function(response) {
-            console.log(response);
             var movies = response.results;
             var dataList = "";
             movies.forEach(function(object){
-                dataList += "<option value='" + object.title + " - " +object.release_date + "'>"
+                dataList += "<option value='" + object.title + " - " + (object.release_date).split('-')[0] + "'>"
             });
             $('#moviesAutocomplete').html(dataList);
         });
