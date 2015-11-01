@@ -1,6 +1,10 @@
 <div class="row center">
-  <h1 class="bold">What you want now ?</h1>
+ <form  data-ng-submit="updateStatus()">
+     <input data-ng-keypress="fillAutoComplete()" class="full-width" list="moviesAutocomplete" data-ng-model="statusText" style="padding: 20px; font-size: 2em;" type="text" placeholder="What are watching now ?">
+ </form>
 </div>
+<datalist id="moviesAutocomplete"></datalist>
+<hr />
 <div class="row">
   <div class="col-xs-6 col-sm-3 col-md-2">
     <a href="#/movie">

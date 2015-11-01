@@ -70,8 +70,6 @@ app.controller('userHomeController', function($scope, $routeParams, $http){
                         theme: theme,
                         count: percentage
                     });
-                    console.log(genres.length);
-                    console.log(index);
                     if(genres.length == index){
                         $('.notification').first().hide('fast');
                         $scope.genreList.sort(compare);

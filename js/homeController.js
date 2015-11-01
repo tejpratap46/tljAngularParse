@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('homeController', ['$scope', function($scope){
+app.controller('homeController', function($scope, $http){
 	setNav('#navHome');
     var currentUser = Parse.User.current();
     if (currentUser) {
@@ -146,4 +146,25 @@ app.controller('homeController', ['$scope', function($scope){
     $scope.like = function($index,movie){
         addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
-}]);
+    
+    $scope.updateStatus = function(){
+        var status = $scope.statusText;
+        var tagArray= status.match(/(^|\s)#([^ ]*)/g);
+        var atArray= status.match(/(^|\s)@([^ ]*)/g);
+        console.log(tagArray + ', ' + atArray);
+    }
+    
+    $scope.fillAutoComplete = function(){
+        var status = $scope.statusText;
+        $http.get("http://api.themoviedb.org/3/search/movie?search_type=ngram&query=" + status + "&api_key=" + tmdbapikey)
+            .success(function(response) {
+            console.log(response);
+            var movies = response.results;
+            var dataList = "";
+            movies.forEach(function(object){
+                dataList += "<option value='" + object.title + " - " +object.release_date + "'>"
+            });
+            $('#moviesAutocomplete').html(dataList);
+        });
+    }
+});

@@ -74,7 +74,6 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
             $scope.comments = [];
             results.forEach(function(object){
                 var votedByTemp = object.get('voted_by');
-                console.log('created by : ' + votedByTemp.length);
                 var user = Parse.User.current();
                 var votedBy = "";
                 if (votedByTemp.length == 0){
@@ -148,6 +147,7 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
     
     $scope.addComment = function(tmdb_id){
         var commentText = $scope.commentText;
+        $scope.commentText = "";
         if(commentText.length == 0){
             return;
         }
@@ -163,8 +163,8 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
         }
         // no problem, add comment
         var name = user.get("username");
-        comment.set("comment_by", name);
-
+        comment.set("username", name);
+        comment.addUnique("voted_by", name);
         $('.notification').first().text('Adding...').show('fast');
         comment.save(null, {
             success: function(comment) {
