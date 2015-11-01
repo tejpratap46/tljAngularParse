@@ -48,7 +48,6 @@ app.controller('listHomeController', function($scope, $routeParams, $window){
                 });
             });
             moviesTemp.forEach(function(object){
-                console.log(object);
                 $scope.movieList.push(object);
                 $scope.$apply();
             });
