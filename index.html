@@ -34,7 +34,7 @@
               <div class="col-xs-12">
                 <form id="searchBar" method="get" action="{{'#/movie/list/search/' + searchData}}">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search Movie" aria-describedby="basic-addon2" ng-model="searchData">
+                        <input data-ng-keyup="searchMovie()" type="text" class="form-control" placeholder="Search Movie" aria-describedby="basic-addon2" ng-model="searchData">
                         <a href="{{'#/movie/list/search/' + searchData}}" class="input-group-addon btn btn-default" id="basic-addon2">
                             <span class="glyphicon glyphicon-search"></span>
                         </a>

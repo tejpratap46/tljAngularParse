@@ -1,6 +1,6 @@
 <div class="row center">
  <form  data-ng-submit="updateStatus()">
-     <input data-ng-keypress="fillAutoComplete()" class="full-width" list="moviesAutocomplete" data-ng-model="statusText" style="padding: 20px; font-size: 2em;" type="text" placeholder="What are watching now ?">
+     <input data-ng-keyup="fillAutoComplete()" class="full-width" list="moviesAutocomplete" data-ng-model="statusText" style="padding: 20px; font-size: 2em;" type="text" placeholder="What are watching now ?">
  </form>
 </div>
 <datalist id="moviesAutocomplete"></datalist>

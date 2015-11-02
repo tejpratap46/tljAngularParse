@@ -74,6 +74,10 @@ app.config(function ($routeProvider) {
 
 app.controller('navController', function ($scope) {
 	checkIfLoggedIn();
+    $scope.searchMovie = function(){
+        var movie = $scope.searchData;
+        window.location.hash = "#/movie/list/search/" + movie;
+    }
 });
 
 app.controller('loginController', function($scope) {
