@@ -148,23 +148,68 @@ app.controller('homeController', function($scope, $http){
     }
     
     $scope.updateStatus = function(){
-        var status = $scope.statusText;
-        var tagArray= status.match(/(^|\s)#([^ ]*)/g);
-        var atArray= status.match(/(^|\s)@([^ ]*)/g);
-        console.log(tagArray + ', ' + atArray);
+        var statusText = $scope.statusText;
+        var atArray= statusText.match(/(^|\s)@([^ ]*)/g);
+        if(atArray != null){
+            $('.notification').first().text('Adding...').show('fast');
+            var query = atArray[0].replace("@", "").replace(/([A-Z0-9])/g, function($1){return " "+$1.toLowerCase();})
+            $http.get("http://api.themoviedb.org/3/search/movie?search_type=ngram&query=" + query + "&api_key=" + tmdbapikey)
+                .success(function(response) {
+                var movies = response.results;
+                if(movies.length == 0){
+                    $('.notification').first().text('No Movie Found').show('fast').delay(3000).hide('fast');
+                }
+                var movie =  movies[0];
+                var tmdb_id = movie.id;
+                var poster_path = movie.poster_path;
+                var title = movie.title;
+                var Status = Parse.Object.extend("Status");
+                addMovieWatched(-1,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+                var status = new Status();
+                status.set("tmdb_id", tmdb_id + "");
+                status.set("text", statusText);
+                status.set("poster_path", poster_path);
+                status.set("title", title);
+                status.set("votes",1);
+                var user = Parse.User.current();
+                if (user == null){
+                    eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
+                    return false;
+                }
+                // no problem, add status
+                var name = user.get("username");
+                status.set("username", name);
+                status.addUnique("voted_by", name);
+                status.save(null, {
+                    success: function(status) {
+                        $('.notification').first().hide('fast');
+                    },
+                error: function(status, error) {
+                        $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
+                    }
+                });
+            });
+        }
     }
     
     $scope.fillAutoComplete = function(){
         var status = $scope.statusText;
-        var searchUrl = "http://api.themoviedb.org/3/search/movie?api_key=968cca12b1a8492036b1e1e05af57e3f&query=ba&search_type=ngram";
-        $http.get("http://api.themoviedb.org/3/search/movie?search_type=ngram&query=" + status + "&api_key=" + tmdbapikey)
-            .success(function(response) {
-            var movies = response.results;
-            var dataList = "";
-            movies.forEach(function(object){
-                dataList += "<option value='" + object.title + " - " + (object.release_date).split('-')[0] + "'>"
+        var atArray = status.match(/(^|\s)@([^ ]*)/g);
+        if(atArray != null){
+            var query = atArray[0].replace("@", "").replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase();});
+            console.log(query);
+            $http.get("http://api.themoviedb.org/3/search/movie?search_type=ngram&query=" + query + "&api_key=" + tmdbapikey)
+                .success(function(response) {
+                var movies = response.results;
+                var dataList = [];
+                movies.forEach(function(object){
+                    dataList.push(object.title.split(' ').join(''));
+                });
+                $('#statusText').atwho({
+                    at: "@",
+                    data: dataList
+                })
             });
-            $('#moviesAutocomplete').html(dataList);
-        });
+        }
     }
 });
