@@ -177,6 +177,40 @@ function addMovieWatched($index,tmdbid,name,image,genre,release,vote_average){
     }
     });
 }
+// dows not prompt to remove it if already added, used in comments and status
+function addMovieWatchedSilent($index,tmdbid,name,image,genre,release,vote_average){
+    var MovieWatched = Parse.Object.extend("MovieWatched");
+    var movie = new MovieWatched();
+    
+    var query = new Parse.Query(MovieWatched);
+    query.equalTo("tmdb_id", tmdbid + "");
+    query.find({
+        success: function(results) {
+        if(results.length > 0){
+            var object = results[0];
+            if(object.get('is_deleted') == true){
+                $('.notification').first().text('Loading...').show('fast');
+                object.set('is_deleted',false);
+                object.save(null, {
+                    success: function(movie) {
+                        $('.notification').first().hide('fast');
+                        toggleButtonAdded($index, "movieWatched");
+                        userMoviesWatchedNames.push(name);
+                    },
+                error: function(movie, error) {
+                        $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
+                    }
+                });
+            }
+        }else{
+            addMovie($index,movie,tmdbid,name,image,genre,release,vote_average, "movieWatched");
+        }
+    },
+    error: function(error) {
+        $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
+    }
+    });
+}
 
 function addMovieLiked($index,tmdbid,name,image,genre,release,vote_average){
     var MovieWatched = Parse.Object.extend("MovieLiked");

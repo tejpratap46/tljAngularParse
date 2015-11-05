@@ -86,7 +86,6 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
                 }else{
                     votedBy = votedByTemp.length + " people liked this";
                 }
-                console.log(votedBy);
                 commentsTemp.push({
                     id: object.id,
                     text: object.get('text'),
@@ -145,7 +144,8 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
         addMovieLiked($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
     }
     
-    $scope.addComment = function(tmdb_id){
+    $scope.addComment = function(){
+        var movie = $scope.movie;
         var commentText = $scope.commentText;
         $scope.commentText = "";
         if(commentText.length == 0){
@@ -153,8 +153,13 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
         }
         var Comment = Parse.Object.extend("Comment");
         var comment = new Comment();
-        comment.set("tmdb_id", tmdb_id + "");
+        comment.set("tmdb_id", movie.id + "");
         comment.set("text", commentText);
+        comment.set("poster_path", movie.poster_path);
+        comment.set("title", movie.title);
+        comment.set("genre", movie.genre_ids);
+        comment.set("release_date", movie.release_date);
+        comment.set("vote_average", movie.vote_average);
         comment.increment("votes");
         var user = Parse.User.current();
         if (user == null){
@@ -165,11 +170,16 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
         var name = user.get("username");
         comment.set("username", name);
         comment.addUnique("voted_by", name);
+        var custom_acl = new Parse.ACL();
+        custom_acl.setWriteAccess(user, true);
+        custom_acl.setPublicReadAccess(true);
+        comment.setACL(custom_acl);
         $('.notification').first().text('Adding...').show('fast');
         comment.save(null, {
             success: function(comment) {
                 $('.notification').first().hide('fast');
                 $scope.loadComments = loadComments();
+                addMovieWatchedSilent(-1,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
             },
         error: function(comment, error) {
                 $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');

@@ -160,16 +160,15 @@ app.controller('homeController', function($scope, $http){
                     $('.notification').first().text('No Movie Found').show('fast').delay(3000).hide('fast');
                 }
                 var movie =  movies[0];
-                var tmdb_id = movie.id;
-                var poster_path = movie.poster_path;
-                var title = movie.title;
-                var Status = Parse.Object.extend("Status");
-                addMovieWatched(-1,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+                var Status = Parse.Object.extend("Comment");
                 var status = new Status();
-                status.set("tmdb_id", tmdb_id + "");
+                status.set("tmdb_id", movie.id + "");
                 status.set("text", statusText);
-                status.set("poster_path", poster_path);
-                status.set("title", title);
+                status.set("poster_path", movie.poster_path);
+                status.set("title", movie.title);
+                status.set("genre", movie.genre_ids);
+                status.set("release_date", movie.release_date);
+                status.set("vote_average", movie.vote_average);
                 status.set("votes",1);
                 var user = Parse.User.current();
                 if (user == null){
@@ -180,9 +179,15 @@ app.controller('homeController', function($scope, $http){
                 var name = user.get("username");
                 status.set("username", name);
                 status.addUnique("voted_by", name);
+                var custom_acl = new Parse.ACL();
+                custom_acl.setWriteAccess(user, true);
+                custom_acl.setPublicReadAccess(true);
+                status.setACL(custom_acl);
                 status.save(null, {
                     success: function(status) {
                         $('.notification').first().hide('fast');
+                        $('#statusText').val('');
+                        addMovieWatchedSilent(-1,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
                     },
                 error: function(status, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -197,7 +202,6 @@ app.controller('homeController', function($scope, $http){
         var atArray = status.match(/(^|\s)@([^ ]*)/g);
         if(atArray != null){
             var query = atArray[0].replace("@", "").replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase();});
-            console.log(query);
             $http.get("http://api.themoviedb.org/3/search/movie?search_type=ngram&query=" + query + "&api_key=" + tmdbapikey)
                 .success(function(response) {
                 var movies = response.results;

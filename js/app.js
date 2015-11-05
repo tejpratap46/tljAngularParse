@@ -63,6 +63,10 @@ app.config(function ($routeProvider) {
 		templateUrl: 'views/list/view.html',
 		controller : 'listViewController'
 	})
+	.when('/feed', {
+		templateUrl: 'views/feed/home.html',
+		controller : 'feedHomeController'
+	})
 	.when('/test', {
 		templateUrl: 'views/test.html'
 	})
