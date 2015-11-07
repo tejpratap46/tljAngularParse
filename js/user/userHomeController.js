@@ -8,13 +8,14 @@ app.controller('userHomeController', function($scope, $routeParams, $http){
         window.location.hash = '#/';
     }
     $scope.total = 0;
+    $routeParams.username = typeof $routeParams.username !== 'undefined' ? $routeParams.username : $scope.username;
+    if ($routeParams.username.length > 0) {
+        $scope.username = $routeParams.username;
+    }
     var classes = ["MovieWatchList", "MovieWatched", "MovieLiked"];
     classes.forEach(function(className){
-        var movie = Parse.Object.extend(className);
-        var query = new Parse.Query(movie);
-        query.equalTo("is_deleted", false);
         $('.notification').first().text('Loading...').show('fast');
-        query.count({
+        Parse.Cloud.run('getMovieCount', {className: className, username: $routeParams.username}, {
             success: function(count) {
                 $('.notification').first().hide('fast');
                 if(className == "MovieWatchList"){
@@ -46,12 +47,8 @@ app.controller('userHomeController', function($scope, $routeParams, $http){
         var index = 1;
         $scope.genreList = [];
         genres.forEach(function(genreItem){
-            var movie = Parse.Object.extend("MovieWatched");
-            var query = new Parse.Query(movie);
-            query.equalTo("genre", genreItem.id);
-            query.equalTo("is_deleted", false);
             $('.notification').first().text('Loading...').show('fast');
-            query.count({
+            Parse.Cloud.run('getMovieCount', {className: 'MovieWatched', username: $routeParams.username, genre: genreItem.id}, {
                 success: function(count) {
                     var percentage = (count/$scope.MovieWatched)*100;
                     var theme = "success";

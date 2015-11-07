@@ -86,12 +86,23 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
                 }else{
                     votedBy = votedByTemp.length + " people liked this";
                 }
+                var updatedAtString = "";
+                var updatedAt = object.get('updatedAt');
+                var currentDate = new Date();
+                var timeDifference = currentDate.getTime() - updatedAt.getTime();
+                if(timeDifference > 86400000){
+                    var days = Math.round(timeDifference/86400000);
+                    updatedAtString = days + " day" + (days<2?'':'s') + " ago";
+                }else{
+                    updatedAtString = "Today at" + (updatedAt.getHours()%12 || 12) + ":" +((updatedAt.getMinutes()<10?'0':'') + updatedAt.getMinutes()) + " " + (updatedAt.getHours()<12?'AM':'PM');
+                }
                 commentsTemp.push({
                     id: object.id,
                     text: object.get('text'),
                     username: object.get('username'),
                     voted_by: votedBy,
-                    votes: object.get('votes')
+                    votes: object.get('votes'),
+                    updatedAt: updatedAtString
                 });
             });
             commentsTemp.forEach(function(object){

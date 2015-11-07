@@ -35,17 +35,17 @@ app.config(function ($routeProvider) {
 		templateUrl: 'views/movie/view.html',
 		controller : 'movieViewController'
 	})
-	.when('/user', {
+	.when('/user/:username?', {
 		templateUrl: 'views/user/home.html',
 		controller : 'userHomeController'
+	})
+	.when('/user/movie/:category/:genre?/:username?', {
+		templateUrl: 'views/user/movie.html',
+		controller : 'userMovieController'
 	})
 	.when('/trend/:id?/:genre?', {
 		templateUrl: 'views/trend/list.html',
 		controller : 'trendListController'
-	})
-	.when('/user/movie/:category/:genre?', {
-		templateUrl: 'views/user/movie.html',
-		controller : 'userMovieController'
 	})
 	.when('/people/view/:id/:name?', {
 		templateUrl: 'views/people/view.html',

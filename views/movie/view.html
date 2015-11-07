@@ -126,8 +126,9 @@
     </blockquote>
     <blockquote class="row" data-ng-repeat="comment in comments track by $index">
       <dix class="col-xs-12">
+            <a href="#user/{{comment.username}}"><h4>{{comment.username}}</h4></a>
             <p>{{comment.text}}</p>
-            <small>{{comment.username}}</small>
+            <small>{{comment.updatedAt}}</small>
       </dix>
       <div class="col-xs-12">
            <button class="btn btn-link glyphicon glyphicon-thumbs-up" title="Like" data-ng-click="upvote(comment.id)"></button><span class="ellipsis"> {{comment.voted_by}}</span>

@@ -304,7 +304,8 @@ function addMovie($index,movie,tmdbid,name,image,genre,release,vote_average, but
     }else{
         movie.setACL(new Parse.ACL(user));
     }
-
+    var username = user.get("username");
+    movie.set("username", username);
     $('.notification').first().text('Adding...').show('fast');
     movie.save(null, {
         success: function(movie) {

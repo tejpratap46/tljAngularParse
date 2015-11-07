@@ -2,30 +2,20 @@ app = angular.module('tlj');
 
 app.controller('userMovieController', function($scope, $routeParams){
     
-    $routeParams.genre = typeof $routeParams.genre !== 'undefined' ? $routeParams.genre : 0;
-    $routeParams.genre = parseInt($routeParams.genre);
-    
     var currentUser = Parse.User.current();
     if (currentUser) {
+        $scope.username = currentUser.get('username');
     }else{
         window.location.hash = '#/';
     }
     
-    var movies = Parse.Object.extend($routeParams.category);
-    var query = new Parse.Query(movies);
+    $routeParams.genre = typeof $routeParams.genre !== 'undefined' ? $routeParams.genre : '';
+    $routeParams.genre = parseInt($routeParams.genre);
+    console.log($routeParams.genre.length > 0);
+    $routeParams.username = typeof $routeParams.username !== 'undefined' ? $routeParams.username : $scope.username;
     
     $('.notification').first().text('Loading...').show('fast');
-    
-    if($routeParams.genre > 0){
-        query.equalTo("genre", $routeParams.genre);
-    }
-    if($routeParams.category == 'MovieWatchList'){
-        query.descending("release_date");
-    }else{
-        query.descending("updatedAt");
-    }
-    query.equalTo("is_deleted", false);
-    query.find({
+    Parse.Cloud.run('getMovie', {className: $routeParams.category, limit: 1000, page: 1, genre: $routeParams.genre, username: $routeParams.username},{
     success: function(results) {
         var moviesTemp = [];
         $scope.movies = [];
@@ -54,7 +44,7 @@ app.controller('userMovieController', function($scope, $routeParams){
                 poster_path: object.get('poster_path'),
                 vote_average: object.get('vote_average'),
                 release_date: object.get('release_date'),
-                genre: object.get('genre'),
+                genre_ids: object.get('genre'),
                 id: object.get('tmdb_id')
             });
         });

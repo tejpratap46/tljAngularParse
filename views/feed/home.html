@@ -1,9 +1,38 @@
-<blockquote class="row" data-ng-repeat="comment in comments track by $index">
-  <dix class="col-xs-12">
-        <p>{{comment.text}}</p>
-        <small>{{comment.username}}</small>
-  </dix>
-  <div class="col-xs-12">
-       <button class="btn btn-link glyphicon glyphicon-thumbs-up" title="Like" data-ng-click="upvote(comment.id)"></button><span class="ellipsis"> {{comment.voted_by}}</span>
-  </div>
-</blockquote>
+<div data-ng-repeat="comment in comments track by $index">
+    <div class="row">
+     <div class="col-md-8">
+         <div class="col-sm-4">
+             <div class="thumbnail">
+                <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">
+                   <div style="height: 150px; overflow: hidden;">
+                        <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w185' + comment.poster_path}}" alt="{{comment.title}}">
+                    </div>
+                    <div class="caption">
+                        <div style="margin-top: -40px; opacity: 0.9;" class="center"><button style="height:60px; width:60px; font-size: 1.5em;" class="btn btn-success bold round-button">{{comment.vote_average}}</button></div>
+                        <h4 class="center ellipsis" title="{{comment.title}}">{{comment.title}}</h4>
+                        <p class="center ellipsis">{{comment.release_date}}</p>
+                    </div>
+                </a>
+                <div class="center">
+                    <div class="btn-group" style="margin-top: -20px;">
+                        <button class="movieWatchlist btn {{comment.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, comment)"></button>
+                        <button class="movieWatched btn {{comment.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index, comment)"></button>
+                        <button class="movieLiked btn {{comment.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index, comment)"></button>
+                        <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index, comment)"></button>
+                    </div>
+                </div>
+            </div>
+         </div>
+         <blockquote class="col-sm-8">
+          <div class="col-xs-12">
+                <a href="#user/{{comment.username}}"><h4>{{comment.username}}</h4></a>
+                <p>{{comment.text}}</p>
+                <small>{{comment.updatedAt}}</small>
+          </div>
+          <div class="col-xs-12">
+               <button class="btn btn-link glyphicon glyphicon-thumbs-up" title="Like" data-ng-click="upvote(comment.id)"></button><span class="ellipsis"> {{comment.voted_by}}</span>
+          </div>
+         </blockquote>
+     </div>
+    </div>
+</div>
