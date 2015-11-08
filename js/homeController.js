@@ -7,7 +7,8 @@ app.controller('homeController', function($scope, $http){
         getUserMoviesWatchlist();
         getUserMoviesWatched();
         getUserMoviesLiked();
-    }   
+        window.location.hash = '#/feed';
+    }
     
     $scope.MovieWatched = [];
     $scope.MovieLiked = [];

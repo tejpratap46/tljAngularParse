@@ -1,3 +1,9 @@
+<div class="row center">
+ <form  data-ng-submit="updateStatus()">
+     <input id="statusText" data-ng-keyup="fillAutoComplete()" class="full-width" list="moviesAutocomplete" data-ng-model="statusText" style="padding: 20px; font-size: 2em;" type="text" placeholder="What are watching now ?">
+ </form>
+</div>
+<hr />
 <div data-ng-repeat="comment in comments track by $index">
     <div class="row">
      <div class="col-md-8">
