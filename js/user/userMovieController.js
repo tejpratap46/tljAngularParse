@@ -20,22 +20,28 @@ app.controller('userMovieController', function($scope, $routeParams){
         var moviesTemp = [];
         $scope.movies = [];
         if($routeParams.category == 'MovieWatched'){
-            userMoviesWatched = results;
-            userMoviesWatchedNames = [];
-            for (var i=0; i< results.length; i++){
-                userMoviesWatchedNames.push(results[i].get('title'));
+            if ($routeParams.username == $scope.username) {
+                userMoviesWatched = results;
+                userMoviesWatchedNames = [];
+                for (var i=0; i< results.length; i++){
+                    userMoviesWatchedNames.push(results[i].get('title'));
+                }
             }
         }else if($routeParams.category == 'MovieWatchList'){
-            userMoviesWatchlist = results;
-            userMoviesWatchlistNames = [];
-            for (var i=0; i< results.length; i++){
-                userMoviesWatchlistNames.push(results[i].get('title'));
+            if ($routeParams.username == $scope.username) {
+                userMoviesWatchlist = results;
+                userMoviesWatchlistNames = [];
+                for (var i=0; i< results.length; i++){
+                    userMoviesWatchlistNames.push(results[i].get('title'));
+                }
             }
         }else if($routeParams.category == 'MovieLiked'){
-            userMoviesLiked = results;
-            userMoviesLikedNames = [];
-            for (var i=0; i< results.length; i++){
-                userMoviesLikedNames.push(results[i].get('title'));
+            if ($routeParams.username == $scope.username) {
+                userMoviesLiked = results;
+                userMoviesLikedNames = [];
+                for (var i=0; i< results.length; i++){
+                    userMoviesLikedNames.push(results[i].get('title'));
+                }
             }
         }
         results.forEach(function(object){

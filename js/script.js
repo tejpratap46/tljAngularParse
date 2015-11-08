@@ -28,7 +28,7 @@ function setNav (activeId) {
 function checkIfLoggedIn() {
 	var currentUser = Parse.User.current();
 	if (currentUser) {
-	    var loginViewData = "<li><a href='#/user'>" + currentUser.get('username') + "<span class='caret'></span></a></li>";
+	    var loginViewData = "<li><a href='#/user'>" + currentUser.get('username') + "<span class='caret'></span></a></li><li><a href='#/logout'>Logout</a></li>";
    		$('#navLoggedIn').html(loginViewData);
 	} else {
    		$('#navLoggedIn').html('<a type="button" class="btn btn-default navbar-btn" href="#/login">Sign in</a>');

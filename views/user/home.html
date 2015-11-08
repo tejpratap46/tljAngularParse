@@ -1,44 +1,56 @@
-<div class="row center">
-    <a href="#/logout" class="btn btn-danger right">Logout</a>
-	<h1 class="bold ellipsis">Hello {{username}}</h1>
+<div class="container">
+<div class="row">
+	<div class="col-md-2">
+		<div class="round-button btn btn-info center center-vertical" style="height: 150px; width: 150px;"><h1 class="bold white" style="font-size: 7em;">{{username.split('')[0] | uppercase}}</h1></div>
+	</div>
+	<div class="col-md-6">
+		<h1 class="ellipsis">{{username.split('@')[0]}}</h1>
+		<button class="btn btn-link bold"><span class="bold">{{MovieWatchList}}</span> Movies in Watchlisted</button>
+		<button class="btn btn-link bold"><span class="bold">{{MovieWatched}}</span> Movies Watched</button>
+		<button class="btn btn-link bold"><span class="bold">{{MovieLiked}}</span> Movies Liked</button><br />
+		<button id="buttonFollow" class="btn btn-{{buttonTheme}} bold full-width" ng-click="followUser()">{{followText}}</button>
+	</div>
+	<div class="col-md-4"></div>
+</div>
    <hr />
     <h3><span class="bold left">Level : </span>{{level | number:0}}</h3>
     <div class="progress">
         <div class="progress-bar" style="width: {{levelPercent}}%;"></div>
     </div>
-    <h3><span class="bold left">{{remaining}} Movies to go</span> For Level {{level + 1}}</h3>
+    <h3 class="right"><span class="bold">{{remaining}} Movies to go</span> For Level {{level + 1}}</h3>
 	<hr />
-	<div class="col-xs-6 col-sm-4">
-		<a href="#/user/movie/MovieWatchList//{{username}}">
-			<div class="full-width btn btn-success">
-				<h1 class="bold white">{{MovieWatchList}}</h1>
-				<div class="caption">
-					<h5 class="center ellipsis white">Movies in Watchlisted</h5>
+	<div class="row">
+		<div class="col-xs-6 col-sm-4 no-margin no-padding">
+			<a href="#/user/movie/MovieWatchList//{{username}}">
+				<div class="full-width btn btn-success">
+					<h1 class="bold white">{{MovieWatchList}}</h1>
+					<div class="caption">
+						<h5 class="center ellipsis white">Movies in Watchlisted</h5>
+					</div>
 				</div>
-			</div>
-		</a>
-	</div>
-	<div class="col-xs-6 col-sm-4">
-		<a href="#/user/movie/MovieWatched//{{username}}">
-			<div class="full-width btn btn-info">
-				<h1 class="bold white">{{MovieWatched}}</h1>
-				<div class="caption">
-					<h5 class="center ellipsis white">Movies Watched</h5>
+			</a>
+		</div>
+		<div class="col-xs-6 col-sm-4 no-margin no-padding">
+			<a href="#/user/movie/MovieWatched//{{username}}">
+				<div class="full-width btn btn-info">
+					<h1 class="bold white">{{MovieWatched}}</h1>
+					<div class="caption">
+						<h5 class="center ellipsis white">Movies Watched</h5>
+					</div>
 				</div>
-			</div>
-		</a>
-	</div>
-	<div class="col-xs-6 col-sm-4">
-		<a href="#/user/movie/MovieLiked//{{username}}">
-			<div class="full-width btn btn-warning">
-				<h1 class="bold white">{{MovieLiked}}</h1>
-				<div class="caption">
-					<h5 class="center ellipsis white">Movies Liked</h5>
+			</a>
+		</div>
+		<div class="col-xs-6 col-sm-4 no-margin no-padding">
+			<a href="#/user/movie/MovieLiked//{{username}}">
+				<div class="full-width btn btn-warning">
+					<h1 class="bold white">{{MovieLiked}}</h1>
+					<div class="caption">
+						<h5 class="center ellipsis white">Movies Liked</h5>
+					</div>
 				</div>
-			</div>
-		</a>
+			</a>
+		</div>
 	</div>
-</div>
 <hr />
 <div class="row">
     <div class="progress">
@@ -48,9 +60,9 @@
     </div>
 </div>
 <hr />
-<div class="center">
+<div class="row center">
    <h3>Out Of <span class="bold left">{{MovieWatched}}</span> Movies</h3>
-	<div class="col-xs-6 col-sm-3 no-margin no-padding" ng-repeat="genre in genreList track by $index">
+	<div class="col-xs-6 col-sm-3 col-sm-2 no-margin no-padding" ng-repeat="genre in genreList track by $index">
 		<a href="#/user/movie/MovieWatched/{{genre.id}}/{{username}}">
 			<div class="full-width btn btn-{{genre.theme}}">
 				<h1 class="bold white">{{genre.count | number: 0}}%</h1>
@@ -63,4 +75,5 @@
 			</div>
 		</a>
 	</div>
+</div>
 </div>

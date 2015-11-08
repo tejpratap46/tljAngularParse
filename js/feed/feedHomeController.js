@@ -1,9 +1,25 @@
 var app = angular.module('tlj');
 
 app.controller('feedHomeController', function($scope, $window, $routeParams){
+    var currentUser = Parse.User.current();
+    var following = currentUser.get('following');
+    var username = currentUser.get('username');
+    if (currentUser) {
+        $scope.username = currentUser.get('username');
+        currentUser.fetch({
+            success: function(user){
+                following = user.get('following');
+                console.log(following);
+                currentUser = user;
+                $scope.loadComments = loadComments();
+            }
+        });
+    }else{
+        $scope.loadComments = loadComments();
+    }
     $scope.comments = [];
     var page = 0;
-    $scope.loadComments = loadComments();
+
     angular.element($window).bind("scroll", function() {
         var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
         var body = document.body, html = document.documentElement;
@@ -14,11 +30,16 @@ app.controller('feedHomeController', function($scope, $window, $routeParams){
         }
     });
     function loadComments(){
+        following = currentUser.get('following');
         var comment = Parse.Object.extend("Comment");
         var query = new Parse.Query(comment);
         query.descending("votes");
         query.descending("createdAt");
         query.limit(10);
+        if (following.length > 0) {
+            following.push(username);
+            query.containedIn("username",following);
+        }
         query.skip(10 * (++page) - 10);
         $('.notification').first().text('Loading ...').show('fast');
         query.find({
@@ -47,7 +68,7 @@ app.controller('feedHomeController', function($scope, $window, $routeParams){
                     var days = Math.round(timeDifference/86400000);
                     updatedAtString = days + " day" + (days<2?'':'s') + " ago";
                 }else{
-                    updatedAtString = "Today at" + (updatedAt.getHours()%12 || 12) + ":" +((updatedAt.getMinutes()<10?'0':'') + updatedAt.getMinutes()) + " " + (updatedAt.getHours()<12?'AM':'PM');
+                    updatedAtString = "Today at " + (updatedAt.getHours()%12 || 12) + ":" +((updatedAt.getMinutes()<10?'0':'') + updatedAt.getMinutes()) + " " + (updatedAt.getHours()<12?'AM':'PM');
                 }
                 commentsTemp.push({
                     id: object.id,
