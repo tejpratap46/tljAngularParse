@@ -36,9 +36,11 @@ app.controller('feedHomeController', function($scope, $window, $routeParams){
         query.descending("votes");
         query.descending("createdAt");
         query.limit(10);
-        if (following.length > 0) {
-            following.push(username);
-            query.containedIn("username",following);
+        if (following) {
+            if (following.length > 0) {
+                following.push(username);
+                query.containedIn("username",following);
+            }
         }
         query.skip(10 * (++page) - 10);
         $('.notification').first().text('Loading ...').show('fast');
