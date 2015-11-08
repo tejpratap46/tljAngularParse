@@ -2,9 +2,11 @@ var app = angular.module('tlj');
 
 app.controller('feedHomeController', function($scope, $window, $routeParams){
     var currentUser = Parse.User.current();
-    var following = currentUser.get('following');
-    var username = currentUser.get('username');
+    var following;
+    var username;
     if (currentUser) {
+        username = currentUser.get('username');
+        following = currentUser.get('following');
         $scope.username = currentUser.get('username');
         currentUser.fetch({
             success: function(user){
@@ -15,7 +17,7 @@ app.controller('feedHomeController', function($scope, $window, $routeParams){
             }
         });
     }else{
-        $scope.loadComments = loadComments();
+        window.location.hash = '#/login';
     }
     $scope.comments = [];
     var page = 0;
