@@ -181,10 +181,6 @@ app.controller('movieViewController', function($scope, $http, $routeParams){
         var name = user.get("username");
         comment.set("username", name);
         comment.addUnique("voted_by", name);
-        var custom_acl = new Parse.ACL();
-        custom_acl.setWriteAccess(user, true);
-        custom_acl.setPublicReadAccess(true);
-        comment.setACL(custom_acl);
         $('.notification').first().text('Adding...').show('fast');
         comment.save(null, {
             success: function(comment) {

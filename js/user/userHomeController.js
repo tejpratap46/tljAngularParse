@@ -76,7 +76,7 @@ app.controller('userHomeController', function($scope, $routeParams, $http){
                 success: function(count) {
                     var percentage = (count/$scope.MovieWatched)*100;
                     var theme = "success";
-                    if (percentage > 10) {
+                    if (percentage > 0) {
                         if(percentage < 30){
                             theme = "danger";
                         }else if(percentage < 50){

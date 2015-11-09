@@ -6,17 +6,14 @@
 <hr />
 <div data-ng-repeat="comment in comments track by $index">
     <div class="row">
-     <div class="col-md-8">
+     <div class="well no-margin col-md-8">
          <div class="col-sm-4">
-             <div class="thumbnail">
+             <div class="thumbnail" style="background-image: url('{{'http://image.tmdb.org/t/p/w185' + comment.poster_path}}');background-size:100%;">
                 <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">
-                   <div style="height: 150px; overflow: hidden;">
-                        <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w185' + comment.poster_path}}" alt="{{comment.title}}">
-                    </div>
                     <div class="caption">
-                        <div style="margin-top: -40px; opacity: 0.9;" class="center"><button style="height:60px; width:60px; font-size: 1.5em;" class="btn btn-success bold round-button">{{comment.vote_average}}</button></div>
-                        <h4 class="center ellipsis" title="{{comment.title}}">{{comment.title}}</h4>
-                        <p class="center ellipsis">{{comment.release_date}}</p>
+                        <div style="opacity: 0.9;" class="center"><button style="height:60px; width:60px; font-size: 1.5em;" class="btn btn-success bold round-button">{{comment.vote_average}}</button></div>
+                        <h4 class="center ellipsis white" title="{{comment.title}}">{{comment.title}}</h4>
+                        <p class="center ellipsis white">{{comment.release_date}}</p>
                     </div>
                 </a>
                 <div class="center">
@@ -41,4 +38,5 @@
          </blockquote>
      </div>
     </div>
+    <hr />
 </div>
