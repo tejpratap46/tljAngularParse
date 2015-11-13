@@ -10,7 +10,6 @@ app.controller('userHomeController', function($scope, $routeParams, $http){
             success: function(user){
                 following = user.get('following');
                 following = typeof following !== 'undefined' ? following : [];
-                console.log(following);
                 currentUser = user;
                 if (username == $routeParams.username) {
                     $scope.followText = "Following " + following.length + " people";

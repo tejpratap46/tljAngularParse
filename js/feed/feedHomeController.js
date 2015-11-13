@@ -5,13 +5,13 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
     var following;
     var username;
     if (currentUser) {
+        $scope.isMovieSnapShown= false;
         username = currentUser.get('username');
         following = currentUser.get('following');
         $scope.username = currentUser.get('username');
         currentUser.fetch({
             success: function(user){
                 following = user.get('following');
-                console.log(following);
                 currentUser = user;
                 $scope.loadComments = loadComments();
             }
@@ -21,6 +21,15 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
     }
     $scope.comments = [];
     var page = 0;
+
+    Parse.Cloud.run('feed', {following: following, limit: 12, page: 1},{
+        success: function(results) {
+            console.log(results);
+        },
+        error: function(error) {
+            $('.notification').first().text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
+        }
+    });
 
     angular.element($window).bind("scroll", function() {
         var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
@@ -32,63 +41,12 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
         }
     });
     function loadComments(){
-        following = currentUser.get('following');
-        var comment = Parse.Object.extend("Comment");
-        var query = new Parse.Query(comment);
-        query.descending("votes");
-        query.descending("createdAt");
-        query.limit(10);
-        if (following) {
-            if (following.length > 0) {
-                following.push(username);
-                query.containedIn("username",following);
-            }
-        }
-        query.skip(10 * (++page) - 10);
+        following.push(username);
         $('.notification').first().text('Loading ...').show('fast');
-        query.find({
+        Parse.Cloud.run('feed', {following: following, limit: 12, page: (++page)},{
         success: function(results) {
             $('.notification').first().hide('fast');
-            var commentsTemp = [];
-            results.forEach(function(object){
-                var votedByTemp = object.get('voted_by');
-                var user = Parse.User.current();
-                var votedBy = "";
-                if (votedByTemp.length == 0){
-                    votedBy = "";
-                }else if (votedByTemp.indexOf(user.get("username")) >= 0){
-                    if (votedByTemp.length == 1)
-                        votedBy = "you liked this";
-                    else
-                        votedBy = "you and " + (votedByTemp.length - 1) + " other liked this";
-                }else{
-                    votedBy = votedByTemp.length + " people liked this";
-                }
-                var updatedAtString = "";
-                var updatedAt = object.get('updatedAt');
-                var currentDate = new Date();
-                var timeDifference = currentDate.getTime() - updatedAt.getTime();
-                if(timeDifference > 86400000){
-                    var days = Math.round(timeDifference/86400000);
-                    updatedAtString = days + " day" + (days<2?'':'s') + " ago";
-                }else{
-                    updatedAtString = "Today at " + (updatedAt.getHours()%12 || 12) + ":" +((updatedAt.getMinutes()<10?'0':'') + updatedAt.getMinutes()) + " " + (updatedAt.getHours()<12?'AM':'PM');
-                }
-                commentsTemp.push({
-                    id: object.id,
-                    text: object.get('text'),
-                    username: object.get('username'),
-                    voted_by: votedBy,
-                    votes: object.get('votes'),
-                    title: object.get('title'),
-                    poster_path: object.get('poster_path'),
-                    vote_average: object.get('vote_average'),
-                    release_date: object.get('release_date'),
-                    tmdb_id: object.get('tmdb_id'),
-                    updatedAt: updatedAtString
-                });
-            });
-
+            var commentsTemp = results;
             for(var i=0;i<commentsTemp.length;i++){
                 var index = $.inArray(commentsTemp[i]['title'], userMoviesWatchlistNames);
                 if (index >= 0){
@@ -117,7 +75,7 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
         });
     }
 
-    $scope.upvote = function(id){
+    $scope.upvote = function($index,id){
         var Comment = Parse.Object.extend("Comment");
         var query = new Parse.Query(Comment);
         query.get(id, {
@@ -133,7 +91,20 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
                 comment.increment("votes");
                 comment.save(null, {
                     success: function(comment) {
-                        $scope.loadComments = loadComments();
+                        var votedByTemp = comment.get('voted_by');
+                        var votedBy = "";
+                        if (votedByTemp.length == 0){
+                            votedBy = "";
+                        }else if (votedByTemp.indexOf(user.get("username")) >= 0){
+                            if (votedByTemp.length == 1)
+                                votedBy = " you liked this";
+                            else
+                                votedBy = " you and " + (votedByTemp.length - 1) + " other liked this";
+                        }else{
+                            votedBy = votedByTemp.length + " people liked this";
+                        }
+                        var pre = $('.likedBy').eq($index).text();
+                        $('.likedBy').eq($index).text(votedBy);
                     },
                 error: function(comment, error) {
                     }
@@ -197,8 +168,40 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
                     success: function(status) {
                         $('.notification').first().hide('fast');
                         $('#statusText').val('');
-                        $scope.loadComments = loadComments();
-                        addMovieWatchedSilent(-1,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+                        var commentsTemp = {id:status.id,
+                            text:status.get('text'),
+                            username:status.get('username'),
+                            voted_by:"you liked this",
+                            votes:status.get('votes'),
+                            title:status.get('title'),
+                            poster_path:status.get('poster_path'),
+                            vote_average:status.get('vote_average'),
+                            release_date:status.get('release_date'),
+                            tmdb_id:status.get('tmdb_id'),
+                            updatedAt:"just now"
+                        };
+                        var index = $.inArray(commentsTemp['title'], userMoviesWatchlistNames);
+                        if (index >= 0){
+                            commentsTemp.watchlistClass = "btn-danger";
+                        }else{
+                            commentsTemp.watchlistClass = "btn-success";
+                        }
+                        index = $.inArray(commentsTemp['title'], userMoviesWatchedNames);
+                        if (index >= 0){
+                            commentsTemp.watchedClass = "btn-danger";
+                        }else{
+                            commentsTemp.watchedClass = "btn-info";
+                        }
+                        index = $.inArray(commentsTemp['title'], userMoviesLikedNames);
+                        if (index >= 0){
+                            commentsTemp.likedClass = "btn-danger";
+                        }else{
+                            commentsTemp.likedClass = "btn-warning";
+                        }
+                        $scope.comments.unshift(commentsTemp);
+                        $scope.isMovieSnapShown = false;
+                        $scope.$apply();
+                        // addMovieWatchedSilent(-1,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
                     },
                 error: function(status, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -211,11 +214,40 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
     $scope.fillAutoComplete = function(){
         var status = $scope.statusText;
         var atArray = status.match(/(^|\s)@([^ ]*)/g);
+        $scope.isMovieSnapShown = false;
         if(atArray != null){
             var query = atArray[0].replace("@", "").replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase();});
             $http.get("http://api.themoviedb.org/3/search/movie?search_type=ngram&query=" + query + "&api_key=" + tmdbapikey)
                 .success(function(response) {
                 var movies = response.results;
+                if(movies.length == 0){
+                    $scope.isMovieSnapShown = false;
+                    $scope.$apply();
+                    return;
+                }
+                $scope.isMovieSnapShown = true;
+                $scope.$apply();
+                var movieTemp = movies[0];
+                var index = $.inArray(movieTemp['title'], userMoviesWatchlistNames);
+                if (index >= 0){
+                    movieTemp.watchlistClass = "btn-danger";
+                }else{
+                    movieTemp.watchlistClass = "btn-success";
+                }
+                index = $.inArray(movieTemp['title'], userMoviesWatchedNames);
+                if (index >= 0){
+                    movieTemp.watchedClass = "btn-danger";
+                }else{
+                    movieTemp.watchedClass = "btn-info";
+                }
+                index = $.inArray(movieTemp['title'], userMoviesLikedNames);
+                if (index >= 0){
+                    movieTemp.likedClass = "btn-danger";
+                }else{
+                    movieTemp.likedClass = "btn-warning";
+                }
+                $scope.search = movieTemp;
+                $scope.$apply();
                 var dataList = [];
                 movies.forEach(function(object){
                     dataList.push(object.title.split(' ').join(''));
