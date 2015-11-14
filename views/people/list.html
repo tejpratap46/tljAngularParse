@@ -3,7 +3,7 @@
         <div class="thumbnail">
             <a href="#/people/view/{{cast.id + '/' + cast.name}}">
                <div style="height: 200px; overflow: hidden;">
-                    <img style="width: 100%;" src="http://image.tmdb.org/t/p/w185{{cast.profile_path}}" alt="{{cast.name}}">
+                    <img style="width: 100%;" src="http://image.tmdb.org/t/p/w185{{cast.profile_path}}" alt="{{cast.name}}" onError="this.onerror=null;this.src='images/logo-512.png';" />
                 </div>
                 <div class="caption">
                     <h4 class="center ellipsis" title="{{cast.name}}">{{cast.name}}</h4>

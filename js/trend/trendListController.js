@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('trendListController', function($scope, $routeParams, $window){
+app.registerCtrl('trendListController', function($scope, $routeParams, $window){
 	setNav('#navHome');
     var page = 0;
     $scope.movies = [];

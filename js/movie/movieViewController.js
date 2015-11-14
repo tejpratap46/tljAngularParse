@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('movieViewController', function($scope, $http, $routeParams){
+app.registerCtrl('movieViewController', function($scope, $http, $routeParams){
 	setNav('#navStart');
     document.title = $routeParams.name;
     $('html,body').scrollTop(0);

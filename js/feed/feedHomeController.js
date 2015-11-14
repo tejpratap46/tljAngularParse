@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('feedHomeController', function($scope, $window, $routeParams, $http){
+app.registerCtrl('feedHomeController', function($scope, $window, $routeParams, $http){
     var currentUser = Parse.User.current();
     var following;
     var username;
@@ -21,15 +21,6 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
     }
     $scope.comments = [];
     var page = 0;
-
-    Parse.Cloud.run('feed', {following: following, limit: 12, page: 1},{
-        success: function(results) {
-            console.log(results);
-        },
-        error: function(error) {
-            $('.notification').first().text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
-        }
-    });
 
     angular.element($window).bind("scroll", function() {
         var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
@@ -142,7 +133,7 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
                 .success(function(response) {
                 var movies = response.results;
                 if(movies.length == 0){
-                    $('.notification').first().text('No Movie Found').show('fast').delay(3000).hide('fast');
+                    $('.notification').first().text('No Movie Found with ' + query + '.Try to use autocomplete box.').show('fast').delay(3000).hide('fast');
                 }
                 var movie =  movies[0];
                 var Status = Parse.Object.extend("Comment");
@@ -168,7 +159,10 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
                     success: function(status) {
                         $('.notification').first().hide('fast');
                         $('#statusText').val('');
-                        var commentsTemp = {id:status.id,
+                        var commentsTemp = {
+                            id:status.id,
+                            canLike: true,
+                            postAction: " Commented On",
                             text:status.get('text'),
                             username:status.get('username'),
                             voted_by:"you liked this",
@@ -208,6 +202,8 @@ app.controller('feedHomeController', function($scope, $window, $routeParams, $ht
                     }
                 });
             });
+        }else{
+            $('.notification').first().text('use @MovieName to specify what movie you are talking about.').show('fast').delay(5000).hide('fast');
         }
     }
     

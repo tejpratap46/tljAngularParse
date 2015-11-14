@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('peopleViewController', function($scope, $http, $routeParams){
+app.registerCtrl('peopleViewController', function($scope, $http, $routeParams){
     setNav('#navMovie');
     $http.get("http://api.themoviedb.org/3/person/" + $routeParams.id + "?api_key=" + tmdbapikey)
         .success(function(response) {

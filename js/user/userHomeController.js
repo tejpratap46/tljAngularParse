@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('userHomeController', function($scope, $routeParams, $http){
+app.registerCtrl('userHomeController', function($scope, $routeParams, $http){
     var currentUser = Parse.User.current();
     var following = currentUser.get('following');
     var username = currentUser.get('username');

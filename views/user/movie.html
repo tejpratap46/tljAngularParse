@@ -3,7 +3,7 @@
         <div class="thumbnail">
             <a href="#/movie/view/{{movie.id + '/' + movie.title}}">
                <div style="height: 275px; overflow: hidden;">
-                    <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w185' + movie.poster_path}}" alt="{{movie.title}}">
+                    <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w185' + movie.poster_path}}" alt="{{movie.title}}" onError="this.onerror=null;this.src='images/logo-512.png';" />
                 </div>
                 <div class="caption">
                     <div style="margin-top: -40px; opacity: 0.9;" class="center"><button style="height:60px; width:60px; font-size: 1.5em;" class="btn btn-success bold round-button">{{movie.vote_average}}</button></div>

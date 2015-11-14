@@ -1,6 +1,6 @@
 app = angular.module('tlj');
 
-app.controller('userMovieController', function($scope, $routeParams){
+app.registerCtrl('userMovieController', function($scope, $routeParams){
     
     var currentUser = Parse.User.current();
     if (currentUser) {

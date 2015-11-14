@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('homeController', function($scope, $http){
+app.registerCtrl('homeController', function($scope, $http){
 	setNav('#navHome');
     var currentUser = Parse.User.current();
     if (currentUser) {

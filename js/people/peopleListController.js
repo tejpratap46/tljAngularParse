@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('peopleListController', function($scope, $http, $routeParams, $window){
+app.registerCtrl('peopleListController', function($scope, $http, $routeParams, $window){
 	setNav('#navStart');
     document.title = "Popular actors and actresses";
     $('html,body').scrollTop(0);

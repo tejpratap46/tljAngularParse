@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.controller('movieListController', function($scope, $window, $http, $routeParams){
+app.registerCtrl('movieListController', function($scope, $window, $http, $routeParams){
 	setNav('#navStart');
     $scope.movies = [];
     
