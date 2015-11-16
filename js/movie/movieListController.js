@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.registerCtrl('movieListController', function($scope, $window, $http, $routeParams){
+app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routeParams', function($scope, $window, $http, $routeParams){
 	setNav('#navStart');
     $scope.movies = [];
     
@@ -217,4 +217,4 @@ app.registerCtrl('movieListController', function($scope, $window, $http, $routeP
     $scope.like = function($index,movie){
         addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
-});
+}]);

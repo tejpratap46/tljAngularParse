@@ -1,6 +1,6 @@
 app = angular.module('tlj');
 
-app.registerCtrl('userMovieController', function($scope, $routeParams){
+app.registerCtrl('userMovieController', ['$scope', '$routeParams', function($scope, $routeParams){
     
     var currentUser = Parse.User.current();
     if (currentUser) {
@@ -98,4 +98,4 @@ app.registerCtrl('userMovieController', function($scope, $routeParams){
     $scope.like = function($index,movie){
         addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
-});
+}]);

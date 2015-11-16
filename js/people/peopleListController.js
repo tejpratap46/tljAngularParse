@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.registerCtrl('peopleListController', function($scope, $http, $routeParams, $window){
+app.registerCtrl('peopleListController', ['$scope', '$http', '$routeParams', '$window', function($scope, $http, $routeParams, $window){
 	setNav('#navStart');
     document.title = "Popular actors and actresses";
     $('html,body').scrollTop(0);
@@ -33,4 +33,4 @@ app.registerCtrl('peopleListController', function($scope, $http, $routeParams, $
             $scope.casts = response.results;
             $scope.$apply();
     });
-});
+}]);

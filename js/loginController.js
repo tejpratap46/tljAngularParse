@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.registerCtrl('loginController', function($scope) {
+app.registerCtrl('loginController', ['$scope', function($scope) {
 	setNav('#navHome');
    Parse.User.logOut();
    // update nav bar
@@ -13,12 +13,15 @@ app.registerCtrl('loginController', function($scope) {
 	    	window.location.hash = '#/';
 	    	// update nav bar
 	    	checkIfLoggedIn();
+	        getUserMoviesWatchlist();
+	        getUserMoviesWatched();
+	        getUserMoviesLiked();
 	    },
 		error: function(user, error) {
 			$('.notification').text('Error : ' + error).show('fast').delay(3000).hide('fast');
 		}
 	});
-   };
+	};
 
    $scope.register = function() {
    	$('.notification').text('Loading...').show('fast');
@@ -39,4 +42,4 @@ app.registerCtrl('loginController', function($scope) {
 	  }
 	});
    };
-});
+}]);

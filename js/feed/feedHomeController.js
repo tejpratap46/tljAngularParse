@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.registerCtrl('feedHomeController', function($scope, $window, $routeParams, $http){
+app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$http', function($scope, $window, $routeParams, $http){
     var currentUser = Parse.User.current();
     var following;
     var username;
@@ -39,6 +39,7 @@ app.registerCtrl('feedHomeController', function($scope, $window, $routeParams, $
             $('.notification').first().hide('fast');
             var commentsTemp = results;
             for(var i=0;i<commentsTemp.length;i++){
+                commentsTemp[i].timeString = moment(commentsTemp[i].sortWith).fromNow();
                 var index = $.inArray(commentsTemp[i]['title'], userMoviesWatchlistNames);
                 if (index >= 0){
                     commentsTemp[i].watchlistClass = "btn-danger";
@@ -255,4 +256,4 @@ app.registerCtrl('feedHomeController', function($scope, $window, $routeParams, $
             });
         }
     }
-});
+}]);

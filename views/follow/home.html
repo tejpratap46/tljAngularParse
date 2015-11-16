@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-sm-12">
+	    <form  data-ng-submit="searchPeople()">
+	        <input autocomplete="off" data-ng-keyup="searchPeople()" class="full-width" data-ng-model="followString" style="padding: 20px; font-size: 2em;" type="text" placeholder="Search People here ?">
+	    </form>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div>
+    	<div data-ng-repeat="people in peoples track by $index">
+			<div class="col-md-3 center">
+				<div class="thumbnail">
+					<a href="#user/{{people.username}}">
+						<div class="round-button btn btn-info center center-vertical" style="height: 100px; width: 100px;"><h1 class="bold white" style="font-size: 4em;">{{people.username.split('')[0] | uppercase}}</h1></div>
+						<div class="caption">
+							<h3 class="ellipsis">{{people.username.split('@')[0]}}</h3>
+						</div>
+					</a>
+					<button id="buttonFollow" class="btn btn-{{people.buttonTheme}} bold full-width" data-ng-click="followUser($index, people.username)">{{people.followText}}</button>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.registerCtrl('peopleViewController', function($scope, $http, $routeParams){
+app.registerCtrl('peopleViewController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams){
     setNav('#navMovie');
     $http.get("http://api.themoviedb.org/3/person/" + $routeParams.id + "?api_key=" + tmdbapikey)
         .success(function(response) {
@@ -73,4 +73,4 @@ app.registerCtrl('peopleViewController', function($scope, $http, $routeParams){
         }
         addMovieLiked($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
     }
-});
+}]);

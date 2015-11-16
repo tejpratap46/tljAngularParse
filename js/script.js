@@ -140,7 +140,7 @@ function addMovieWatchlist($index,tmdbid,name,image,genre,release,vote_average){
 function addMovieWatched($index,tmdbid,name,image,genre,release,vote_average){
     var MovieWatched = Parse.Object.extend("MovieWatched");
     var movie = new MovieWatched();
-    
+
     var query = new Parse.Query(MovieWatched);
     query.equalTo("tmdb_id", tmdbid + "");
     query.find({
@@ -181,7 +181,7 @@ function addMovieWatched($index,tmdbid,name,image,genre,release,vote_average){
 function addMovieWatchedSilent($index,tmdbid,name,image,genre,release,vote_average){
     var MovieWatched = Parse.Object.extend("MovieWatched");
     var movie = new MovieWatched();
-    
+
     var query = new Parse.Query(MovieWatched);
     query.equalTo("tmdb_id", tmdbid + "");
     query.find({
@@ -215,7 +215,7 @@ function addMovieWatchedSilent($index,tmdbid,name,image,genre,release,vote_avera
 function addMovieLiked($index,tmdbid,name,image,genre,release,vote_average){
     var MovieWatched = Parse.Object.extend("MovieLiked");
     var movie = new MovieWatched();
-    
+
     var query = new Parse.Query(MovieWatched);
     query.equalTo("tmdb_id", tmdbid + "");
     query.find({
@@ -256,7 +256,7 @@ function addMovieLiked($index,tmdbid,name,image,genre,release,vote_average){
 function deleteMovie(){
     console.log('Delete Ok');
     globalmovie.set("is_deleted", true);
-    
+
     $('.notification').first().text('Loading...').show('fast');
     globalmovie.save(null, {
         success: function(movie) {

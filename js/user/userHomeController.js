@@ -1,35 +1,35 @@
 var app = angular.module('tlj');
 
-app.registerCtrl('userHomeController', function($scope, $routeParams, $http){
+app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http){
     var currentUser = Parse.User.current();
+    if (currentUser == null) {
+        window.location.hash = '#/login';
+        return;
+    }
     var following = currentUser.get('following');
     var username = currentUser.get('username');
-    if (currentUser) {
-        $scope.username = currentUser.get('username');
-        currentUser.fetch({
-            success: function(user){
-                following = user.get('following');
-                following = typeof following !== 'undefined' ? following : [];
-                currentUser = user;
-                if (username == $routeParams.username) {
-                    $scope.followText = "Following " + following.length + " people";
-                    $scope.buttonTheme = "link disabled";
+    $scope.username = currentUser.get('username');
+    currentUser.fetch({
+        success: function(user){
+            following = user.get('following');
+            following = typeof following !== 'undefined' ? following : [];
+            currentUser = user;
+            if (username == $routeParams.username) {
+                $scope.followText = "Following " + following.length + " people";
+                $scope.buttonTheme = "link disabled";
+            }else{
+                var index = $.inArray($routeParams.username, following);
+                console.log(index);
+                if (index >= 0){
+                    $scope.followText = "Following";
+                    $scope.buttonTheme = "danger";
                 }else{
-                    var index = $.inArray($routeParams.username, following);
-                    console.log(index);
-                    if (index >= 0){
-                        $scope.followText = "Following";
-                        $scope.buttonTheme = "danger";
-                    }else{
-                        $scope.followText = "Follow";
-                        $scope.buttonTheme = "success";
-                    }
+                    $scope.followText = "Follow";
+                    $scope.buttonTheme = "success";
                 }
             }
-        });
-    }else{
-        window.location.hash = '#/';
-    }
+        }
+    });
     $scope.total = 0;
     $routeParams.username = typeof $routeParams.username !== 'undefined' ? $routeParams.username : $scope.username;
     if ($routeParams.username.length > 0) {
@@ -67,7 +67,6 @@ app.registerCtrl('userHomeController', function($scope, $routeParams, $http){
     $http.get("http://api.themoviedb.org/3/genre/movie/list?api_key=" + tmdbapikey)
         .success(function(response) {
         var genres = response.genres;
-        var index = 1;
         $scope.genreList = [];
         genres.forEach(function(genreItem){
             $('.notification').first().text('Loading...').show('fast');
@@ -76,11 +75,11 @@ app.registerCtrl('userHomeController', function($scope, $routeParams, $http){
                     var percentage = (count/$scope.MovieWatched)*100;
                     var theme = "success";
                     if (percentage > 0) {
-                        if(percentage < 30){
+                        if(percentage < 10){
                             theme = "danger";
-                        }else if(percentage < 50){
+                        }else if(percentage < 30){
                             theme = "warning";
-                        }else if(percentage < 80){
+                        }else if(percentage < 70){
                             theme = "info";
                         }else{
                             theme = "success";
@@ -91,12 +90,8 @@ app.registerCtrl('userHomeController', function($scope, $routeParams, $http){
                             theme: theme,
                             count: percentage
                         });
-                        if(genres.length == index){
-                            $('.notification').first().hide('fast');
-                            $scope.genreList.sort(compare);
-                            $scope.$apply();
-                        }
-                        index += 1;
+                        $scope.genreList.sort(compare);
+                        $scope.$apply();
                     }
                 },
                 error: function(error) {
@@ -105,17 +100,8 @@ app.registerCtrl('userHomeController', function($scope, $routeParams, $http){
             });
         });
     });
-    
-    function compare(a,b) {
-        if (a.count > b.count)
-            return -1;
-        if (a.count < b.count)
-            return 1;
-        return 0;
-    }
 
     $scope.followUser = function(){
-        console.log(following);
         if (username == $routeParams.username) {
             return;
         }else{
@@ -129,9 +115,9 @@ app.registerCtrl('userHomeController', function($scope, $routeParams, $http){
                 currentUser.set("following", newFollowing);
                 currentUser.save(null, {
                 success: function(comment) {
-                    $('.notification').first().hide('fast');
                     $scope.followText = "Follow";
                     $scope.buttonTheme = "success";
+                    following = newFollowing;
                 },
                 error: function(comment, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -145,6 +131,7 @@ app.registerCtrl('userHomeController', function($scope, $routeParams, $http){
                 success: function(comment) {
                     $scope.followText = "Following";
                     $scope.buttonTheme = "danger";
+                    following.push(username);
                 },
                 error: function(comment, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -153,4 +140,4 @@ app.registerCtrl('userHomeController', function($scope, $routeParams, $http){
             }
         }
     }
-});
+}]);

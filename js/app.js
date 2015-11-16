@@ -121,6 +121,11 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
 		controller : 'feedHomeController',
         resolve: loader(['js/feed/feedHomeController.js'])
 	})
+	.when('/follow', {
+		templateUrl: 'views/follow/home.html',
+		controller : 'followHomeController',
+        resolve: loader(['js/follow/followHomeController.js'])
+	})
 	.when('/test', {
 		templateUrl: 'views/test.html'
 	})

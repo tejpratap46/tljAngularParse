@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.registerCtrl('movieHomeController', function($scope, $http){
+app.registerCtrl('movieHomeController', ['$scope', '$http', function($scope, $http){
 	setNav('#navStart');
 
 	$scope.categories = [{"name" : "Top Rated", "id": "top_rated", "glyphicon": "stats"},
@@ -16,4 +16,4 @@ app.registerCtrl('movieHomeController', function($scope, $http){
         .success(function(response) {
             $scope.genres = response.genres;
     });
-});
+}]);

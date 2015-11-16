@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.registerCtrl('homeController', function($scope, $http){
+app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http){
 	setNav('#navHome');
     var currentUser = Parse.User.current();
     if (currentUser) {
@@ -146,4 +146,4 @@ app.registerCtrl('homeController', function($scope, $http){
     $scope.like = function($index,movie){
         addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
-});
+}]);

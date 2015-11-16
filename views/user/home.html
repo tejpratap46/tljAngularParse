@@ -8,7 +8,7 @@
 		<button class="btn btn-link bold"><span class="bold">{{MovieWatchList}}</span> Movies in Watchlisted</button>
 		<button class="btn btn-link bold"><span class="bold">{{MovieWatched}}</span> Movies Watched</button>
 		<button class="btn btn-link bold"><span class="bold">{{MovieLiked}}</span> Movies Liked</button><br />
-		<button id="buttonFollow" class="btn btn-{{buttonTheme}} bold full-width" ng-click="followUser()">{{followText}}</button>
+		<button id="buttonFollow" class="btn btn-{{buttonTheme}} bold full-width" data-ng-click="followUser()">{{followText}}</button>
 	</div>
 	<div class="col-md-4"></div>
 </div>
@@ -62,7 +62,7 @@
 <hr />
 <div class="row center">
    <h3>Out Of <span class="bold left">{{MovieWatched}}</span> Movies</h3>
-	<div class="col-xs-6 col-sm-3 col-sm-2 no-margin no-padding" ng-repeat="genre in genreList track by $index">
+	<div class="col-xs-6 col-sm-3 col-sm-2 no-margin no-padding" ng-repeat="genre in genreList track by $index | orderBy : count : reverse">
 		<a href="#/user/movie/MovieWatched/{{genre.id}}/{{username}}">
 			<div class="full-width btn btn-{{genre.theme}}">
 				<h1 class="bold white">{{genre.count | number: 0}}%</h1>

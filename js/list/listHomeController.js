@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.registerCtrl('listHomeController', function($scope, $routeParams, $window){
+app.registerCtrl('listHomeController', ['$scope', '$routeParams', '$window', function($scope, $routeParams, $window){
 	setNav('#navHome');
     var page = 0;
     $scope.movieList = [];
@@ -56,4 +56,4 @@ app.registerCtrl('listHomeController', function($scope, $routeParams, $window){
             $('.notification').first().text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
         }
     });
-});
+}]);
