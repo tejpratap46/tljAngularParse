@@ -31,13 +31,26 @@ app.registerCtrl('userMovieController', ['$scope', '$routeParams', '$window', fu
         Parse.Cloud.run('getMovie', {className: $routeParams.category, limit: 12, page: (++page), genre: $routeParams.genre, username: $routeParams.username},{
         success: function(results) {
             var moviesTemp = [];
+            var groupBy;
+            var shortBy;
             results.forEach(function(object){
                 if ($routeParams.category == 'MovieWatchList') {
-                    var groupBy = "Released In " + moment(object.get('release_date')).format('MMMM YYYY');
-                    var shortBy = object.get('release_date');
+                    var now = moment();
+                    var day = moment(object.get('release_date'));
+                    var text = "";
+                    if (now < day){
+                        text = "Releasing ";
+                    }else{
+                        text = "Released ";
+                    }
+                    groupBy = text + moment(object.get('release_date')).fromNow();;
+                    shortBy = object.get('release_date');
+                }else if ($routeParams.category == 'MovieWatched'){
+                    groupBy = "Watched " + moment(object.get('updatedAt')).fromNow();
+                    shortBy = object.get('updatedAt');
                 }else{
-                    var groupBy = "Watched In " + moment(object.get('updatedAt')).format('MMMM YYYY');
-                    var shortBy = moment(object.get('updatedAt')).format('YYYY-mm-dd');
+                    groupBy = "Liked " + moment(object.get('updatedAt')).fromNow();
+                    shortBy = object.get('updatedAt');
                 }
                 moviesTemp.push({
                     title: object.get('title'),
