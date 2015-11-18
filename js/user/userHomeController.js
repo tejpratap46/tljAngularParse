@@ -90,7 +90,6 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
                             theme: theme,
                             count: percentage
                         });
-                        $scope.genreList.sort(compare);
                         $scope.$apply();
                     }
                 },

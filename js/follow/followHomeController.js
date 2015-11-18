@@ -1,6 +1,6 @@
 var app = angular.module('tlj');
 
-app.registerCtrl('followHomeController',['$scope', function($scope) {
+app.registerCtrl('followHomeController',['$scope','$window', function($scope, $window) {
 	var currentUser = Parse.User.current();
 	if (currentUser == null) {
         window.location.hash = '#/login';
@@ -25,12 +25,22 @@ app.registerCtrl('followHomeController',['$scope', function($scope) {
 		$scope.findPeopleOnParse = findPeopleOnParse(page, $scope.followString);
 	}
 
-	function findPeopleOnParse(page,searchUsername) {
+    angular.element($window).bind("scroll", function() {
+        var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+        var body = document.body, html = document.documentElement;
+        var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+        windowBottom = windowHeight + window.pageYOffset;
+        if (windowBottom >= docHeight - 100) {
+            $scope.loadMovies = loadMovies();
+        }
+    });
+
+	function findPeopleOnParse(searchUsername) {
     	if (page == 1) {
 			$scope.peoples = [];
     	};
 		$('.notification').first().text('Loading ...').show('fast');
-        Parse.Cloud.run('userList', {username: searchUsername, limit: 12, page: (page)},{
+        Parse.Cloud.run('userList', {username: searchUsername, limit: 12, page: (++page)},{
         success: function(results) {
             $('.notification').first().hide('fast');
             var userTemp = results;
@@ -57,8 +67,8 @@ app.registerCtrl('followHomeController',['$scope', function($scope) {
 	}
 
 	function random (items,outof) {
-		var cardCount = 200, // total number of cards in your Card class
-	    requestCount = 10, // number of random cards that you want to query
+		var cardCount = outof, // total number of cards in your Card class
+	    requestCount = items, // number of random cards that you want to query
 	    query1, query2, randomQuery,
 	    queries = [],
 	    i;

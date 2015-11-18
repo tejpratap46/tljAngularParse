@@ -1,22 +1,28 @@
 <div class="row">
-    <div class="col-sm-4 col-md-3 col-lg-2" style="height: 440px;" data-ng-repeat="movie in movies track by $index">
-        <div class="thumbnail">
-            <a href="#/movie/view/{{movie.id + '/' + movie.title}}">
-               <div style="height: 275px; overflow: hidden;">
-                    <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w185' + movie.poster_path}}" alt="{{movie.title}}" onError="this.onerror=null;this.src='images/logo-512.png';" />
-                </div>
-                <div class="caption">
-                    <div style="margin-top: -40px; opacity: 0.9;" class="center"><button style="height:60px; width:60px; font-size: 1.5em;" class="btn btn-success bold round-button">{{movie.vote_average}}</button></div>
-                    <h4 class="center ellipsis" title="{{movie.title}}">{{movie.title}}</h4>
-                    <p class="center ellipsis">{{movie.release_date}}</p>
-                </div>
-            </a>
-            <div class="center">
-                <div class="btn-group" style="margin-top: -20px;">
-                    <button class="movieWatchlist btn {{movie.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, movie)"></button>
-                    <button class="movieWatched btn {{movie.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index, movie)"></button>
-                    <button class="movieLiked btn {{movie.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index, movie)"></button>
-                    <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index, movie)"></button>
+    <div data-ng-repeat="movie in movies track by $index">
+        <div class="col-xs-12" data-ng-if="movies[$index-1].group_by != movie.group_by">
+            <h3 class="bold">{{movie.group_by}}</h3>
+            <hr/>
+        </div>
+        <div class="col-sm-4 col-md-3 col-lg-2" style="height: 440px;">
+            <div class="thumbnail">
+                <a href="#/movie/view/{{movie.id + '/' + movie.title}}">
+                   <div style="height: 275px; overflow: hidden;">
+                        <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w185' + movie.poster_path}}" alt="{{movie.title}}" onError="this.onerror=null;this.src='images/logo-512.png';" />
+                    </div>
+                    <div class="caption">
+                        <div style="margin-top: -40px; opacity: 0.9;" class="center"><button style="height:60px; width:60px; font-size: 1.5em;" class="btn btn-success bold round-button">{{movie.vote_average}}</button></div>
+                        <h4 class="center ellipsis" title="{{movie.title}}">{{movie.title}}</h4>
+                        <p class="center ellipsis">{{movie.release_date}}</p>
+                    </div>
+                </a>
+                <div class="center">
+                    <div class="btn-group" style="margin-top: -20px;">
+                        <button class="movieWatchlist btn {{movie.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, movie)"></button>
+                        <button class="movieWatched btn {{movie.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index, movie)"></button>
+                        <button class="movieLiked btn {{movie.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index, movie)"></button>
+                        <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index, movie)"></button>
+                    </div>
                 </div>
             </div>
         </div>

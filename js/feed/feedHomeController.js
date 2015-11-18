@@ -40,6 +40,7 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
             var commentsTemp = results;
             for(var i=0;i<commentsTemp.length;i++){
                 commentsTemp[i].timeString = moment(commentsTemp[i].sortWith).fromNow();
+                commentsTemp[i].timeTitle = moment(commentsTemp[i].sortWith).format('MMMM Do YYYY, h:mm a');
                 var index = $.inArray(commentsTemp[i]['title'], userMoviesWatchlistNames);
                 if (index >= 0){
                     commentsTemp[i].watchlistClass = "btn-danger";

@@ -1,6 +1,6 @@
 app = angular.module('tlj');
 
-app.registerCtrl('userMovieController', ['$scope', '$routeParams', function($scope, $routeParams){
+app.registerCtrl('userMovieController', ['$scope', '$routeParams', '$window', function($scope, $routeParams, $window){
     
     var currentUser = Parse.User.current();
     if (currentUser) {
@@ -11,77 +11,83 @@ app.registerCtrl('userMovieController', ['$scope', '$routeParams', function($sco
     
     $routeParams.genre = typeof $routeParams.genre !== 'undefined' ? $routeParams.genre : '';
     $routeParams.genre = parseInt($routeParams.genre);
-    console.log($routeParams.genre.length > 0);
     $routeParams.username = typeof $routeParams.username !== 'undefined' ? $routeParams.username : $scope.username;
     
-    $('.notification').first().text('Loading...').show('fast');
-    Parse.Cloud.run('getMovie', {className: $routeParams.category, limit: 1000, page: 1, genre: $routeParams.genre, username: $routeParams.username},{
-    success: function(results) {
-        var moviesTemp = [];
-        $scope.movies = [];
-        if($routeParams.category == 'MovieWatched'){
-            if ($routeParams.username == $scope.username) {
-                userMoviesWatched = results;
-                userMoviesWatchedNames = [];
-                for (var i=0; i< results.length; i++){
-                    userMoviesWatchedNames.push(results[i].get('title'));
-                }
-            }
-        }else if($routeParams.category == 'MovieWatchList'){
-            if ($routeParams.username == $scope.username) {
-                userMoviesWatchlist = results;
-                userMoviesWatchlistNames = [];
-                for (var i=0; i< results.length; i++){
-                    userMoviesWatchlistNames.push(results[i].get('title'));
-                }
-            }
-        }else if($routeParams.category == 'MovieLiked'){
-            if ($routeParams.username == $scope.username) {
-                userMoviesLiked = results;
-                userMoviesLikedNames = [];
-                for (var i=0; i< results.length; i++){
-                    userMoviesLikedNames.push(results[i].get('title'));
-                }
-            }
+    $scope.movies = [];
+    var page = 0;
+    $scope.loadMovies = loadMovies();
+    angular.element($window).bind("scroll", function() {
+        var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+        var body = document.body, html = document.documentElement;
+        var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+        windowBottom = windowHeight + window.pageYOffset;
+        if (windowBottom >= docHeight - 100) {
+            $scope.loadMovies = loadMovies();
         }
-        results.forEach(function(object){
-            moviesTemp.push({
-                title: object.get('title'),
-                poster_path: object.get('poster_path'),
-                vote_average: object.get('vote_average'),
-                release_date: object.get('release_date'),
-                genre_ids: object.get('genre'),
-                id: object.get('tmdb_id')
-            });
-        });
-        
-        for(var i=0;i<moviesTemp.length;i++){
-            var index = $.inArray(moviesTemp[i]['title'], userMoviesWatchlistNames);
-            if (index >= 0){
-                moviesTemp[i].watchlistClass = "btn-danger";
-            }else{
-                moviesTemp[i].watchlistClass = "btn-success";
-            }
-            index = $.inArray(moviesTemp[i]['title'], userMoviesWatchedNames);
-            if (index >= 0){
-                moviesTemp[i].watchedClass = "btn-danger";
-            }else{
-                moviesTemp[i].watchedClass = "btn-info";
-            }
-            index = $.inArray(moviesTemp[i]['title'], userMoviesLikedNames);
-            if (index >= 0){
-                moviesTemp[i].likedClass = "btn-danger";
-            }else{
-                moviesTemp[i].likedClass = "btn-warning";
-            }
-            $scope.movies.push(moviesTemp[i]);
-            $scope.$apply();
-        }
-        $('.notification').first().hide('fast');
-    },
-    error: function(error) {
-        $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');}
     });
+
+    function loadMovies(){
+        $('.notification').first().text('Loading...').show('fast');
+        Parse.Cloud.run('getMovie', {className: $routeParams.category, limit: 12, page: (++page), genre: $routeParams.genre, username: $routeParams.username},{
+        success: function(results) {
+            var moviesTemp = [];
+            results.forEach(function(object){
+                if ($routeParams.category == 'MovieWatchList') {
+                    var groupBy = "Released In " + moment(object.get('release_date')).format('MMMM YYYY');
+                    var shortBy = object.get('release_date');
+                }else{
+                    var groupBy = "Watched In " + moment(object.get('updatedAt')).format('MMMM YYYY');
+                    var shortBy = moment(object.get('updatedAt')).format('YYYY-mm-dd');
+                }
+                moviesTemp.push({
+                    title: object.get('title'),
+                    poster_path: object.get('poster_path'),
+                    vote_average: object.get('vote_average'),
+                    release_date: object.get('release_date'),
+                    genre_ids: object.get('genre'),
+                    group_by: groupBy,
+                    short_by: shortBy,
+                    id: object.get('tmdb_id')
+                });
+            });
+            
+            for(var i=0;i<moviesTemp.length;i++){
+                var index = $.inArray(moviesTemp[i]['title'], userMoviesWatchlistNames);
+                if (index >= 0){
+                    moviesTemp[i].watchlistClass = "btn-danger";
+                }else{
+                    moviesTemp[i].watchlistClass = "btn-success";
+                }
+                index = $.inArray(moviesTemp[i]['title'], userMoviesWatchedNames);
+                if (index >= 0){
+                    moviesTemp[i].watchedClass = "btn-danger";
+                }else{
+                    moviesTemp[i].watchedClass = "btn-info";
+                }
+                index = $.inArray(moviesTemp[i]['title'], userMoviesLikedNames);
+                if (index >= 0){
+                    moviesTemp[i].likedClass = "btn-danger";
+                }else{
+                    moviesTemp[i].likedClass = "btn-warning";
+                }
+                $scope.movies.push(moviesTemp[i]);
+                $scope.movies.sort(compare);
+                $scope.$apply();
+            }
+            $('.notification').first().hide('fast');
+        },
+        error: function(error) {
+            $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');}
+        });
+    }
+
+    function compare(a,b) {
+        if (a.short_by > b.short_by)
+            return -1;
+        if (a.short_by < b.short_by)
+            return 1;
+        return 0;
+    }
     
     $scope.watchlist = function($index,movie){
         addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
