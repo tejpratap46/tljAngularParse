@@ -61,6 +61,11 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
 		controller : 'loginController',
         resolve: loader(['js/loginController.js'])
 	})
+	.when('/register', {
+		templateUrl: 'views/register.html',
+		controller : 'registerController',
+        resolve: loader(['js/registerController.js'])
+	})
 	.when('/logout', {
 		templateUrl: 'views/login.html',
 		controller : 'loginController',

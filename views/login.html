@@ -3,15 +3,15 @@
 	<form class="form-signin thumbnail" id="loginForm" data-ng-submit="login()">
 		<h1 class="form-signin-heading">Login</h1>
 		<label for="inputEmail" class="sr-only">Email address</label>
-		<input ng-model="email" id="email" type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+		<input data-ng-model="email" id="email" type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
 		<label for="inputPassword" class="sr-only">Password</label>
-		<input ng-model="password" id="password" type="password" name="password" class="form-control" placeholder="Password" required>
+		<input data-ng-model="password" id="password" type="password" name="password" class="form-control" placeholder="Password" required>
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-xs-12">
 				<input type="submit" class="btn btn-lg btn-primary btn-block" type="button" data-ng-click="login()" value="Log in" />
 			</div>
-			<div class="col-md-6">
-				<button class="btn btn-lg btn-success btn-block" type="button" data-ng-click="register()">Register</button>
+			<div class="col-xs-12">
+				<button class="btn btn-lg btn-link btn-block" type="button" data-ng-click="register()">Register</button>
 			</div>
 		</div>
 	</form>

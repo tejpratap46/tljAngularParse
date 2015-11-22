@@ -2,11 +2,12 @@ var app = angular.module('tlj');
 
 app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$http', function($scope, $window, $routeParams, $http){
     var currentUser = Parse.User.current();
-    var following;
+    var following = [];
     var username;
     if (currentUser) {
         $scope.isMovieSnapShown= false;
         username = currentUser.get('username');
+        userObjectId = currentUser.id;
         following = currentUser.get('following');
         $scope.username = currentUser.get('username');
         currentUser.fetch({
@@ -27,12 +28,12 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
         var body = document.body, html = document.documentElement;
         var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
         windowBottom = windowHeight + window.pageYOffset;
-        if (windowBottom >= docHeight - 100) {
+        if (windowBottom >= docHeight - 10) {
             $scope.loadComments = loadComments();
         }
     });
     function loadComments(){
-        following.push(username);
+        following.push(userObjectId);
         $('.notification').first().text('Loading ...').show('fast');
         Parse.Cloud.run('feed', {following: following, limit: 12, page: (++page)},{
         success: function(results) {
@@ -41,6 +42,7 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
             for(var i=0;i<commentsTemp.length;i++){
                 commentsTemp[i].timeString = moment(commentsTemp[i].sortWith).fromNow();
                 commentsTemp[i].timeTitle = moment(commentsTemp[i].sortWith).format('MMMM Do YYYY, h:mm a');
+                console.log(commentsTemp[i].name);
                 var index = $.inArray(commentsTemp[i]['title'], userMoviesWatchlistNames);
                 if (index >= 0){
                     commentsTemp[i].watchlistClass = "btn-danger";
@@ -155,6 +157,7 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                 }
                 // no problem, add status
                 var name = user.get("username");
+                status.set("created_by", user);
                 status.set("username", name);
                 status.addUnique("voted_by", name);
                 status.save(null, {

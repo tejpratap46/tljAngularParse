@@ -126,7 +126,7 @@
     </blockquote>
     <blockquote class="row" data-ng-repeat="comment in comments track by $index">
       <dix class="col-xs-12">
-            <a href="#user/{{comment.username}}"><h4>{{comment.username}}</h4></a>
+            <a href="#user/{{comment.userObjectId}}"><h4>{{comment.username}}</h4></a>
             <p>{{comment.text}}</p>
             <small>{{comment.updatedAt}}</small>
       </dix>

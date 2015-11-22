@@ -302,6 +302,7 @@ function addMovie($index,movie,tmdbid,name,image,genre,release,vote_average, but
         eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
         return false;
     }else{
+        movie.set("created_by", user);
         movie.setACL(new Parse.ACL(user));
     }
     var username = user.get("username");

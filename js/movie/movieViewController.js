@@ -63,7 +63,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
     function loadComments(){
         var comment = Parse.Object.extend("Comment");
         var query = new Parse.Query(comment);
-
+        query.include("created_by");
         query.descending("votes");
         query.descending("createdAt");
         query.limit(10);
@@ -99,7 +99,8 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
                 commentsTemp.push({
                     id: object.id,
                     text: object.get('text'),
-                    username: object.get('username'),
+                    userObjectId: object.get('created_by').id,
+                    username: object.get('created_by').get("name"),
                     voted_by: votedBy,
                     votes: object.get('votes'),
                     updatedAt: updatedAtString
@@ -179,6 +180,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
         }
         // no problem, add comment
         var name = user.get("username");
+        comment.set("created_by", user);
         comment.set("username", name);
         comment.addUnique("voted_by", name);
         $('.notification').first().text('Adding...').show('fast');

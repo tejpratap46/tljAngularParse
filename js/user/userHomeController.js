@@ -8,13 +8,14 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
     }
     var following = currentUser.get('following');
     var username = currentUser.get('username');
-    $scope.username = currentUser.get('username');
+    $scope.username = currentUser.get('name');
+    $scope.userObjectId = currentUser.id;
     currentUser.fetch({
         success: function(user){
             following = user.get('following');
             following = typeof following !== 'undefined' ? following : [];
             currentUser = user;
-            if (username == $routeParams.username) {
+            if ($scope.userObjectId == $routeParams.username) {
                 $scope.followText = "Following " + following.length + " people";
                 $scope.buttonTheme = "link disabled";
             }else{
@@ -31,14 +32,23 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
         }
     });
     $scope.total = 0;
-    $routeParams.username = typeof $routeParams.username !== 'undefined' ? $routeParams.username : $scope.username;
+    $routeParams.username = typeof $routeParams.username !== 'undefined' ? $routeParams.username : $scope.userObjectId;
     if ($routeParams.username.length > 0) {
-        $scope.username = $routeParams.username;
+        var User = Parse.User;
+        var user = new User();
+        user.id = $routeParams.username;
+        user.fetch().then(function(fetchedUser){
+            $scope.username = fetchedUser.get("name");
+        }, function(error){
+            console.log(error.message);
+        });
+    }else{
+
     }
     var classes = ["MovieWatchList", "MovieWatched", "MovieLiked"];
     classes.forEach(function(className){
         $('.notification').first().text('Loading...').show('fast');
-        Parse.Cloud.run('getMovieCount', {className: className, username: $routeParams.username}, {
+        Parse.Cloud.run('getMovieCount', {className: className, userObjectId: $routeParams.username}, {
             success: function(count) {
                 $('.notification').first().hide('fast');
                 if(className == "MovieWatchList"){
@@ -70,7 +80,7 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
         $scope.genreList = [];
         genres.forEach(function(genreItem){
             $('.notification').first().text('Loading...').show('fast');
-            Parse.Cloud.run('getMovieCount', {className: 'MovieWatched', username: $routeParams.username, genre: genreItem.id}, {
+            Parse.Cloud.run('getMovieCount', {className: 'MovieWatched', userObjectId: $routeParams.username, genre: genreItem.id}, {
                 success: function(count) {
                     var percentage = (count/$scope.MovieWatched)*100;
                     var theme = "success";
@@ -90,6 +100,7 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
                             theme: theme,
                             count: percentage
                         });
+                        $scope.genreList.sort(compare);
                         $scope.$apply();
                     }
                 },
@@ -101,7 +112,7 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
     });
 
     $scope.followUser = function(){
-        if (username == $routeParams.username) {
+        if ($scope.userObjectId == $routeParams.username) {
             return;
         }else{
             var index = $.inArray($routeParams.username, following);
@@ -138,5 +149,13 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
                 });
             }
         }
+    }
+ 
+    function compare(a,b) {
+        if (a.count > b.count)
+            return -1;
+        if (a.count < b.count)
+            return 1;
+        return 0;
     }
 }]);

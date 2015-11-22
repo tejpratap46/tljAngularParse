@@ -28,7 +28,7 @@
     <blockquote data-ng-repeat="comment in comments track by $index">
         <div class="row">
             <div class="round-button btn btn-info center center-vertical" style="height: 50px; width: 50px;"><h6 class="bold white">{{username.split('')[0] | uppercase}}</h6></div>
-            <a href="#user/{{comment.username}}">{{comment.username.split('@')[0]}}</a>{{comment.postAction}}<a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">{{'  '+comment.title}}</a><hr/>
+            <a href="#user/{{comment.userObjectId}}">{{comment.username.split('@')[0]}}</a>{{comment.postAction}}<a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">{{'  '+comment.title}}</a><hr/>
              <div class="col-sm-3">
                  <div class="thumbnail no-margin" style="background-image: url('{{'http://image.tmdb.org/t/p/w185' + comment.poster_path}}');background-size:100%;">
                     <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">

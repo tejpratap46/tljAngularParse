@@ -13,7 +13,7 @@ app.registerCtrl('listViewController', ['$scope', '$routeParams', '$window', fun
         var body = document.body, html = document.documentElement;
         var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
         windowBottom = windowHeight + window.pageYOffset;
-        if (windowBottom >= docHeight - 100) {
+        if (windowBottom >= docHeight - 10) {
             $scope.loadMovies = loadMovies();
         }
     });

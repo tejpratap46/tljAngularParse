@@ -11,14 +11,16 @@ app.registerCtrl('followHomeController',['$scope','$window', function($scope, $w
     currentUser.fetch({
         success: function(user){
             following = typeof following !== 'undefined' ? following : [];
-		    $scope.username = user.get('username');
 		    $scope.following = user.get('following');
+            $scope.username = user.get('username');
+            $scope.userObjectId = user.id;
 		    $scope.followString = "";
 			$scope.findPeopleOnParse = findPeopleOnParse((++page), $scope.followString);
 		}
     });
 	$scope.peoples = [];
 
+    $scope.findPeopleOnParse = findPeopleOnParse(page, $scope.followString);
 	$scope.searchPeople = function(){
 		$scope.peoples = [];
 		page = 1;
@@ -30,7 +32,7 @@ app.registerCtrl('followHomeController',['$scope','$window', function($scope, $w
         var body = document.body, html = document.documentElement;
         var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
         windowBottom = windowHeight + window.pageYOffset;
-        if (windowBottom >= docHeight - 100) {
+        if (windowBottom >= docHeight - 10) {
             $scope.loadMovies = loadMovies();
         }
     });
@@ -46,11 +48,11 @@ app.registerCtrl('followHomeController',['$scope','$window', function($scope, $w
             var userTemp = results;
             for(var i=0;i<userTemp.length;i++){
                 userTemp[i].timeString = moment(userTemp[i].sortWith).fromNow();
-                var index = $.inArray(userTemp[i].username, $scope.following);
+                var index = $.inArray(userTemp[i].id, $scope.following);
                 if (index >= 0){
                 	userTemp[i].buttonTheme = "danger";
                 	userTemp[i].followText = "following";
-                }else if (userTemp[i].username == $scope.username) {
+                }else if (userTemp[i].id == $scope.userObjectId) {
 	                	userTemp[i].buttonTheme = "link disabled";
 	                	userTemp[i].followText = "you";
 	            }else{
@@ -86,16 +88,16 @@ app.registerCtrl('followHomeController',['$scope','$window', function($scope, $w
 		});
 	}
 
-	$scope.followUser = function($index,username){
-        if ($scope.username == username) {
+	$scope.followUser = function($index,userObjectId){
+        if ($scope.userObjectId == userObjectId) {
             return;
         }else{
-            var index = $.inArray(username, $scope.following);
+            var index = $.inArray(userObjectId, $scope.following);
             if (index >= 0){
                 $scope.peoples[$index].followText = "Follow";
                 $scope.peoples[$index].buttonTheme = "success";
                 newFollowing = jQuery.grep($scope.following, function(value) {
-                    return value != username;
+                    return value != userObjectId;
                 });
                 currentUser.set("following", newFollowing);
                 currentUser.save(null, {
@@ -112,12 +114,12 @@ app.registerCtrl('followHomeController',['$scope','$window', function($scope, $w
             }else{
                 $scope.peoples[$index].followText = "Following";
                 $scope.peoples[$index].buttonTheme = "danger";
-                currentUser.addUnique("following", username);
+                currentUser.addUnique("following", userObjectId);
                 currentUser.save(null, {
                 success: function(comment) {
                     $scope.peoples[$index].followText = "Following";
                     $scope.peoples[$index].buttonTheme = "danger";
-                    $scope.following.push(username);
+                    $scope.following.push(userObjectId);
         			$scope.$apply();
                 },
                 error: function(comment, error) {
