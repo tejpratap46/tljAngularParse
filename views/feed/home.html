@@ -24,38 +24,35 @@
     </div>
 </div>
 <hr />
-<div class="">
-    <blockquote data-ng-repeat="comment in comments track by $index">
-        <div class="row">
-            <div class="round-button btn btn-info center center-vertical" style="height: 50px; width: 50px;"><h6 class="bold white">{{username.split('')[0] | uppercase}}</h6></div>
-            <a href="#user/{{comment.userObjectId}}">{{comment.username.split('@')[0]}}</a>{{comment.postAction}}<a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">{{'  '+comment.title}}</a><hr/>
-             <div class="col-sm-3">
-                 <div class="thumbnail no-margin" style="background-image: url('{{'http://image.tmdb.org/t/p/w185' + comment.poster_path}}');background-size:100%;">
+<div>
+    <div class="row" data-ng-repeat="comment in comments track by $index">
+        <div class="col-sm-1 col-md-2 col-lg-3"></div>
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 no-padding">
+            <div class="thumbnail">
+                <div class="round-button btn btn-info center center-vertical" style="height: 50px; width: 50px;"><h6 class="bold white">{{username.split('')[0] | uppercase}}</h6></div>
+                <a href="#user/{{comment.userObjectId}}">{{comment.username.split('@')[0]}}</a>{{comment.postAction}}<a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">{{'  '+comment.title}}</a><hr style="margin: 5px;"/>
+                <div style="height: 275px; overflow: hidden;">
                     <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">
-                        <div class="caption">
-                            <h4 class="shadow center ellipsis white" title="{{comment.title}}">{{comment.title}}</h4>
-                            <p class="shadow center ellipsis white">{{comment.release_date}}</p>
-                        </div>
+                        <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w300' + comment.poster_path}}" alt="comment.title" onError="this.onerror=null;this.src='images/logo-512.png';">
                     </a>
-                    <div class="center">
-                        <div class="btn-group" style="margin-top: -20px;">
-                            <button class="movieWatchlist btn {{comment.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index+1, comment)"></button>
-                            <button class="movieWatched btn {{comment.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index+1, comment)"></button>
-                            <button class="movieLiked btn {{comment.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index+1, comment)"></button>
-                            <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index+1, comment)"></button>
-                        </div>
+                </div>
+                <div class="center"style="height: 0px;">
+                    <div class="btn-group" style="margin-top: -80px;">
+                        <button class="movieWatchlist btn {{comment.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index+1, comment)"></button>
+                        <button class="movieWatched btn {{comment.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index+1, comment)"></button>
+                        <button class="movieLiked btn {{comment.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index+1, comment)"></button>
+                        <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index+1, comment)"></button>
+                    </div>
+                </div><hr style="margin: 5px;"/>
+                <div class="caption">
+                    <small title="{{comment.timeTitle}}">{{comment.timeString}}</small>
+                    <div ng-if="comment.canLike">
+                        <p>{{comment.text}}</p>
+                         <button class="btn btn-link glyphicon glyphicon-thumbs-up" title="Like" data-ng-click="upvote($index,comment.id)"></button><span class="likedBy ellipsis"> {{comment.voted_by}}</span>
                     </div>
                 </div>
-             </div>
-             <blockquote class="col-sm-9">
-                <div class="col-xs-12">
-                    <p ng-if="comment.canLike">{{comment.text}}</p>
-                    <small title="{{comment.timeTitle}}">{{comment.timeString}}</small>
-                </div>
-                <div ng-if="comment.canLike" class="col-xs-12">
-                     <button class="btn btn-link glyphicon glyphicon-thumbs-up" title="Like" data-ng-click="upvote($index,comment.id)"></button><span class="likedBy ellipsis"> {{comment.voted_by}}</span>
-                </div>
-             </blockquote>
-         </div>
-    </blockquote>
+            </div>
+        </div>
+        <div class="col-sm-1 col-md-2 col-lg-3"></div>
+    </div>
 </div>
