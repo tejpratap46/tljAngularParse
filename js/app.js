@@ -18,10 +18,6 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
         homeControllerjs = "js/feed/feedHomeController.js";
     }
 
-    console.log(homeTemplate);
-    console.log(homeController);
-    console.log(homeControllerjs);
-
 // code used from : http://stackoverflow.com/questions/25168593/angularjs-lazy-loading-controllers-and-content/28199498#28199498
     app.registerCtrl = $controllerProvider.register;
 
@@ -62,9 +58,9 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
     
 	$routeProvider
 	.when('/', {
-		templateUrl: homeTemplate,
-		controller: homeController,
-        resolve: loader([homeControllerjs])
+		templateUrl: 'views/home.html',
+		controller: 'homeController',
+        resolve: loader(['js/homeController.js'])
 	})
 	.when('/login', {
 		templateUrl: 'views/login.html',
