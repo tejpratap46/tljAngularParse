@@ -6,11 +6,21 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
     
     Parse.initialize("LQ0CkEovQS7YW2s4i6VXe7x6su7mrtGVFgJvMlYL", "ZEu9KSnsmCeQDqadynUC53dlU3Fs8MQSwI2mBY6R");
     var currentUser = Parse.User.current();
+    var homeTemplate = "views/home.html";
+    var homeController = "homeController";
+    var homeControllerjs = "js/homeController.js";
     if (currentUser) {
         getUserMoviesWatchlist();
         getUserMoviesWatched();
         getUserMoviesLiked();
+        homeTemplate = "views/feed/home.html";
+        homeController = "feedHomeController";
+        homeControllerjs = "js/feed/feedHomeController.js";
     }
+
+    console.log(homeTemplate);
+    console.log(homeController);
+    console.log(homeControllerjs);
 
 // code used from : http://stackoverflow.com/questions/25168593/angularjs-lazy-loading-controllers-and-content/28199498#28199498
     app.registerCtrl = $controllerProvider.register;
@@ -52,9 +62,9 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
     
 	$routeProvider
 	.when('/', {
-		templateUrl: 'views/home.html',
-		controller: 'homeController',
-        resolve: loader(['js/homeController.js'])
+		templateUrl: homeTemplate,
+		controller: homeController,
+        resolve: loader([homeControllerjs])
 	})
 	.when('/login', {
 		templateUrl: 'views/login.html',
@@ -138,7 +148,6 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
 		redirectTo: '/'
 	});
 }]);
-
 
 app.controller('navController', function ($scope) {
 	checkIfLoggedIn();

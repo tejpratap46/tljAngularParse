@@ -66,8 +66,9 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
             }
         },
         error: function(error) {
-            $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');}
-        });
+            $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');
+        }
+    });
     }
 
     $scope.upvote = function($index,id){
@@ -82,7 +83,7 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
             }else{
                 // no problem, add comment
                 var name = user.get("username");
-                comment.addUnique("voted_by", name);
+                comment.addUnique("voted_by", userObjectId);
                 comment.increment("votes");
                 comment.save(null, {
                     success: function(comment) {

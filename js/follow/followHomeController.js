@@ -64,7 +64,8 @@ app.registerCtrl('followHomeController',['$scope','$window', function($scope, $w
             }
         },
         error: function(error) {
-            $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');}
+            $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');
+        }
         });
 	}
 

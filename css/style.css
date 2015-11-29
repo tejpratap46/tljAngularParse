@@ -96,3 +96,10 @@
 .white {
 	color: #FFFFFF;
 }
+
+.square{
+	height:0px;
+	position:relative;
+	overflow:hidden;
+	padding-bottom:100%;
+}
