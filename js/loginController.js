@@ -16,7 +16,6 @@ app.registerCtrl('loginController', ['$scope', function($scope) {
 	        getUserMoviesWatchlist();
 	        getUserMoviesWatched();
 	        getUserMoviesLiked();
-	        window.location.reload();
 	    },
 		error: function(user, error) {
 			$('.notification').text('Error : ' + error).show('fast').delay(3000).hide('fast');

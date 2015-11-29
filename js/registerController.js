@@ -26,7 +26,6 @@ app.registerCtrl('registerController', ['$scope', function($scope) {
 	    window.location.hash = '#/';
     	// update nav bar
     	checkIfLoggedIn();
-      window.location.reload();
 	  },
 	  error: function(user, error) {
 		$('.notification').hide('fast');
