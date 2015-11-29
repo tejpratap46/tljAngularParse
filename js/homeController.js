@@ -4,7 +4,6 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http){
 	setNav('#navHome');
     var currentUser = Parse.User.current();
     if (currentUser) {
-        window.location.hash = '#/feed';
         getUserMoviesWatchlist();
         getUserMoviesWatched();
         getUserMoviesLiked();
