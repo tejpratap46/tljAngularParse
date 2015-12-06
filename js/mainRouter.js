@@ -7,6 +7,6 @@ app.registerCtrl('mainRouter', ['$scope', function($scope) {
     if (currentUser) {
         window.location.hash = '#/feed';
     }else{
-        window.location.hash = '#/';
+        window.location.hash = '#/home';
     }
 }]);

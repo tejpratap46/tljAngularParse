@@ -62,6 +62,11 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
 		controller: 'mainRouter',
         resolve: loader(['js/mainRouter.js'])
 	})
+	.when('/home', {
+		templateUrl: 'views/home.html',
+		controller: 'homeController',
+        resolve: loader(['js/homeController.js'])
+	})
 	.when('/login', {
 		templateUrl: 'views/login.html',
 		controller : 'loginController',

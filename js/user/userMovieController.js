@@ -5,13 +5,14 @@ app.registerCtrl('userMovieController', ['$scope', '$routeParams', '$window', fu
     var currentUser = Parse.User.current();
     if (currentUser) {
         $scope.username = currentUser.get('username');
+        $scope.userObjectId = currentUser.id;
     }else{
         window.location.hash = '#/';
     }
     
     $routeParams.genre = typeof $routeParams.genre !== 'undefined' ? $routeParams.genre : '';
     $routeParams.genre = parseInt($routeParams.genre);
-    $routeParams.username = typeof $routeParams.username !== 'undefined' ? $routeParams.username : $scope.username;
+    $routeParams.userObjectId = typeof $routeParams.username !== 'undefined' ? $routeParams.username : $scope.userObjectId;
     
     $scope.movies = [];
     var page = 0;
@@ -28,7 +29,7 @@ app.registerCtrl('userMovieController', ['$scope', '$routeParams', '$window', fu
 
     function loadMovies(){
         $('.notification').first().text('Loading...').show('fast');
-        Parse.Cloud.run('getMovie', {className: $routeParams.category, limit: 12, page: (++page), genre: $routeParams.genre, username: $routeParams.username},{
+        Parse.Cloud.run('getMovie', {className: $routeParams.category, limit: 12, page: (++page), genre: $routeParams.genre, userObjectId: $routeParams.userObjectId},{
         success: function(results) {
             var moviesTemp = [];
             var groupBy;

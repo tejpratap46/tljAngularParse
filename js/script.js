@@ -31,7 +31,7 @@ function checkIfLoggedIn() {
 	    var loginViewData = "<li><a href='#/user'>" + currentUser.get('username') + "<span class='caret'></span></a></li><li><a href='#/logout'>Logout</a></li>";
    		$('#navLoggedIn').html(loginViewData);
 	} else {
-   		$('#navLoggedIn').html('<a type="button" class="btn btn-default navbar-btn" href="#/login">Sign in</a>');
+   		$('#navLoggedIn').html('<a type="button" class="btn btn-primary navbar-btn" href="#/login">Sign in</a>');
 	}
 }
 
