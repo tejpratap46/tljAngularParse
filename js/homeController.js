@@ -12,138 +12,58 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http){
     $scope.MovieWatched = [];
     $scope.MovieLiked = [];
     $scope.MovieWatchList = [];
-    
-    Parse.Cloud.run('getMovie', {className: 'MovieWatched', limit: 12, page: 1}, {
-        success: function(results) {
-            var moviesTemp = [];
-            results.forEach(function(object){
-                moviesTemp.push({
-                    title: object.get('title'),
-                    poster_path: object.get('poster_path'),
-                    vote_average: object.get('vote_average'),
-                    release_date: object.get('release_date'),
-                    id: object.get('tmdb_id')
-                });
-            });
-        
-            for(var i=0;i<moviesTemp.length;i++){
-                var index = $.inArray(moviesTemp[i]['title'], userMoviesWatchlistNames);
-                if (index >= 0){
-                    moviesTemp[i].watchlistClass = "btn-danger";
-                }else{
-                    moviesTemp[i].watchlistClass = "btn-success";
-                }
-                index = $.inArray(moviesTemp[i]['title'], userMoviesWatchedNames);
-                if (index >= 0){
-                    moviesTemp[i].watchedClass = "btn-danger";
-                }else{
-                    moviesTemp[i].watchedClass = "btn-info";
-                }
-                index = $.inArray(moviesTemp[i]['title'], userMoviesLikedNames);
-                if (index >= 0){
-                    moviesTemp[i].likedClass = "btn-danger";
-                }else{
-                    moviesTemp[i].likedClass = "btn-warning";
-                }
-                $scope.MovieWatched.push(moviesTemp[i]);
-                $scope.$apply();
-            }
-        },
-        error: function(error) {
-        }
+
+    $http.get("http://api.themoviedb.org/3/movie/popular?api_key=" + tmdbapikey + "&page=1")
+        .success(function(response) {
+            $scope.moviesPopular = response.results;
     });
-    Parse.Cloud.run('getMovie', {className: 'MovieWatchList', limit: 12, page: 1}, {
-        success: function(results) {
-            var moviesTemp = [];
-            results.forEach(function(object){
-                moviesTemp.push({
-                    title: object.get('title'),
-                    poster_path: object.get('poster_path'),
-                    vote_average: object.get('vote_average'),
-                    release_date: object.get('release_date'),
-                    id: object.get('tmdb_id')
+
+    $scope.movies = [];
+    $scope.listid = 'JcyK0VvLGe';
+    $scope.loadMovies = loadMovies();
+
+    function loadMovies(){
+        $('.notification').first().text('Loading...').show('fast');
+        Parse.Cloud.run('getListMovies', {list_id: $scope.listid, limit: 24, page: (1)}, {
+            success: function(results) {
+                $('.notification').first().hide('fast');
+                var moviesTemp = [];
+                results.forEach(function(object){
+                    moviesTemp.push({
+                        title: object.get('title'),
+                        poster_path: object.get('poster_path'),
+                        vote_average: object.get('vote_average'),
+                        release_date: object.get('release_date'),
+                        id: object.get('tmdb_id')
+                    });
                 });
-            });
-        
-            for(var i=0;i<moviesTemp.length;i++){
-                var index = $.inArray(moviesTemp[i]['title'], userMoviesWatchlistNames);
-                if (index >= 0){
-                    moviesTemp[i].watchlistClass = "btn-danger";
-                }else{
-                    moviesTemp[i].watchlistClass = "btn-success";
+
+                for(var i=0;i<moviesTemp.length;i++){
+                    var index = $.inArray(moviesTemp[i]['title'], userMoviesWatchlistNames);
+                    if (index >= 0){
+                        moviesTemp[i].watchlistClass = "btn-danger";
+                    }else{
+                        moviesTemp[i].watchlistClass = "btn-success";
+                    }
+                    index = $.inArray(moviesTemp[i]['title'], userMoviesWatchedNames);
+                    if (index >= 0){
+                        moviesTemp[i].watchedClass = "btn-danger";
+                    }else{
+                        moviesTemp[i].watchedClass = "btn-info";
+                    }
+                    index = $.inArray(moviesTemp[i]['title'], userMoviesLikedNames);
+                    if (index >= 0){
+                        moviesTemp[i].likedClass = "btn-danger";
+                    }else{
+                        moviesTemp[i].likedClass = "btn-warning";
+                    }
+                    $scope.movies.push(moviesTemp[i]);
+                    $scope.$apply();
                 }
-                index = $.inArray(moviesTemp[i]['title'], userMoviesWatchedNames);
-                if (index >= 0){
-                    moviesTemp[i].watchedClass = "btn-danger";
-                }else{
-                    moviesTemp[i].watchedClass = "btn-info";
-                }
-                index = $.inArray(moviesTemp[i]['title'], userMoviesLikedNames);
-                if (index >= 0){
-                    moviesTemp[i].likedClass = "btn-danger";
-                }else{
-                    moviesTemp[i].likedClass = "btn-warning";
-                }
-                $scope.MovieWatchList.push(moviesTemp[i]);
-                $scope.$apply();
+            },
+            error: function(error) {
+                $('.notification').first().text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
             }
-        },
-        error: function(error) {
-        }
-    });
-    Parse.Cloud.run('getMovie', {className: 'MovieLiked', limit: 12, page: 1}, {
-        success: function(results) {
-            var moviesTemp = [];
-            results.forEach(function(object){
-                moviesTemp.push({
-                    title: object.get('title'),
-                    poster_path: object.get('poster_path'),
-                    vote_average: object.get('vote_average'),
-                    release_date: object.get('release_date'),
-                    id: object.get('tmdb_id')
-                });
-            });
-        
-            for(var i=0;i<moviesTemp.length;i++){
-                var index = $.inArray(moviesTemp[i]['title'], userMoviesWatchlistNames);
-                if (index >= 0){
-                    moviesTemp[i].watchlistClass = "btn-danger";
-                }else{
-                    moviesTemp[i].watchlistClass = "btn-success";
-                }
-                index = $.inArray(moviesTemp[i]['title'], userMoviesWatchedNames);
-                if (index >= 0){
-                    moviesTemp[i].watchedClass = "btn-danger";
-                }else{
-                    moviesTemp[i].watchedClass = "btn-info";
-                }
-                index = $.inArray(moviesTemp[i]['title'], userMoviesLikedNames);
-                if (index >= 0){
-                    moviesTemp[i].likedClass = "btn-danger";
-                }else{
-                    moviesTemp[i].likedClass = "btn-warning";
-                }
-                $scope.MovieLiked.push(moviesTemp[i]);
-                $scope.$apply();
-            }
-        },
-        error: function(error) {
-        }
-    });
-    
-    $scope.watchlist = function($index,movie){
-        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
-    }
-    
-    $scope.watched = function($index,movie){
-        addMovieWatched($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
-    }
-    
-    $scope.trailer = function($index,movie){
-        showMovieTrailer($index,movie.id);
-    }
-    
-    $scope.like = function($index,movie){
-        addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        });
     }
 }]);

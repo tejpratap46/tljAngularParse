@@ -33,6 +33,7 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
     });
     $scope.total = 0;
     $routeParams.username = typeof $routeParams.username !== 'undefined' ? $routeParams.username : $scope.userObjectId;
+    $scope.userObjectId = $routeParams.username;
     if ($routeParams.username.length > 0) {
         var User = Parse.User;
         var user = new User();

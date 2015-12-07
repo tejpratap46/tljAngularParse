@@ -1,23 +1,122 @@
-<div class="row jumbotron center" style="background: white;">
-  <h1 class="bold">Categories</h1>
-  <h4>Show Me Movies That Are</h4>
+<div class="row jumbotron" style="background: white;">
+  <h1 class="bold center">Hey!</h1>
+  <h4 class="center">This one is popular now</h4>
   <div>
     <a href="#/movie">
-      <div class="col-xs-2">
-        <img style="width: 100%;" src="images/start.png" alt="Movies">
+    <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+        <div class="col-xs-3">
+          <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w185' + moviesPopular[0].poster_path}}" alt="Movies">
+        </div>
+        <div class="col-xs-9">
+          <h5 class="ellipsis">{{moviesPopular[0].title}}</h5>
+          <p class="ellipsis">{{moviesPopular[0].overview}}</p>
+        </div>
       </div>
-      <div class="col-xs-10">
-        <h5 class="ellipsis">Start Here</h5>
-        <p class="ellipsis">Different ways to checkout movies.</p>
-      </div>
+    <div class="col-sm-2"></div>
     </a>
   </div>
-</div>
-<div class="row jumbotron center">
-  <h1 class="bold">Categories</h1>
-  <h4>Show Me Movies That Are</h4>
-</div>
-<div class="row jumbotron center" style="background: white;">
-  <h1 class="bold">Categories</h1>
-  <h4>Show Me Movies That Are</h4>
+  </div>
+  <div class="row jumbotron">
+    <h1 class="bold center">Have You Seen</h1>
+    <h4 class="center">All movies of <a href="http://localhost/projects/tljAngular/#/list/view/{{listid}}">Marvel Cinematic Universe</a></h4>
+    <div class="row">
+        <div class="col-sm-6" data-ng-repeat="movie in movies track by $index | limitTo: 4">
+          <blockquote>
+                <a href="#/movie/view/{{movie.id + '/' + movie.title}}">
+                    <div class="col-sm-4">
+                        <div style="height: 275px; overflow: hidden;">
+                            <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w185' + movie.poster_path}}" alt="{{movie.title}}" onError="this.onerror=null;this.src='images/logo-512.png';" />
+                        </div>
+                    </div>
+                    <div class="col-sm-8 center">
+                        <button style="height:60px; width:60px; font-size: 1.5em;" class="center btn btn-success bold round-button">{{movie.vote_average}}</button>
+                        <h4 class="ellipsis" title="{{movie.title}}">{{movie.title}}</h4>
+                        <p class="ellipsis">{{movie.release_date}}</p>
+                        <p class="ellipsis" title="{{movie.overview}}">{{movie.overview}}</p>
+                    </div>
+                </a>
+                <div class="row center">
+                    <div class="btn-group">
+                        <button class="movieWatchlist btn {{movie.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, movie)"></button>
+                        <button class="movieWatched btn {{movie.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index, movie)"></button>
+                        <button class="movieLiked btn {{movie.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index, movie)"></button>
+                        <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index, movie)"></button>
+                    </div>
+                </div>
+          </blockquote>
+        </div>
+    </div>
+  </div>
+  <div class="row jumbotron" style="background: white;">
+    <h1 class="bold center">More Great Stuff</h1>
+    <h4 class="center"></h4>
+    <div>
+    <div class="col-xs-6 col-sm-3 col-md-2">
+      <a href="#/movie">
+        <div class="thumbnail">
+          <img style="width: 100%;" src="images/start.png" alt="Movies">
+          <div class="caption">
+            <h5 class="center ellipsis">Start Here</h5>
+            <p class="center ellipsis">Different ways to checkout movies.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-2">
+      <a href="#/movie/list/discover/popularity.desc">
+        <div class="thumbnail">
+          <img style="width: 100%;" src="images/discover.png" alt="Discover">
+          <div class="caption">
+            <h5 class="center ellipsis">Discover</h5>
+            <p class="center ellipsis">Different ways to checkout movies.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-2">
+      <a href="#/list">
+        <div class="thumbnail">
+          <img style="width: 100%;" src="images/list.png" alt="Lists">
+          <div class="caption">
+            <h5 class="center ellipsis">Lists</h5>
+            <p class="center ellipsis">Awesome movie curated by experts.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-2">
+      <a href="#/trend">
+        <div class="thumbnail">
+          <img style="width: 100%;" src="images/trend.png" alt="Trends">
+          <div class="caption">
+            <h5 class="center ellipsis">Trends</h5>
+            <p class="center ellipsis">What people want on TMJ.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-2">
+      <a href="#/user">
+        <div class="thumbnail">
+          <img style="width: 100%;" src="images/user.png" alt="You">
+          <div class="caption">
+            <h5 class="center ellipsis">You</h5>
+            <p class="center ellipsis">Movies you are intrested in.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-2">
+      <a href="#/feed">
+        <div class="thumbnail">
+          <img style="width: 100%;" src="images/feed.png" alt="Feed">
+          <div class="caption">
+            <h5 class="center ellipsis">Feed</h5>
+            <p class="center ellipsis">Buzz going around movies.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
 </div>
