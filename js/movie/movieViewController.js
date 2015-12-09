@@ -112,7 +112,9 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
             });
         },
         error: function(error) {
-            $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');}
+            $('.notification').first().hide('fast');
+            // $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');
+            }
         });
     }
     

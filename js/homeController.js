@@ -23,10 +23,8 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http){
     $scope.loadMovies = loadMovies();
 
     function loadMovies(){
-        $('.notification').first().text('Loading...').show('fast');
         Parse.Cloud.run('getListMovies', {list_id: $scope.listid, limit: 24, page: (1)}, {
             success: function(results) {
-                $('.notification').first().hide('fast');
                 var moviesTemp = [];
                 results.forEach(function(object){
                     moviesTemp.push({
@@ -38,7 +36,7 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http){
                     });
                 });
 
-                for(var i=0;i<moviesTemp.length;i++){
+                for(var i=0;i<Math.min(6, moviesTemp.length);i++){
                     var index = $.inArray(moviesTemp[i]['title'], userMoviesWatchlistNames);
                     if (index >= 0){
                         moviesTemp[i].watchlistClass = "btn-danger";
@@ -62,8 +60,25 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http){
                 }
             },
             error: function(error) {
-                $('.notification').first().text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
+                $('.notification').first().hide('fast');
+                // $('.notification').first().text('Error : ' + error.message).show('fast').delay(3000).hide('fast');
             }
         });
+    }
+    
+    $scope.watchlist = function($index,movie){
+        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+    }
+    
+    $scope.watched = function($index,movie){
+        addMovieWatched($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+    }
+    
+    $scope.trailer = function($index,movie){
+        showMovieTrailer($index,movie.id);
+    }
+    
+    $scope.like = function($index,movie){
+        addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
 }]);

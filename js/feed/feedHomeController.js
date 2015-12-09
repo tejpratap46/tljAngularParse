@@ -35,7 +35,7 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
     function loadComments(){
         following.push(userObjectId);
         $('.notification').first().text('Loading ...').show('fast');
-        Parse.Cloud.run('feed', {following: following, limit: 12, page: (++page)},{
+        Parse.Cloud.run('feed', {following: following, limit: 6, page: (++page)},{
         success: function(results) {
             $('.notification').first().hide('fast');
             var commentsTemp = results;
@@ -66,7 +66,8 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
             }
         },
         error: function(error) {
-            $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');
+            $('.notification').first().hide('fast');
+            // $('.notification').first().text('Error ' + error.message).show('fast').delay(3000).hide('fast');
         }
     });
     }
