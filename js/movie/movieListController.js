@@ -62,10 +62,9 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
                 ]
             }
         ];
-        $scope.$apply();
-        $('#discover-filter').show();
+        $scope.showFilter = true;
     }else{
-        $('#discover-filter').hide();
+        $scope.showFilter = true;
     }
     
     $scope.minMovieRatingChanged = function(){
@@ -171,8 +170,16 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
             });
         }else if($routeParams.list == 'discover'){
             $('.notification').first().text('Loading ...').show('fast');
-             $http.get("http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id + "&with_genres=" + $routeParams.genre + "&vote_average.gte=" + $routeParams.rating  + "&with_cast="+$routeParams.cast+"&api_key=" + tmdbapikey + "&page=" + (++page))
+            var url = "http://api.themoviedb.org/3/discover/movie?sort_by=" + $routeParams.id
+            + "&vote_average.gte=" + $routeParams.rating
+            + ($routeParams.genre.length > 0 ? "&with_genres=" + $routeParams.genre : '')
+            + ($routeParams.cast.length > 0 ? "&with_cast=" + $routeParams.cast : '')
+            + "&api_key=" + tmdbapikey
+            + "&page=" + (++page);
+             $http.get(url)
                 .success(function(response) {
+                console.log(response);
+                console.log("Url : " + url);
                 $('.notification').first().hide('fast');
                 for (var i=0; i<response.results.length; i++){
                     var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
@@ -199,8 +206,6 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
             });
         }
     }
-    
-    
     
     $scope.watchlist = function($index,movie){
         addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
