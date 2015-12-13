@@ -1,35 +1,45 @@
-<div class="row center">
-    <div class="col-sm-3">
-        <div data-ng-if="isMovieSnapShown" class="thumbnail no-margin" style="background-image: url('{{'http://image.tmdb.org/t/p/w185' + search.poster_path}}');background-size:100%; height:90px;">
-            <a href="#/movie/view/{{search.id + '/' + search.title}}">
-                <div class="caption">
-                    <h4 class="shadow center ellipsis white" title="{{search.title}}">{{search.title}}</h4>
-                    <p class="shadow center ellipsis white">{{search.release_date}}</p>
+<div class="center">
+    <div class="row">
+        <div class="col-sm-1 col-md-2"></div>
+        <div class="col-sm-10 col-md-8">
+            <div data-ng-if="isMovieSnapShown" class="thumbnail no-margin" style="background-image: url('{{'http://image.tmdb.org/t/p/w185' + search.poster_path}}');background-size:100%; height:90px;">
+                <div class="col-xs-6">
+                    <a href="#/movie/view/{{search.id + '/' + search.title}}">
+                        <div class="caption">
+                            <h4 class="shadow center ellipsis white" title="{{search.title}}">{{search.title}}</h4>
+                            <p class="shadow center ellipsis white">{{search.release_date}}</p>
+                        </div>
+                    </a>
                 </div>
-            </a>
-            <div class="center">
-                <div class="btn-group" style="margin-top: -20px;">
-                    <button class="movieWatchlist btn {{search.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, search)"></button>
-                    <button class="movieWatched btn {{search.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index, search)"></button>
-                    <button class="movieLiked btn {{search.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index, search)"></button>
-                    <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index, search)"></button>
+                <div class="col-xs-6 left">
+                    <div class="btn-group" style="margin-top: 20px;">
+                        <button class="movieWatchlist btn {{search.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist(-1, search)"></button>
+                        <button class="movieWatched btn {{search.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched(-1, search)"></button>
+                        <button class="movieLiked btn {{search.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like(-1, search)"></button>
+                        <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer(-1, search)"></button>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="col-sm-1 col-md-2"></div>
     </div>
-    <div class="col-sm-9">
-     <form  data-ng-submit="updateStatus()">
-         <input autocomplete="off" id="statusText" data-ng-keyup="fillAutoComplete()" class="full-width" data-ng-model="statusText" style="padding: 20px; font-size: 2em;" type="text" placeholder="What are watching now ?">
-     </form>
+    <div class="row">
+        <div class="col-sm-1 col-md-2"></div>
+        <div class="col-sm-10 col-md-8">
+         <form  data-ng-submit="updateStatus()">
+             <input autocomplete="off" id="statusText" data-ng-keyup="fillAutoComplete()" class="full-width" data-ng-model="statusText" style="padding: 20px; font-size: 2em;" type="text" placeholder="What are you watching now ?">
+         </form>
+        </div>
+        <div class="col-sm-1 col-md-2"></div>
     </div>
 </div>
 <hr />
 <div>
     <div class="row" data-ng-repeat="comment in comments track by $index">
         <div class="col-sm-1 col-md-2 col-lg-3"></div>
-        <div data-ng-if="!comment.isAd" class="col-xs-12 col-sm-10 col-md-8 col-lg-6 no-padding">
+        <div data-ng-if="!comment.isAd && !comment.isList" class="col-xs-12 col-sm-10 col-md-8 col-lg-6 no-padding">
             <div class="thumbnail">
-                <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{username.split('')[0] | uppercase}}</h5></div>
+                <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{comment.username.split('')[0] | uppercase}}</h5></div>
                 <a href="#user/{{comment.userObjectId}}" class="bold">{{comment.username.split('@')[0]}}</a>{{comment.postAction}}<a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}" class="bold">{{'  '+comment.title}}</a><hr style="margin: 5px;"/>
                 <div style="height: 275px; overflow: hidden;">
                     <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">
@@ -38,10 +48,10 @@
                 </div>
                 <div class="center"style="height: 0px;">
                     <div class="btn-group" style="margin-top: -80px;">
-                        <button class="movieWatchlist btn {{comment.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index+1, comment)"></button>
-                        <button class="movieWatched btn {{comment.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index+1, comment)"></button>
-                        <button class="movieLiked btn {{comment.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index+1, comment)"></button>
-                        <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index+1, comment)"></button>
+                        <button class="movieWatchlist btn {{comment.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, comment)"></button>
+                        <button class="movieWatched btn {{comment.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index, comment)"></button>
+                        <button class="movieLiked btn {{comment.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index, comment)"></button>
+                        <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index, comment)"></button>
                     </div>
                 </div><hr style="margin: 5px;"/>
                 <div class="caption">
@@ -53,12 +63,41 @@
                 </div>
             </div>
         </div>
+        <!-- is List -->
+        <div data-ng-if="!comment.isAd && comment.isList" class="col-xs-12 col-sm-10 col-md-8 col-lg-6 no-padding">
+            <div class="thumbnail">
+                <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{comment.username.split('')[0] | uppercase}}</h5></div>
+                <a href="#user/{{comment.userObjectId}}" class="bold">{{comment.username.split('@')[0]}}</a>{{comment.postAction}}<hr style="margin: 5px;"/>
+                <div style="height: 275px; overflow: hidden;">
+                    <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">
+                        <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w300' + comment.poster_path}}" alt="comment.title" onError="this.onerror=null;this.src='images/logo-512.png';">
+                    </a>
+                </div>
+                <div class="center"style="height: 0px;">
+                    <div class="btn-group" style="margin-top: -80px;">
+                        <button class="movieWatchlist btn {{comment.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, comment)"></button>
+                        <button class="movieWatched btn {{comment.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index, comment)"></button>
+                        <button class="movieLiked btn {{comment.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index, comment)"></button>
+                        <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index, comment)"></button>
+                    </div>
+                </div><hr style="margin: 5px;"/>
+                <div class="caption">
+                    <small title="{{comment.timeTitle}}">{{comment.timeString}}</small>
+                    <div ng-if="comment.canLike">
+                        <p>{{comment.text}}</p>
+                         <button class="btn btn-link glyphicon glyphicon-thumbs-up" title="Like" data-ng-click="upvote($index,comment.id)"></button><span class="likedBy ellipsis"> {{comment.voted_by}}</span>
+                    </div>
+                    <hr style="margin: 5px;"/>
+                    <p class="right no-margin"><a href="{{comment.list_url}}" class="btn btn-link">more movies</a></p>
+                </div>
+            </div>
+        </div>
         <!-- Is an add -->
         <div data-ng-if="comment.isAd" class="col-xs-12 col-sm-10 col-md-8 col-lg-6 no-padding">
             <div class="thumbnail">
                 <div class="row">
                     <div class="col-xs-8">
-                        <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{username.split('')[0] | uppercase}}</h5></div>
+                        <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{comment.username.split('')[0] | uppercase}}</h5></div>
                         <a href="#/movie/view/{{comment.id}}" class="bold">{{comment.title}}</a> {{comment.text}}
                     </div>
                     <div class="col-xs-4">

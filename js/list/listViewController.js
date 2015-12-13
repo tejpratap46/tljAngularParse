@@ -67,11 +67,11 @@ app.registerCtrl('listViewController', ['$scope', '$routeParams', '$window', fun
     
     
     $scope.watchlist = function($index,movie){
-        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average,movie.backdrop_path);
     }
     
     $scope.watched = function($index,movie){
-        addMovieWatched($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        addMovieWatched($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average,movie.backdrop_path);
     }
     
     $scope.trailer = function($index,movie){
@@ -79,6 +79,6 @@ app.registerCtrl('listViewController', ['$scope', '$routeParams', '$window', fun
     }
     
     $scope.like = function($index,movie){
-        addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average,movie.backdrop_path);
     }
 }]);

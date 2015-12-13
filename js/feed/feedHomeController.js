@@ -43,6 +43,9 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                 var offset = new Date().getTimezoneOffset();
                 commentsTemp[i].timeString = moment(commentsTemp[i].sortWith).fromNow();
                 commentsTemp[i].timeTitle = moment(commentsTemp[i].sortWith).format('MMMM Do YYYY, h:mm a');
+                commentsTemp[i].isAd = commentsTemp[i].isAd ? true : false;
+                commentsTemp[i].isList = commentsTemp[i].list_url ? true : false;
+                console.log(commentsTemp[i].isList);
                 var index = $.inArray(commentsTemp[i]['title'], userMoviesWatchlistNames);
                 if (index >= 0){
                     commentsTemp[i].watchlistClass = "btn-danger";
@@ -114,19 +117,23 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
     }
     
     $scope.watchlist = function($index,movie){
-        addMovieWatchlist($index,movie.tmdb_id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        var add = $scope.isMovieSnapShown ? 1:0;
+        addMovieWatchlist($index + add,movie.tmdb_id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
     
     $scope.watched = function($index,movie){
-        addMovieWatched($index,movie.tmdb_id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        var add = $scope.isMovieSnapShown ? 1:0;
+        addMovieWatched($index + add,movie.tmdb_id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
     
     $scope.trailer = function($index,movie){
-        showMovieTrailer($index,movie.tmdb_id);
+        var add = $scope.isMovieSnapShown ? 1:0;
+        showMovieTrailer($index + add,movie.tmdb_id);
     }
     
     $scope.like = function($index,movie){
-        addMovieLiked($index,movie.tmdb_id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        var add = $scope.isMovieSnapShown ? 1:0;
+        addMovieLiked($index + add,movie.tmdb_id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
     }
 
     $scope.updateStatus = function(){
@@ -232,6 +239,7 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                 $scope.$apply();
                 var movieTemp = movies[0];
                 var index = $.inArray(movieTemp['title'], userMoviesWatchlistNames);
+                movieTemp.tmdb_id = movieTemp.id;
                 if (index >= 0){
                     movieTemp.watchlistClass = "btn-danger";
                 }else{

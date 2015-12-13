@@ -64,7 +64,7 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
         ];
         $scope.showFilter = true;
     }else{
-        $scope.showFilter = true;
+        $scope.showFilter = false;
     }
     
     $scope.minMovieRatingChanged = function(){
@@ -208,11 +208,11 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
     }
     
     $scope.watchlist = function($index,movie){
-        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average,movie.backdrop_path);
     }
     
     $scope.watched = function($index,movie){
-        addMovieWatched($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        addMovieWatched($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average,movie.backdrop_path);
     }
     
     $scope.trailer = function($index,movie){
@@ -220,6 +220,6 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
     }
     
     $scope.like = function($index,movie){
-        addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average);
+        addMovieLiked($index,movie.id,movie.title,movie.poster_path,movie.genre_ids,movie.release_date,movie.vote_average,movie.backdrop_path);
     }
 }]);

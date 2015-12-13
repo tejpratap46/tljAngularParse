@@ -2,7 +2,7 @@
     <div class="row">
         <h1 class="bold center">{{movie.title}}</h1>
         <hr />
-        <div class="col-sm-3">
+        <div class="col-sm-3" style="max-height: 440px; overflow: hidden;">
             <img style="width: 100%;" src="http://image.tmdb.org/t/p/w185{{movie.poster_path}}" alt="{{movie.title}}" onError="this.onerror=null;this.src='images/logo-512.png';" />
         </div>
         <div class="col-sm-9">

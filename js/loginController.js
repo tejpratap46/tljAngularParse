@@ -3,6 +3,12 @@ var app = angular.module('tlj');
 app.registerCtrl('loginController', ['$scope', function($scope) {
 	setNav('#navHome');
    Parse.User.logOut();
+   var userMoviesWatchlistNames = [];
+	var userMoviesWatchedNames = [];
+	var userMoviesLikedNames = [];
+	var userMoviesWatchlist = [];
+	var userMoviesWatched = [];
+	var userMoviesLiked = [];
    // update nav bar
    checkIfLoggedIn();
    $scope.login = function() {

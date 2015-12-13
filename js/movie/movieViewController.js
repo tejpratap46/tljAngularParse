@@ -127,7 +127,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
                 genres.push(object.id);
             })
         }
-        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
+        addMovieWatchlist($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average,movie.backdrop_path);
     }
     
     $scope.watched = function($index,movie){
@@ -139,7 +139,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
                 genres.push(object.id);
             })
         }
-        addMovieWatched($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
+        addMovieWatched($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average,movie.backdrop_path);
     }
     
     $scope.trailer = function($index,movie){
@@ -155,7 +155,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
                 genres.push(object.id);
             })
         }
-        addMovieLiked($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average);
+        addMovieLiked($index,movie.id,movie.title,movie.poster_path,genres,movie.release_date,movie.vote_average,movie.backdrop_path);
     }
     
     $scope.addComment = function(){
