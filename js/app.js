@@ -127,7 +127,7 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
 		controller : 'listHomeController',
         resolve: loader(['js/list/listHomeController.js'])
 	})
-	.when('/list/view/:id', {
+	.when('/list/view/:id/:name?', {
 		templateUrl: 'views/list/view.html',
 		controller : 'listViewController',
         resolve: loader(['js/list/listViewController.js'])

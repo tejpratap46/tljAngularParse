@@ -1,6 +1,7 @@
 var app = angular.module('tlj');
 
 app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$http', function($scope, $window, $routeParams, $http){
+    document.title = 'The List Job';
     var currentUser = Parse.User.current();
     var following = [];
     var username;
@@ -40,12 +41,16 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
             $('.notification').first().hide('fast');
             var commentsTemp = results;
             for(var i=0;i<commentsTemp.length;i++){
-                var offset = new Date().getTimezoneOffset();
-                commentsTemp[i].timeString = moment(commentsTemp[i].sortWith).fromNow();
-                commentsTemp[i].timeTitle = moment(commentsTemp[i].sortWith).format('MMMM Do YYYY, h:mm a');
                 commentsTemp[i].isAd = commentsTemp[i].isAd ? true : false;
                 commentsTemp[i].isList = commentsTemp[i].list_url ? true : false;
-                console.log(commentsTemp[i].isList);
+                var offset = new Date().getTimezoneOffset();
+                if (commentsTemp[i].isList) {
+                    commentsTemp[i].timeString = moment(commentsTemp[i].release_date).fromNow();
+                    commentsTemp[i].timeTitle = moment(commentsTemp[i].release_date).format('MMMM Do YYYY, h:mm a');
+                }else{
+                    commentsTemp[i].timeString = moment(commentsTemp[i].sortWith).fromNow();
+                    commentsTemp[i].timeTitle = moment(commentsTemp[i].sortWith).format('MMMM Do YYYY, h:mm a');
+                }
                 var index = $.inArray(commentsTemp[i]['title'], userMoviesWatchlistNames);
                 if (index >= 0){
                     commentsTemp[i].watchlistClass = "btn-danger";

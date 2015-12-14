@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-sm-6 no-margin no-padding" data-ng-repeat="list in movieList track by $index">
         <div class="imageAndText" style="height: 275px; overflow: hidden;">
-           <a href="#/list/view/{{list.id}}">
+           <a href="#/list/view/{{list.id}}/{{list.name}}">
                 <img src="{{list.image}}" style="min-height: 100%; min-width: 100%; align-center: true;" alt="{{list.name}}" onError="this.onerror=null;this.src='images/logo-512.png';" />
                 <div class="col">
                     <div class="col-sm-12">

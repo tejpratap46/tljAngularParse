@@ -1,6 +1,7 @@
 var app = angular.module('tlj');
 
 app.registerCtrl('movieHomeController', ['$scope', '$http', function($scope, $http){
+    document.title = 'Movies Home';
 	setNav('#navStart');
 
 	$scope.categories = [{"name" : "Top Rated", "id": "top_rated", "glyphicon": "stats"},

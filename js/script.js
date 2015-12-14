@@ -18,6 +18,30 @@ var userMoviesLiked = [];
 //   lastScrollTop = st;
 //});
 
+// Loading
+// var interval = 0;
+// setInterval(function(){
+//     switch (interval){
+//         case 0:
+//         $('#loading').text('Loading .');
+//         interval = 1;
+//         break;
+//         case 1:
+//         $('#loading').text('Loading ..');
+//         interval = 2;
+//         break;
+//         case 2:
+//         $('#loading').text('Loading ...');
+//         interval = 3;
+//         break;
+//         case 3:
+//         $('#loading').text('Loading .');
+//         interval = 0;
+//         break;
+//         default: break;
+//     }
+// }, 800);
+
 function setNav (activeId) {
 	$('#navHome').removeClass('active');
 	$('#navStart').removeClass('active');

@@ -8,13 +8,13 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
     }
     var following = currentUser.get('following');
     var username = currentUser.get('username');
-    $scope.username = currentUser.get('name');
     $scope.userObjectId = currentUser.id;
     currentUser.fetch({
         success: function(user){
             following = user.get('following');
             following = typeof following !== 'undefined' ? following : [];
             currentUser = user;
+            $scope.username = currentUser.get('name');
             if ($scope.userObjectId == $routeParams.username) {
                 $scope.followText = "Following " + following.length + " people";
                 $scope.buttonTheme = "link disabled";
@@ -34,18 +34,21 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
     $scope.total = 0;
     $routeParams.username = typeof $routeParams.username !== 'undefined' ? $routeParams.username : $scope.userObjectId;
     $scope.userObjectId = $routeParams.username;
+    document.title = $routeParams.name;
     if ($routeParams.username.length > 0) {
         var User = Parse.User;
         var user = new User();
         user.id = $routeParams.username;
         user.fetch().then(function(fetchedUser){
             $scope.username = fetchedUser.get("name");
+            document.title = $scope.username;
         }, function(error){
             console.log(error.message);
         });
     }else{
-
+        document.title = $scope.username;
     }
+
     var classes = ["MovieWatchList", "MovieWatched", "MovieLiked"];
     classes.forEach(function(className){
         $('.notification').first().text('Loading...').show('fast');

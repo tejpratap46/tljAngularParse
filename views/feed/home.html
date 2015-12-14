@@ -1,8 +1,8 @@
 <div class="center">
     <div class="row">
         <div class="col-sm-1 col-md-2"></div>
-        <div class="col-sm-10 col-md-8">
-            <div data-ng-if="isMovieSnapShown" class="thumbnail no-margin" style="background-image: url('{{'http://image.tmdb.org/t/p/w185' + search.poster_path}}');background-size:100%; height:90px;">
+        <div class="col-sm-10 col-md-8" style="height: 120px;">
+            <div data-ng-if="isMovieSnapShown" class="thumbnail no-margin" style="background-image: url('{{'http://image.tmdb.org/t/p/w185' + search.poster_path}}');background-size:100%; height:110px;">
                 <div class="col-xs-6">
                     <a href="#/movie/view/{{search.id + '/' + search.title}}">
                         <div class="caption">
@@ -41,7 +41,7 @@
             <div class="thumbnail">
                 <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{comment.username.split('')[0] | uppercase}}</h5></div>
                 <a href="#user/{{comment.userObjectId}}" class="bold">{{comment.username.split('@')[0]}}</a>{{comment.postAction}}<a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}" class="bold">{{'  '+comment.title}}</a><hr style="margin: 5px;"/>
-                <div style="height: 275px; overflow: hidden;">
+                <div style="max-height: 275px; overflow: hidden;">
                     <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">
                         <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w300' + comment.poster_path}}" alt="comment.title" onError="this.onerror=null;this.src='images/logo-512.png';">
                     </a>
@@ -67,8 +67,8 @@
         <div data-ng-if="!comment.isAd && comment.isList" class="col-xs-12 col-sm-10 col-md-8 col-lg-6 no-padding">
             <div class="thumbnail">
                 <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{comment.username.split('')[0] | uppercase}}</h5></div>
-                <a href="#user/{{comment.userObjectId}}" class="bold">{{comment.username.split('@')[0]}}</a>{{comment.postAction}}<hr style="margin: 5px;"/>
-                <div style="height: 275px; overflow: hidden;">
+                <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.username}}" class="bold">{{comment.username.split('@')[0]}}</a> Is {{comment.postAction}}<hr style="margin: 5px;"/>
+                <div style="max-height: 275px; overflow: hidden;">
                     <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">
                         <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w300' + comment.poster_path}}" alt="comment.title" onError="this.onerror=null;this.src='images/logo-512.png';">
                     </a>
@@ -95,9 +95,9 @@
         <!-- Is an add -->
         <div data-ng-if="comment.isAd" class="col-xs-12 col-sm-10 col-md-8 col-lg-6 no-padding">
             <div class="thumbnail">
-                <div class="row">
+                <div class="no-margin row">
                     <div class="col-xs-8">
-                        <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{comment.username.split('')[0] | uppercase}}</h5></div>
+                        <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{comment.title.split('')[0] | uppercase}}</h5></div>
                         <a href="#/movie/view/{{comment.id}}" class="bold">{{comment.title}}</a> {{comment.text}}
                     </div>
                     <div class="col-xs-4">

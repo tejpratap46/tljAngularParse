@@ -1,7 +1,8 @@
 var app = angular.module('tlj');
 
 app.registerCtrl('trendListController', ['$scope', '$routeParams', '$window', function($scope, $routeParams, $window){
-	setNav('#navHome');
+	document.title = "Trends";
+    setNav('#navHome');
     var page = 0;
     $scope.movies = [];
     $routeParams.id = typeof $routeParams.id !== 'undefined' ? $routeParams.id : 'MovieWatched';

@@ -3,9 +3,11 @@ var app = angular.module('tlj');
 app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams){
 	setNav('#navStart');
     document.title = $routeParams.name;
+    $scope.isLoadingComplete = false;
     $('html,body').scrollTop(0);
     $http.get("http://api.themoviedb.org/3/movie/" + $routeParams.id + "?api_key=" + tmdbapikey)
         .success(function(response) {
+            $scope.isLoadingComplete = true;
             $scope.movie = response;
             var index = $.inArray(response.title, userMoviesWatchlistNames);
             if (index >= 0){

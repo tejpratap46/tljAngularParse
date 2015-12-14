@@ -1,6 +1,7 @@
 var app = angular.module('tlj');
 
 app.registerCtrl('followHomeController',['$scope','$window', function($scope, $window) {
+    document.title = 'Follow People';
 	var currentUser = Parse.User.current();
 	if (currentUser == null) {
         window.location.hash = '#/login';

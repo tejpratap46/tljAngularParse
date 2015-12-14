@@ -11,7 +11,7 @@
     	<div data-ng-repeat="people in peoples track by $index">
 			<div class="col-md-3 center">
 				<div class="thumbnail">
-					<a href="#user/{{people.username}}">
+					<a href="#user/{{people.id}}">
 						<div class="round-button btn btn-info center center-vertical" style="height: 100px; width: 100px;"><h1 class="bold white" style="font-size: 4em;">{{people.username.split('')[0] | uppercase}}</h1></div>
 						<div class="caption">
 							<h3 class="ellipsis">{{people.username.split('@')[0]}}</h3>
