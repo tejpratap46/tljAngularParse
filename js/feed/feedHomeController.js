@@ -43,6 +43,7 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
             for(var i=0;i<commentsTemp.length;i++){
                 commentsTemp[i].isAd = commentsTemp[i].isAd ? true : false;
                 commentsTemp[i].isList = commentsTemp[i].list_url ? true : false;
+                commentsTemp[i].isVideo = commentsTemp[i].video_id ? true : false;
                 var offset = new Date().getTimezoneOffset();
                 if (commentsTemp[i].isList) {
                     commentsTemp[i].timeString = moment(commentsTemp[i].release_date).fromNow();
@@ -132,8 +133,12 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
     }
     
     $scope.trailer = function($index,movie){
-        var add = $scope.isMovieSnapShown ? 1:0;
-        showMovieTrailer($index + add,movie.tmdb_id);
+        if (movie.isVideo) {
+            eModal.iframe('http://www.youtube.com/embed/' + movie.video_id + '?autoplay=1', 'Trailer');
+        }else{
+            var add = $scope.isMovieSnapShown ? 1:0;
+            showMovieTrailer($index + add,movie.tmdb_id);
+        }
     }
     
     $scope.like = function($index,movie){
