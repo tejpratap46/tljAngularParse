@@ -69,9 +69,14 @@
                 <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{comment.username.split('')[0] | uppercase}}</h5></div>
                 <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.username}}" class="bold">{{comment.username.split('@')[0]}}</a> Is {{comment.postAction}}<hr style="margin: 5px;"/>
                 <div style="max-height: 275px; overflow: hidden;">
-                    <a href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">
-                        <img data-ng-if="!comment.isVideo" style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w300' + comment.poster_path}}" alt="comment.title" onError="this.onerror=null;this.src='images/logo-512.png';">
-                        <img data-ng-if="comment.isVideo" style="width: 100%;" src="{{'https://i.ytimg.com/vi/' + comment.video_id + '/mqdefault.jpg'}}" alt="comment.title" onError="this.onerror=null;this.src='images/logo-512.png';">
+                    <a data-ng-if="!comment.isVideo" href="#/movie/view/{{comment.tmdb_id + '/' + comment.title}}">
+                        <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w300' + comment.poster_path}}" alt="comment.title" onError="this.onerror=null;this.src='images/logo-512.png';">
+                    </a>
+                    <a data-ng-if="comment.isVideo" data-ng-click="trailer($index, comment)">
+                        <img style="width: 100%; position:relative; text-align:center; float: left;" src="{{'https://i.ytimg.com/vi/' + comment.video_id + '/mqdefault.jpg'}}" alt="comment.title" onError="this.onerror=null;this.src='images/logo-512.png';">
+                        <div style="position: absolute; top: 20%; width: 100%;">
+                            <h1 class="center white shadow" style="font-size: 8em;"><span class="glyphicon glyphicon-play-circle"></span></h1>
+                        </div>
                     </a>
                 </div>
                 <div class="center"style="height: 0px;">

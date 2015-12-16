@@ -2,7 +2,7 @@
 	font-weight: bold;
 }
 .shadow{
-	text-shadow: 1px 1px #000;
+	text-shadow: 1px 1px 1px #000000;
 }
 .bottom {
 	bottom: 0px;

@@ -29,7 +29,7 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
         var body = document.body, html = document.documentElement;
         var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
         windowBottom = windowHeight + window.pageYOffset;
-        if (windowBottom >= docHeight - 10) {
+        if (windowBottom >= docHeight - 100) {
             $scope.loadComments = loadComments();
         }
     });

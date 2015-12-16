@@ -14,8 +14,9 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
             following = user.get('following');
             following = typeof following !== 'undefined' ? following : [];
             currentUser = user;
+            $scope.userObjectId = currentUser.id;
             $scope.username = currentUser.get('name');
-            if ($scope.userObjectId == $routeParams.username) {
+            if (currentUser.id == $routeParams.username) {
                 $scope.followText = "Following " + following.length + " people";
                 $scope.buttonTheme = "link disabled";
             }else{
