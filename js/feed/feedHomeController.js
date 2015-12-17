@@ -102,10 +102,11 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                         if (votedByTemp.length == 0){
                             votedBy = "";
                         }else if (votedByTemp.indexOf(user.get("username")) >= 0){
-                            if (votedByTemp.length == 1)
+                            if (votedByTemp.length == 1){
                                 votedBy = " you liked this";
-                            else
+                            }else{
                                 votedBy = " you and " + (votedByTemp.length - 1) + " other liked this";
+                            }
                         }else{
                             votedBy = votedByTemp.length + " people liked this";
                         }

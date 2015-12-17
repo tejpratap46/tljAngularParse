@@ -21,7 +21,7 @@ app.registerCtrl('trendListController', ['$scope', '$routeParams', '$window', fu
     
     function loadMovies(){
         $('.notification').first().text('Loading...').show('fast');
-        Parse.Cloud.run('getMovie', {className: $routeParams.id, limit: 24, page: (++page), genre: $routeParams.genre}, {
+        Parse.Cloud.run('getMovie', {className: $routeParams.id, limit: 24, page: (++page), genre: $routeParams.genre, includeDeleted: false}, {
             success: function(results) {
                 $('.notification').first().hide('fast');
                 var moviesTemp = [];

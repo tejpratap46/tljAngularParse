@@ -29,7 +29,7 @@ app.registerCtrl('userMovieController', ['$scope', '$routeParams', '$window', fu
 
     function loadMovies(){
         $('.notification').first().text('Loading...').show('fast');
-        Parse.Cloud.run('getMovie', {className: $routeParams.category, limit: 12, page: (++page), genre: $routeParams.genre, userObjectId: $routeParams.userObjectId},{
+        Parse.Cloud.run('getMovie', {className: $routeParams.category, limit: 12, page: (++page), genre: $routeParams.genre, userObjectId: $routeParams.userObjectId, includeDeleted: false},{
         success: function(results) {
             var moviesTemp = [];
             var groupBy;
