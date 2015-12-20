@@ -44,6 +44,13 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                 commentsTemp[i].isAd = commentsTemp[i].isAd ? true : false;
                 commentsTemp[i].isList = commentsTemp[i].list_url ? true : false;
                 commentsTemp[i].isVideo = commentsTemp[i].video_id ? true : false;
+                if (commentsTemp[i].canLike) {
+                    if (commentsTemp[i].voted_by.indexOf("you ") >= 0){
+                        commentsTemp[i].commentLikedClass = "primary";
+                    }else{
+                        commentsTemp[i].commentLikedClass = "link";
+                    }
+                }
                 var offset = new Date().getTimezoneOffset();
                 if (commentsTemp[i].isList) {
                     commentsTemp[i].timeString = moment(commentsTemp[i].release_date).fromNow();
@@ -52,19 +59,19 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                     commentsTemp[i].timeString = moment(commentsTemp[i].sortWith).fromNow();
                     commentsTemp[i].timeTitle = moment(commentsTemp[i].sortWith).format('MMMM Do YYYY, h:mm a');
                 }
-                var index = $.inArray(commentsTemp[i]['title'], userMoviesWatchlistNames);
+                var index = $.inArray(commentsTemp[i].tmdb_id, userMoviesWatchlistNames);
                 if (index >= 0){
                     commentsTemp[i].watchlistClass = "btn-danger";
                 }else{
                     commentsTemp[i].watchlistClass = "btn-success";
                 }
-                index = $.inArray(commentsTemp[i]['title'], userMoviesWatchedNames);
+                index = $.inArray(commentsTemp[i].tmdb_id, userMoviesWatchedNames);
                 if (index >= 0){
                     commentsTemp[i].watchedClass = "btn-danger";
                 }else{
                     commentsTemp[i].watchedClass = "btn-info";
                 }
-                index = $.inArray(commentsTemp[i]['title'], userMoviesLikedNames);
+                index = $.inArray(commentsTemp[i].tmdb_id, userMoviesLikedNames);
                 if (index >= 0){
                     commentsTemp[i].likedClass = "btn-danger";
                 }else{
@@ -82,41 +89,57 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
     }
 
     $scope.upvote = function($index,id){
+        var user = Parse.User.current();
+        if (user == null){
+            eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
+            return false;
+        }
         var Comment = Parse.Object.extend("Comment");
         var query = new Parse.Query(Comment);
+        $('.notification').first().text('Loading...').show('fast');
         query.get(id, {
             success: function(comment) {
-            var user = Parse.User.current();
-            if (user == null){
-                eModal.confirm("Create a account in just 10 sec, and track all your entertainment life.", "Login").then(loginOk, loginCancel);
-                return false;
+            $('.notification').first().hide('fast');
+            if (comment.get('voted_by')) {
+                if (comment.get('voted_by').indexOf(user.id) >= 0){
+                    // Remove like
+                    $scope.comments[$index].commentLikedClass = "link";
+                    comment.remove("voted_by", user.id);
+                    comment.set(comment.get("votes")-1);
+                }else{
+                    // Add like
+                    $scope.comments[$index].commentLikedClass = "primary";
+                    comment.addUnique("voted_by", userObjectId);
+                    comment.increment("votes");
+                }
             }else{
-                // no problem, add comment
-                var name = user.get("username");
+                $scope.comments[$index].commentLikedClass = "primary";
                 comment.addUnique("voted_by", userObjectId);
                 comment.increment("votes");
-                comment.save(null, {
-                    success: function(comment) {
-                        var votedByTemp = comment.get('voted_by');
-                        var votedBy = "";
-                        if (votedByTemp.length == 0){
-                            votedBy = "";
-                        }else if (votedByTemp.indexOf(user.get("username")) >= 0){
-                            if (votedByTemp.length == 1){
-                                votedBy = " you liked this";
-                            }else{
-                                votedBy = " you and " + (votedByTemp.length - 1) + " other liked this";
-                            }
-                        }else{
-                            votedBy = votedByTemp.length + " people liked this";
-                        }
-                        var pre = $('.likedBy').eq($index).text();
-                        $('.likedBy').eq($index).text(votedBy);
-                    },
-                error: function(comment, error) {
-                    }
-                });
             }
+            $scope.$apply();
+            comment.save(null, {
+                success: function(comment) {
+                    var votedByTemp = comment.get('voted_by');
+                    var votedBy = "";
+                    if (votedByTemp.length == 0){
+                        votedBy = "";
+                    }else if (votedByTemp.indexOf(user.id) >= 0){
+                        if (votedByTemp.length == 1){
+                            votedBy = " you liked this";
+                        }else{
+                            votedBy = " you and " + (votedByTemp.length - 1) + " other liked this";
+                        }
+                    }else{
+                        votedBy = votedByTemp.length + " people liked this";
+                    }
+                    var pre = $('.likedBy').eq($index).text();
+                    $scope.comments[$index].voted_by = votedBy;
+                    $scope.$apply();
+                },
+                error: function(comment, error) {
+                }
+            });
         },
         error: function(error) {
         }
@@ -249,20 +272,20 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                 $scope.isMovieSnapShown = true;
                 $scope.$apply();
                 var movieTemp = movies[0];
-                var index = $.inArray(movieTemp['title'], userMoviesWatchlistNames);
+                var index = $.inArray(movieTemp.tmdb_id, userMoviesWatchlistNames);
                 movieTemp.tmdb_id = movieTemp.id;
                 if (index >= 0){
                     movieTemp.watchlistClass = "btn-danger";
                 }else{
                     movieTemp.watchlistClass = "btn-success";
                 }
-                index = $.inArray(movieTemp['title'], userMoviesWatchedNames);
+                index = $.inArray(movieTemp.tmdb_id, userMoviesWatchedNames);
                 if (index >= 0){
                     movieTemp.watchedClass = "btn-danger";
                 }else{
                     movieTemp.watchedClass = "btn-info";
                 }
-                index = $.inArray(movieTemp['title'], userMoviesLikedNames);
+                index = $.inArray(movieTemp.tmdb_id, userMoviesLikedNames);
                 if (index >= 0){
                     movieTemp.likedClass = "btn-danger";
                 }else{
@@ -280,5 +303,34 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                 })
             });
         }
+    }
+
+    $scope.writeComment = function(comment){
+        var currentUser = Parse.User.current();
+        var Comment = Parse.Object.extend("Comment");
+        var parentComment = new Comment();
+        parentComment.id = comment.id;
+        var subComment = new Comment();
+        subComment.set("parent_comment", parentComment);
+        subComment.set("created_by", currentUser);
+        subComment.set("username", currentUser.get('username'));
+        subComment.set("text", comment.commentText);
+        subComment.save(null, {
+        success: function(subComment) {
+                parentComment.add("sub_comment", subComment);
+                parentComment.save();
+            }
+        });
+        var subCmt = {};
+        if (!comment.sub_comment) {
+            comment.sub_comment = [];
+        }
+        subCmt.userId = currentUser.id;
+        subCmt.username =  currentUser.get('name');
+        subCmt.commentText =  comment.commentText
+        comment.sub_comment.push(subCmt);
+        comment.sub_comments_count += 1;
+        comment.commentText = "";
+        $scope.$apply();
     }
 }]);

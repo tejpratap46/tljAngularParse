@@ -99,15 +99,12 @@ app.registerCtrl('followHomeController',['$scope','$window', function($scope, $w
             if (index >= 0){
                 $scope.peoples[$index].followText = "Follow";
                 $scope.peoples[$index].buttonTheme = "success";
-                newFollowing = jQuery.grep($scope.following, function(value) {
-                    return value != userObjectId;
-                });
-                currentUser.set("following", newFollowing);
+                currentUser.remove("following", userObjectId);
                 currentUser.save(null, {
                 success: function(comment) {
                     $scope.peoples[$index].followText = "Follow";
                     $scope.peoples[$index].buttonTheme = "success";
-                	$scope.following = newFollowing;
+                	$scope.following = comment.get("following");
         			$scope.$apply();
                 },
                 error: function(comment, error) {
@@ -122,7 +119,7 @@ app.registerCtrl('followHomeController',['$scope','$window', function($scope, $w
                 success: function(comment) {
                     $scope.peoples[$index].followText = "Following";
                     $scope.peoples[$index].buttonTheme = "danger";
-                    $scope.following.push(userObjectId);
+                    $scope.following = comment.get("following");
         			$scope.$apply();
                 },
                 error: function(comment, error) {

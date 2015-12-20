@@ -70,7 +70,7 @@ function getUserMoviesWatchlist(){
     success: function(results) {
         userMoviesWatchlist = results;
         for (var i=0; i< results.length; i++){
-            userMoviesWatchlistNames.push(results[i].get('title'));
+            userMoviesWatchlistNames.push(results[i].get('tmdb_id'));
         }
     },
     error: function(error) {}
@@ -88,7 +88,7 @@ function getUserMoviesWatched(){
     success: function(results) {
         userMoviesWatched = results;
         for (var i=0; i< results.length; i++){
-            userMoviesWatchedNames.push(results[i].get('title'));
+            userMoviesWatchedNames.push(results[i].get('tmdb_id'));
         }
     },
     error: function(error) {}
@@ -106,7 +106,7 @@ function getUserMoviesLiked(){
     success: function(results) {
         userMoviesLiked = results;
         for (var i=0; i< results.length; i++){
-            userMoviesLikedNames.push(results[i].get('title'));
+            userMoviesLikedNames.push(results[i].get('tmdb_id'));
         }
     },
     error: function(error) {}
@@ -137,7 +137,7 @@ function addMovieWatchlist($index,tmdbid,name,image,genre,release,vote_average,b
                     success: function(movie) {
                         $('.notification').first().hide('fast');
                         toggleButtonAdded($index, "movieWatchlist");
-                        userMoviesWatchlistNames.push(name);
+                        userMoviesWatchlistNames.push(tmdbid + '');
                     },
                 error: function(movie, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -178,7 +178,7 @@ function addMovieWatched($index,tmdbid,name,image,genre,release,vote_average,bac
                     success: function(movie) {
                         $('.notification').first().hide('fast');
                         toggleButtonAdded($index, "movieWatched");
-                        userMoviesWatchedNames.push(name);
+                        userMoviesWatchedNames.push(tmdbid + '');
                     },
                 error: function(movie, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -219,7 +219,7 @@ function addMovieWatchedSilent($index,tmdbid,name,image,genre,release,vote_avera
                     success: function(movie) {
                         $('.notification').first().hide('fast');
                         toggleButtonAdded($index, "movieWatched");
-                        userMoviesWatchedNames.push(name);
+                        userMoviesWatchedNames.push(tmdbid + '');
                     },
                 error: function(movie, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -253,7 +253,7 @@ function addMovieLiked($index,tmdbid,name,image,genre,release,vote_average,backd
                     success: function(movie) {
                         $('.notification').first().hide('fast');
                         toggleButtonAdded($index, "movieLiked");
-                        userMoviesLikedNames.push(name);
+                        userMoviesLikedNames.push(tmdbid + '');
                     },
                 error: function(movie, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -287,17 +287,17 @@ function deleteMovie(){
             $('.notification').first().hide('fast');
             toggleButtonRemoved(globalIndex, globalbutton);
             if (globalbutton == "movieWatchlist"){
-                var index = userMoviesWatchlistNames.indexOf(globalmovie.get('name'));
+                var index = userMoviesWatchlistNames.indexOf(globalmovie.get('tmdb_id') + '');
                 if (index > -1) {
                     userMoviesWatchlistNames.splice(index, 1);
                 }
             }else if(globalbutton == "movieWatched"){
-                var index = userMoviesWatchedNames.indexOf(globalmovie.get('name'));
+                var index = userMoviesWatchedNames.indexOf(globalmovie.get('tmdb_id') + '');
                 if (index > -1) {
                     userMoviesWatchedNames.splice(index, 1);
                 }
             }else{
-                var index = userMoviesLikedNames.indexOf(globalmovie.get('name'));
+                var index = userMoviesLikedNames.indexOf(globalmovie.get('tmdb_id') + '');
                 if (index > -1) {
                     userMoviesLikedNames.splice(index, 1);
                 }
@@ -338,11 +338,11 @@ function addMovie($index,movie,tmdbid,name,image,genre,release,vote_average,back
             $('.notification').first().hide('fast');
             toggleButtonAdded($index, buttonId);
             if(buttonId == "movieWatchlist"){
-                userMoviesWatchlistNames.push(name);
+                userMoviesWatchlistNames.push(tmdbid + '');
             }else if(buttonId == "movieWatched"){
-                userMoviesWatchedNames.push(name);
+                userMoviesWatchedNames.push(tmdbid + '');
             }else{
-                userMoviesLikedNames.push(name);
+                userMoviesLikedNames.push(tmdbid + '');
             }
         },
     error: function(movie, error) {

@@ -21,7 +21,6 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
                 $scope.buttonTheme = "link disabled";
             }else{
                 var index = $.inArray($routeParams.username, following);
-                console.log(index);
                 if (index >= 0){
                     $scope.followText = "Following";
                     $scope.buttonTheme = "danger";
@@ -118,22 +117,19 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
     });
 
     $scope.followUser = function(){
-        if ($scope.userObjectId == $routeParams.username) {
+        if ($scope.userObjectId == $routeParams.username || typeof $routeParams.username === 'undefined') {
             return;
         }else{
             var index = $.inArray($routeParams.username, following);
             if (index >= 0){
                 $scope.followText = "Follow";
                 $scope.buttonTheme = "success";
-                newFollowing = jQuery.grep(following, function(value) {
-                    return value != $routeParams.username;
-                });
-                currentUser.set("following", newFollowing);
+                currentUser.remove("following", $routeParams.username);
                 currentUser.save(null, {
                 success: function(comment) {
                     $scope.followText = "Follow";
                     $scope.buttonTheme = "success";
-                    following = newFollowing;
+                    following = comment.get("following");
                 },
                 error: function(comment, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');
@@ -147,7 +143,7 @@ app.registerCtrl('userHomeController', ['$scope', '$routeParams', '$http', funct
                 success: function(comment) {
                     $scope.followText = "Following";
                     $scope.buttonTheme = "danger";
-                    following.push(username);
+                    following = comment.get("following");
                 },
                 error: function(comment, error) {
                         $('.notification').first().text('Oops! ' + error.message).show('fast').delay(3000).hide('fast');

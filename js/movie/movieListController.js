@@ -91,19 +91,19 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
                 .success(function(response) {
                 $('.notification').first().hide('fast');
                 for (var i=0; i<response.results.length; i++){
-                    var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
+                    var index = $.inArray(response.results[i].id + '', userMoviesWatchlistNames);
                     if (index >= 0){
                         response.results[i].watchlistClass = "btn-danger";
                     }else{
                         response.results[i].watchlistClass = "btn-success";
                     }
-                    index = $.inArray(response.results[i].title, userMoviesWatchedNames);
+                    index = $.inArray(response.results[i].id + '', userMoviesWatchedNames);
                     if (index >= 0){
                         response.results[i].watchedClass = "btn-danger";
                     }else{
                         response.results[i].watchedClass = "btn-info";
                     }
-                    index = $.inArray(response.results[i].title, userMoviesLikedNames);
+                    index = $.inArray(response.results[i].id + '', userMoviesLikedNames);
                     if (index >= 0){
                         response.results[i].likedClass = "btn-danger";
                     }else{
@@ -119,19 +119,19 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
                 .success(function(response) {
                 $('.notification').first().hide('fast');
                 for (var i=0; i<response.results.length; i++){
-                    var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
+                    var index = $.inArray(response.results[i].id + '', userMoviesWatchlistNames);
                     if (index >= 0){
                         response.results[i].watchlistClass = "btn-danger";
                     }else{
                         response.results[i].watchlistClass = "btn-success";
                     }
-                    index = $.inArray(response.results[i].title, userMoviesWatchedNames);
+                    index = $.inArray(response.results[i].id + '', userMoviesWatchedNames);
                     if (index >= 0){
                         response.results[i].watchedClass = "btn-danger";
                     }else{
                         response.results[i].watchedClass = "btn-info";
                     }
-                    index = $.inArray(response.results[i].title, userMoviesLikedNames);
+                    index = $.inArray(response.results[i].id + '', userMoviesLikedNames);
                     if (index >= 0){
                         response.results[i].likedClass = "btn-danger";
                     }else{
@@ -147,19 +147,19 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
                 .success(function(response) {
                 $('.notification').first().hide('fast');
                 for (var i=0; i<response.results.length; i++){
-                    var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
+                    var index = $.inArray(response.results[i].id + '', userMoviesWatchlistNames);
                     if (index >= 0){
                         response.results[i].watchlistClass = "btn-danger";
                     }else{
                         response.results[i].watchlistClass = "btn-success";
                     }
-                    index = $.inArray(response.results[i].title, userMoviesWatchedNames);
+                    index = $.inArray(response.results[i].id + '', userMoviesWatchedNames);
                     if (index >= 0){
                         response.results[i].watchedClass = "btn-danger";
                     }else{
                         response.results[i].watchedClass = "btn-info";
                     }
-                    index = $.inArray(response.results[i].title, userMoviesLikedNames);
+                    index = $.inArray(response.results[i].id + '', userMoviesLikedNames);
                     if (index >= 0){
                         response.results[i].likedClass = "btn-danger";
                     }else{
@@ -183,19 +183,19 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
                 console.log("Url : " + url);
                 $('.notification').first().hide('fast');
                 for (var i=0; i<response.results.length; i++){
-                    var index = $.inArray(response.results[i].title, userMoviesWatchlistNames);
+                    var index = $.inArray(response.results[i].id + '', userMoviesWatchlistNames);
                     if (index >= 0){
                         response.results[i].watchlistClass = "btn-danger";
                     }else{
                         response.results[i].watchlistClass = "btn-success";
                     }
-                    index = $.inArray(response.results[i].title, userMoviesWatchedNames);
+                    index = $.inArray(response.results[i].id + '', userMoviesWatchedNames);
                     if (index >= 0){
                         response.results[i].watchedClass = "btn-danger";
                     }else{
                         response.results[i].watchedClass = "btn-info";
                     }
-                    index = $.inArray(response.results[i].title, userMoviesLikedNames);
+                    index = $.inArray(response.results[i].id + '', userMoviesLikedNames);
                     if (index >= 0){
                         response.results[i].likedClass = "btn-danger";
                     }else{
@@ -224,19 +224,19 @@ app.registerCtrl('movieListController', ['$scope', '$window', '$http', '$routePa
                 });
                 
                 for(var i=0;i<moviesTemp.length;i++){
-                    var index = $.inArray(moviesTemp[i]['title'], userMoviesWatchlistNames);
+                    var index = $.inArray(moviesTemp[i].id, userMoviesWatchlistNames);
                     if (index >= 0){
                         moviesTemp[i].watchlistClass = "btn-danger";
                     }else{
                         moviesTemp[i].watchlistClass = "btn-success";
                     }
-                    index = $.inArray(moviesTemp[i]['title'], userMoviesWatchedNames);
+                    index = $.inArray(moviesTemp[i].id, userMoviesWatchedNames);
                     if (index >= 0){
                         moviesTemp[i].watchedClass = "btn-danger";
                     }else{
                         moviesTemp[i].watchedClass = "btn-info";
                     }
-                    index = $.inArray(moviesTemp[i]['title'], userMoviesLikedNames);
+                    index = $.inArray(moviesTemp[i].id, userMoviesLikedNames);
                     if (index >= 0){
                         moviesTemp[i].likedClass = "btn-danger";
                     }else{

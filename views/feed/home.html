@@ -26,8 +26,8 @@
     <div class="row">
         <div class="col-sm-1 col-md-2"></div>
         <div class="col-sm-10 col-md-8">
-         <form  data-ng-submit="updateStatus()">
-             <input autocomplete="off" id="statusText" data-ng-keyup="fillAutoComplete()" class="full-width" data-ng-model="statusText" style="padding: 20px; font-size: 2em;" type="text" placeholder="What are you watching now ?">
+         <form data-ng-submit="updateStatus()">
+            <input autocomplete="off" id="statusText" data-ng-keyup="fillAutoComplete()" class="full-width" data-ng-model="statusText" style="padding: 20px; font-size: 2em;" type="text" placeholder="What are you watching now ?">
          </form>
         </div>
         <div class="col-sm-1 col-md-2"></div>
@@ -57,8 +57,17 @@
                 <div class="caption">
                     <small title="{{comment.timeTitle}}">{{comment.timeString}}</small>
                     <div ng-if="comment.canLike">
-                        <p>{{comment.text}}</p>
-                         <button class="btn btn-link glyphicon glyphicon-thumbs-up" title="Like" data-ng-click="upvote($index,comment.id)"></button><span class="likedBy ellipsis"> {{comment.voted_by}}</span>
+                        <button class="btn btn-{{comment.commentLikedClass}}" title="Like" data-ng-click="upvote($index,comment.id)"><span class="glyphicon glyphicon-thumbs-up"></span></button><span class="likedBy ellipsis"> {{comment.voted_by}}</span>
+                        <p style="font-size: 24px;">{{comment.text}}</p>
+                        <p data-ng-if="comment.sub_comments_count > 0"><a class="bold" href="#post/{{comment.id}}">view all {{comment.sub_comments_count}} comments</a></p>
+                        <div data-ng-repeat="subComment in comment.sub_comment track by $index">
+                            <a class="bold" href="#user/{{subComment.userId}}">{{subComment.username}} </a><span> {{subComment.commentText}}</span>
+                        </div>
+                        <form data-ng-submit="writeComment(comment)">
+                            <button style="float: left;" class="btn btn-link glyphicon glyphicon-comment"></button>
+                            <span style="display: block; overflow: hidden; padding: 5px;">
+                            <input autocomplete="off" style="width:100%" data-ng-model="comment.commentText" type="text" placeholder="Write a comment ..."></span>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -36,19 +36,19 @@ app.registerCtrl('listViewController', ['$scope', '$routeParams', '$window', fun
                 });
 
                 for(var i=0;i<moviesTemp.length;i++){
-                    var index = $.inArray(moviesTemp[i]['title'], userMoviesWatchlistNames);
+                    var index = $.inArray(moviesTemp[i].tmdb_id, userMoviesWatchlistNames);
                     if (index >= 0){
                         moviesTemp[i].watchlistClass = "btn-danger";
                     }else{
                         moviesTemp[i].watchlistClass = "btn-success";
                     }
-                    index = $.inArray(moviesTemp[i]['title'], userMoviesWatchedNames);
+                    index = $.inArray(moviesTemp[i].tmdb_id, userMoviesWatchedNames);
                     if (index >= 0){
                         moviesTemp[i].watchedClass = "btn-danger";
                     }else{
                         moviesTemp[i].watchedClass = "btn-info";
                     }
-                    index = $.inArray(moviesTemp[i]['title'], userMoviesLikedNames);
+                    index = $.inArray(moviesTemp[i].tmdb_id, userMoviesLikedNames);
                     if (index >= 0){
                         moviesTemp[i].likedClass = "btn-danger";
                     }else{

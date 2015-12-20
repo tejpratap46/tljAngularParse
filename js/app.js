@@ -1,9 +1,10 @@
 var app = angular.module('tlj', [
-   'ngRoute'
+   'ngRoute',
+   'angular-loading-bar'
 ]);
 
-app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $controllerProvider){
-    
+app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', function($routeProvider, $controllerProvider, cfpLoadingBarProvider){
+    cfpLoadingBarProvider.includeSpinner = false;
     Parse.initialize("LQ0CkEovQS7YW2s4i6VXe7x6su7mrtGVFgJvMlYL", "ZEu9KSnsmCeQDqadynUC53dlU3Fs8MQSwI2mBY6R");
     var currentUser = Parse.User.current();
     var homeTemplate = "views/home.html";
@@ -137,6 +138,11 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
 		controller : 'feedHomeController',
         resolve: loader(['js/feed/feedHomeController.js'])
 	})
+	.when('/post/:id', {
+		templateUrl: 'views/post/home.html',
+		controller : 'postHomeController',
+        resolve: loader(['js/post/postHomeController.js'])
+	})
 	.when('/follow', {
 		templateUrl: 'views/follow/home.html',
 		controller : 'followHomeController',
@@ -150,10 +156,10 @@ app.config(['$routeProvider', '$controllerProvider', function($routeProvider, $c
 	});
 }]);
 
-app.controller('navController', function ($scope) {
+app.controller('navController',['$scope', function ($scope) {
 	checkIfLoggedIn();
     $scope.searchMovie = function(){
         var movie = $scope.searchData;
         window.location.hash = "#/movie/list/search/" + movie;
     }
-});
+}]);
