@@ -63,8 +63,8 @@
                         <div data-ng-repeat="subComment in comment.sub_comment track by $index">
                             <a class="bold" href="#user/{{subComment.userId}}">{{subComment.username}} </a><span> {{subComment.commentText}}</span>
                         </div>
+                        <button style="float: left;" class="btn btn-link glyphicon glyphicon-comment"></button>
                         <form data-ng-submit="writeComment(comment)">
-                            <button style="float: left;" class="btn btn-link glyphicon glyphicon-comment"></button>
                             <span style="display: block; overflow: hidden; padding: 5px;">
                             <input autocomplete="off" style="width:100%" data-ng-model="comment.commentText" type="text" placeholder="Write a comment ..."></span>
                         </form>

@@ -109,12 +109,12 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                 }else{
                     // Add like
                     $scope.comments[$index].commentLikedClass = "primary";
-                    comment.addUnique("voted_by", userObjectId);
+                    comment.addUnique("voted_by", user.id);
                     comment.increment("votes");
                 }
             }else{
                 $scope.comments[$index].commentLikedClass = "primary";
-                comment.addUnique("voted_by", userObjectId);
+                comment.addUnique("voted_by", user.id);
                 comment.increment("votes");
             }
             $scope.$apply();
@@ -133,7 +133,6 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                     }else{
                         votedBy = votedByTemp.length + " people liked this";
                     }
-                    var pre = $('.likedBy').eq($index).text();
                     $scope.comments[$index].voted_by = votedBy;
                     $scope.$apply();
                 },
@@ -222,19 +221,19 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                             tmdb_id:status.get('tmdb_id'),
                             updatedAt:"just now"
                         };
-                        var index = $.inArray(commentsTemp['title'], userMoviesWatchlistNames);
+                        var index = $.inArray(commentsTemp.tmdb_id, userMoviesWatchlistNames);
                         if (index >= 0){
                             commentsTemp.watchlistClass = "btn-danger";
                         }else{
                             commentsTemp.watchlistClass = "btn-success";
                         }
-                        index = $.inArray(commentsTemp['title'], userMoviesWatchedNames);
+                        index = $.inArray(commentsTemp.tmdb_id, userMoviesWatchedNames);
                         if (index >= 0){
                             commentsTemp.watchedClass = "btn-danger";
                         }else{
                             commentsTemp.watchedClass = "btn-info";
                         }
-                        index = $.inArray(commentsTemp['title'], userMoviesLikedNames);
+                        index = $.inArray(commentsTemp.tmdb_id, userMoviesLikedNames);
                         if (index >= 0){
                             commentsTemp.likedClass = "btn-danger";
                         }else{

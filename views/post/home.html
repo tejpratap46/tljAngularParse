@@ -1,3 +1,37 @@
-<div class="container">
-	<h1>Started working on this.</h1>
+<div data-ng-if="isLoadingComplete" class="container">
+	<div class="col-sm-1 col-md-2 col-lg-3"></div>
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 no-padding">
+            <div class="thumbnail">
+                <div class="round-button btn btn-info center center-vertical" style="height: 60px; width: 60px;"><h5 class="bold white">{{post.username.split('')[0] | uppercase}}</h5></div>
+                <a href="#user/{{post.created_by.objectId}}" class="bold">{{post.created_by.name.split('@')[0]}}</a>{{post.postAction}}<a href="#/movie/view/{{post.tmdb_id + '/' + post.title}}" class="bold">{{'  '+post.title}}</a><hr style="margin: 5px;"/>
+                <div style="max-height: 275px; overflow: hidden;">
+                    <a href="#/movie/view/{{post.tmdb_id + '/' + post.title}}">
+                        <img style="width: 100%;" src="{{'http://image.tmdb.org/t/p/w300' + post.poster_path}}" alt="post.title" onError="this.onerror=null;this.src='images/logo-512.png';">
+                    </a>
+                </div>
+                <div class="center"style="height: 0px;">
+                    <div class="btn-group" style="margin-top: -80px;">
+                        <button class="movieWatchlist btn {{post.watchlistClass}} glyphicon glyphicon-plus" title="Add To Watchlist" data-ng-click="watchlist($index, post)"></button>
+                        <button class="movieWatched btn {{post.watchedClass}} glyphicon glyphicon-ok" title="Mark As Watched" data-ng-click="watched($index, post)"></button>
+                        <button class="movieLiked btn {{post.likedClass}} glyphicon glyphicon-heart" title="Like This" data-ng-click="like($index, post)"></button>
+                        <button class="btn btn-primary glyphicon glyphicon-play" title="Play Trailer" data-ng-click="trailer($index, post)"></button>
+                    </div>
+                </div><hr style="margin: 5px;"/>
+                <div class="caption">
+                    <small title="{{post.timeTitle}}">{{post.timeString}}</small><br/>
+                    <button class="btn btn-{{post.commentLikedClass}}" title="Like" data-ng-click="upvote(post.objectId)"><span class="glyphicon glyphicon-thumbs-up"></span></button><span class="likedBy ellipsis"> {{post.voted_by}}</span>
+                    <p style="font-size: 24px;">{{post.text}}</p>
+                    <small class="bold">total {{post.sub_comments_count}} comments</small>
+                    <div data-ng-repeat="subComment in post.sub_comment track by $index">
+                        <a class="bold" href="#user/{{subComment.userId}}">{{subComment.username}} </a><span> {{subComment.commentText}}</span>
+                    </div>
+                    <button style="float: left;" class="btn btn-link glyphicon glyphicon-comment"></button>
+                    <form data-ng-submit="writeComment(post)">
+                        <span style="display: block; overflow: hidden; padding: 5px;">
+                        <input autocomplete="off" style="width:100%" data-ng-model="post.commentText" type="text" placeholder="Write a comment ..."></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
