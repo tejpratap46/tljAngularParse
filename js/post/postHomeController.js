@@ -82,8 +82,7 @@ app.registerCtrl('postHomeController', ['$scope', '$routeParams', '$window', fun
 
     function getComments(id,page){
         $('.notification').first().text('Loading...').show('fast');
-        console.log("id : " + id + ", page : " + page);
-        Parse.Cloud.run('getSubComments', {id: '3WYiZVpFTI', page: page, limit: 6},{
+        Parse.Cloud.run('getSubComments', {id: id, page: page, limit: 6},{
         success: function(results) {
             $('.notification').first().hide('fast');
             if (!$scope.post.sub_comment) {

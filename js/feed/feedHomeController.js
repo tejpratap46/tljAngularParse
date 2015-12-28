@@ -201,7 +201,7 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                 var name = user.get("username");
                 status.set("created_by", user);
                 status.set("username", name);
-                status.addUnique("voted_by", name);
+                status.addUnique("voted_by", user.id);
                 status.save(null, {
                     success: function(status) {
                         $('.notification').first().hide('fast');
@@ -209,9 +209,10 @@ app.registerCtrl('feedHomeController', ['$scope', '$window', '$routeParams', '$h
                         var commentsTemp = {
                             id:status.id,
                             canLike: true,
+                            commentLikedClass: "primary",
                             postAction: " Commented On",
                             text:status.get('text'),
-                            username:status.get('username'),
+                            username: user.get('name'),
                             voted_by:"you liked this",
                             votes:status.get('votes'),
                             title:status.get('title'),
